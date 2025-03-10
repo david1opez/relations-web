@@ -1,0 +1,14 @@
+.pageContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+    padding: 5vh;
+}
+
+.projectsPageIndicator {
+    display: flex;
+    flex-direction: row;
+    align-self: flex-start;
+}

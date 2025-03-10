@@ -1,0 +1,38 @@
+.pageIndicatorContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-self: flex-start;
+}
+
+.pageIndicatorTitle {
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-left: 0.5rem;
+}
+
+.clickablePageIndicatorTitle {
+    cursor: pointer;
+}
+
+.clickablePageIndicatorTitle:hover {
+    text-decoration: underline;
+}
+
+.subpageContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.subpageDash {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0 0.5rem;
+}
+
+.subpageTitle {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-top: 0.2rem;
+}

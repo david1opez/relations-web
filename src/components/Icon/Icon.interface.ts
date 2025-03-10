@@ -1,9 +1,11 @@
 import Icons from "./Icons.json";
 
+export type IconName = keyof typeof Icons;
+
 export type IconProps = {
   size: number | { width: number; height: number };
   color: string;
-  name: keyof typeof Icons;
+  name: IconName;
   className?: string;
   style?: React.CSSProperties;
   onClick?: () => void;
