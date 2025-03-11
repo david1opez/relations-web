@@ -12,3 +12,18 @@
     flex-direction: row;
     align-self: flex-start;
 }
+
+.contentContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+}
+
+.tabsContainer {
+    align-self: flex-start;
+}
+
+.tabButton {
+    margin-right: 0.6rem;
+}
