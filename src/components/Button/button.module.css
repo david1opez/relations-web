@@ -1,0 +1,21 @@
+.button {
+    border: 1px solid var(--black);
+    border-radius: 4px;
+    background-color: var(--white);
+    padding: 0.4rem 1rem 0.35rem 1rem;
+    cursor: pointer;
+}
+
+.disabled {
+    background: none;
+    border: 1px solid var(--gray);
+}
+
+.text {
+    font-weight: 500;
+    font-size: 0.8rem;
+}
+
+.disabledText {
+    color: var(--gray);
+}
