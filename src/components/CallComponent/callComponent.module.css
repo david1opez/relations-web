@@ -1,0 +1,38 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--blue);
+    padding: 1.2rem 0.5rem;
+}
+
+.icon {
+    border: 1.5px solid var(--black);
+    border-radius: 50%;
+    padding: 0.4rem;
+}
+
+.titleContainer {
+    width: 20vw;
+}
+
+.title {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.attendees {
+    font-size: 0.7rem;
+    font-weight: 300;
+}
+
+.duration {
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.date {
+    font-size: 0.7rem;
+    font-weight: 300;
+}
