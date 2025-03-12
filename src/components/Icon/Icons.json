@@ -161,13 +161,23 @@
         ]
     },
     "close": {
-        "viewbox": "",
-        "fill": "",
-        "paths": []
-    },
-    "arrow": {
-        "viewbox": "",
-        "fill": "",
-        "paths": []
+        "viewbox": "0 0 31 31",
+        "fill": "none",
+        "paths": [
+            {
+                "d": "M24.2188 6.78125L6.78125 24.2188",
+                "stroke": "#6CCDEA",
+                "strokeWidth": "3.1",
+                "strokeLinecap": "round",
+                "strokeLinejoin": "round"
+            },
+            {
+                "d": "M24.2188 24.2188L6.78125 6.78125",
+                "stroke": "#6CCDEA",
+                "strokeWidth": "3.1",
+                "strokeLinecap": "round",
+                "strokeLinejoin": "round"
+            }
+        ]
     }
 }
