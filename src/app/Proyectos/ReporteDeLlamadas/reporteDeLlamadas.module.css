@@ -1,0 +1,26 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.subtitle {
+    margin: 3.5vh 0 2vh 0;
+    font-size: 1.1rem;
+}
+
+.contentContainer {
+    display: flex;
+    flex: 1;
+    margin-top: 2vh;
+}
+
+.callsContainer {
+    width: 100%;
+    max-width: 700px;
+    background-color: var(--white);
+    border-radius: 7px;
+    padding: 3vh 1.7vw;
+    overflow-y: auto;
+    height: 60vh;
+}
