@@ -41,11 +41,13 @@ export default function Proyectos() {
                                 onClick={() => setCurrentTab("Reporte General")}
                                 disabled={currentTab !== "Reporte General"}
                                 className={styles.tabButton}
+                                size='large'
                             />
                             <Button
                                 text="Reporte de Llamadas"
                                 onClick={() => setCurrentTab("Reporte de Llamadas")}
                                 disabled={currentTab !== "Reporte de Llamadas"}
+                                size='large'
                             />
                         </div>
 
