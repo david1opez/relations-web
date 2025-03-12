@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './searchbar.module.css';
 
 // COMPONENTS
@@ -7,8 +7,12 @@ import Icon from '../Icon/Icon';
 // TYPES
 import { SearchbarProps } from './searchbar.interface';
 
-export default function Searchbar({} : SearchbarProps) {
+export default function Searchbar({ onChangeValue } : SearchbarProps) {
     const [searchValue, setSearchValue] = useState('');
+
+    useEffect(() => {
+        onChangeValue(searchValue);
+    }, [searchValue]);
 
     return (
         <div className={styles.container}>
