@@ -5,13 +5,16 @@ import styles from './reporteDeLlamadas.module.css';
 import Searchbar from '@/components/Searchbar/Searchbar';
 import CallComponent from '@/components/CallComponent/CallComponent';
 
-export default function ReporteDeLlamadas() {
+// TYPES
+import { Project } from '@/app/Proyectos/GaleriaDeProyectos/galeriaDeProyectos.interface';
+
+export default function ReporteDeLlamadas({ project }: { project: Project }) {
     const [calls, setCalls] = useState([1,2,3,4,5,6,7,8]);
 
     return (
         <div className={styles.container}>
             <h1 className={styles.subtitle}>Historial de llamadas</h1>
-            <Searchbar/>
+            <Searchbar onChangeValue={(value) => {console.log(value)}}/>
 
             <div className={styles.contentContainer}>
                 <div className={styles.callsContainer}>
