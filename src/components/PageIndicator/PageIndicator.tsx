@@ -24,7 +24,7 @@ export default function PageIndicator({ icon, title, subpages, onPageChange }: P
         <div className={styles.pageIndicatorContainer}>
             <Icon
                 name={icon}
-                size={37}
+                size={35}
                 color="var(--blue)"
             />
             <h1
