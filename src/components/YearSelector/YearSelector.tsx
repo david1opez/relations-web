@@ -1,36 +1,38 @@
-// Archivo YearSelector.tsx
+import { useState } from 'react';
+import styles from "./YearSelector.module.css";
 
-import React, { useState } from 'react';
-import styles from "./YearSelector.module.css";  // Estilos
-import { YearSelectorProps } from "./YearSelector.interface"; // Props del componente
+// COMPONENTS
+import Icon from "@/components/Icon/Icon";
 
-// ICONO
-import Icon from "@/components/Icon/Icon"; // Importación del nuevo Icono
+// TYPES
+import { YearSelectorProps } from "./YearSelector.interface";
 
-export default function YearSelector({ onYearChange }: YearSelectorProps) {
-    const [selectedYear, setSelectedYear] = useState<string>(new Date().getFullYear().toString());
+export default function YearSelector({ onYearChange, className }: YearSelectorProps) {
+    const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
 
     const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const year = event.target.value;
+        const year = parseInt(event.target.value);
         setSelectedYear(year);
-        onYearChange(year); // Envía el año seleccionado al componente padre
+        onYearChange(year);
     };
 
     return (
-        <div className={styles.container}>
+        <div className={`${styles.container} ${className}`}>
             <div className={styles.selectWrapper}>
                 <Icon
-                    name="calendar" // Icono de calendario
-                    size={{ width: 20, height: 20 }}  // Tamaño más grande
-                    color="#6CCDEA"
+                    name="calendar"
+                    size={18}
+                    color="var(--blue)"
                 />
+
                 <span className={styles.yearText}>{selectedYear}</span>  {/* Texto del año */}
+                
                 <Icon 
-                    name="arrowDown"  // Flecha para indicar que es desplegable
-                    size={{ width: 14, height: 14 }}
-                    color="#6CCDEA"
-                    className={styles.arrowIcon}
+                    name="arrowDown"
+                    size={18}
+                    color="var(--black)"
                 />
+
                 <select
                     id="yearSelector"
                     className={styles.select}

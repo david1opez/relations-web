@@ -10,7 +10,13 @@
 .projectsPageIndicator {
     display: flex;
     flex-direction: row;
+    width: 100%;
     align-self: flex-start;
+}
+
+.yearSelector {
+    margin-top: 0.3rem;
+    margin-left: 1rem;
 }
 
 .contentContainer {

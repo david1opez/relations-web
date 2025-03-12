@@ -36,9 +36,10 @@ export default function Proyectos() {
                 />
 
                 {subpages.length === 0 && (
-                    <div className={styles.yearContainer}>
-                        <YearSelector value={selectedYear} onYearChange={setSelectedYear}/>
-                    </div>
+                    <YearSelector
+                        onYearChange={setSelectedYear}
+                        className={styles.yearSelector}
+                    />
                 )}
             </div>
 
