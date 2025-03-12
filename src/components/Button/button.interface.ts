@@ -6,4 +6,5 @@ export type ButtonProps = {
     text: string;
     onClick?: () => void;
     className?: string;
+    size?: "small" | "medium" | "large";
 };
