@@ -9,9 +9,18 @@ import GaleriaDeProyectos from './GaleriaDeProyectos/GaleriaDeProyectos';
 import ReporteGeneral from './ReporteGeneral/ReporteGeneral';
 import ReporteDeLlamadas from './ReporteDeLlamadas/ReporteDeLlamadas';
 
+// TYPES
+import { Project } from './GaleriaDeProyectos/galeriaDeProyectos.interface';
+
 export default function Proyectos() {
-    const [subpages, setSubpages] = useState<string[]>(["Dashboard para deliveries"]);
+    const [project, setProject] = useState<Project|undefined>();
+    const [subpages, setSubpages] = useState<string[]>([]);
     const [currentTab, setCurrentTab] = useState<"Reporte General" | "Reporte de Llamadas">("Reporte General");
+
+    const handleProjectSelection = (project: Project) => {
+        setProject(project);
+        setSubpages([project.name]);
+    };
 
     return (
         <div className={styles.pageContainer}>
@@ -32,7 +41,7 @@ export default function Proyectos() {
 
             {
                 subpages.length === 0 ? (
-                    <GaleriaDeProyectos/>
+                    <GaleriaDeProyectos onSelectProject={handleProjectSelection}/>
                 ) : (
                     <div className={styles.contentContainer}>
                         <div className={styles.tabsContainer}>
@@ -53,9 +62,9 @@ export default function Proyectos() {
 
                         {
                             currentTab === "Reporte General" ? (
-                                <ReporteGeneral/>
+                                <ReporteGeneral project={project || {name: "", id: ""} as Project}/>
                             ) : (
-                                <ReporteDeLlamadas/>
+                                <ReporteDeLlamadas project={project || {name: "", id: ""} as Project}/>
                             )
                         }
                     </div>
