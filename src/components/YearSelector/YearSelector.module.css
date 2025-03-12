@@ -1,0 +1,52 @@
+/* Archivo YearSelector.module.css */
+.container {
+    display: flex;
+    align-items: center;
+    gap: 90px;  /* Aumenta el espacio entre el título y la caja de la fecha */
+}
+
+.selectWrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #6CCDEA;
+    border-radius: 5px;
+    background-color: #f0f4f8;
+    padding: 4px 20px 4px 12px; /* Incrementé el padding derecho */
+    cursor: pointer;
+    position: relative;
+    gap: 6px;  /* Espacio entre el icono del calendario y el texto del año */
+}
+.selectWrapper {
+    margin-left: 10px; /* Ajusta este valor según el espacio que desees */
+}
+
+.yearText {
+    color: #6CCDEA;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.select {
+    border: none;
+    background: transparent;
+    color: transparent; /* Oculta el texto por defecto */
+    outline: none;
+    appearance: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.arrowIcon {
+    position: absolute;
+    right: 1px;
+    top: 50%;    /* Centra verticalmente */
+    transform: translateY(-50%);
+    pointer-events: none;  /* Evita que la flecha interfiera con el click */
+    width: 18px;            /* Tamaño mayor */
+    height: 18px;           /* Tamaño mayor */
+    color: #6CCDEA;         /* Mismo color azul para visibilidad */
+}

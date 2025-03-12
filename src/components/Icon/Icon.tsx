@@ -4,9 +4,14 @@ import Icons from './Icons.json';
 import { IconProps, IconType } from './Icon.interface';
 
 export default function Icon({ size, color, name, className, style, onClick }: IconProps) {
-    const Icon: IconType = Icons[name];
+    const Icon: IconType | undefined = Icons[name];
 
-    return(
+    if (!Icon) {
+        console.error(`El icono "${name}" no se encontró en Icons.json`);
+        return null; // Previene que se intente renderizar algo que no existe
+    }
+
+    return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width={typeof size === 'object' ? size.width : size}
@@ -26,39 +31,9 @@ export default function Icon({ size, color, name, className, style, onClick }: I
                         strokeWidth={path.strokeWidth}
                         strokeLinecap={path.strokeLinecap}
                         strokeLinejoin={path.strokeLinejoin}
-                        cx={path.cx}
-                        cy={path.cy}
-                        r={path.r}
-                        color={path.color}
-                        x={path.x}
-                        y={path.y}
-                        width={path.width}
-                        height={path.height}
-                    >
-                        {
-                            path.content && path.content.map((subPath, index) => (
-                                <path
-                                    key={index}
-                                    d={subPath.d}
-                                    fill={subPath.fill ? color : 'none'}
-                                    stroke={subPath.stroke}
-                                    strokeWidth={subPath.strokeWidth}
-                                    strokeLinecap={subPath.strokeLinecap}
-                                    strokeLinejoin={subPath.strokeLinejoin}
-                                    cx={subPath.cx}
-                                    cy={subPath.cy}
-                                    r={subPath.r}
-                                    color={subPath.color}
-                                    x={subPath.x}
-                                    y={subPath.y}
-                                    width={subPath.width}
-                                    height={subPath.height}
-                                />
-                            ))
-                        }
-                    </path>
+                    />
                 ))
             }
         </svg>
-    )
-};
+    );
+}

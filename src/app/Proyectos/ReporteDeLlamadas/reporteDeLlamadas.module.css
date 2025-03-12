@@ -13,6 +13,7 @@
     display: flex;
     flex: 1;
     margin-top: 2vh;
+    gap: 40px; /* Espacio entre el historial de llamadas y el calendario */
 }
 
 .callsContainer {
@@ -23,4 +24,14 @@
     padding: 3vh 1.7vw;
     overflow-y: auto;
     height: 60vh;
+}
+
+.calendarContainer {
+    width: 100%;
+    max-width: 350px; /* Tamaño máximo del calendario */
+    background-color: var(--white);
+    border-radius: 7px;
+    padding: 3vh 1.7vw;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para que se vea más limpio */
+    height: fit-content; /* Altura dinámica según el contenido */
 }

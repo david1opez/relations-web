@@ -179,5 +179,78 @@
                 "strokeLinejoin": "round"
             }
         ]
+    },
+    "calendar": {
+        "viewbox": "0 0 17 17",
+        "fill": "none",
+        "paths": [
+            {
+                "d": "M13.7868 2.9762H3.50064C3.21659 2.9762 2.98633 3.20647 2.98633 3.49051V13.7767C2.98633 14.0608 3.21659 14.291 3.50064 14.291H13.7868C14.0709 14.291 14.3011 14.0608 14.3011 13.7767V3.49051C14.3011 3.20647 14.0709 2.9762 13.7868 2.9762Z",
+                "stroke": "#6CCDEA",
+                "strokeWidth": "1.45217",
+                "strokeLinecap": "round",
+                "strokeLinejoin": "round"
+            },
+            {
+                "d": "M11.7295 1.94774V4.00498",
+                "stroke": "#6CCDEA",
+                "strokeWidth": "1.45217",
+                "strokeLinecap": "round",
+                "strokeLinejoin": "round"
+            },
+            {
+                "d": "M5.55762 1.94774V4.00498",
+                "stroke": "#6CCDEA",
+                "strokeWidth": "1.45217",
+                "strokeLinecap": "round",
+                "strokeLinejoin": "round"
+            },
+            {
+                "d": "M2.98633 6.06206H14.3011",
+                "stroke": "#6CCDEA",
+                "strokeWidth": "1.45217",
+                "strokeLinecap": "round",
+                "strokeLinejoin": "round"
+            }
+        ]
+    },
+    "arrowDown": {
+        "viewbox": "0 0 24 24",
+        "fill": "none",
+        "paths": [
+            {
+                "d": "M7 10L12 15L17 10",
+                "stroke": "#6CCDEA",
+                "strokeWidth": "1.7",
+                "strokeLinecap": "round",
+                "strokeLinejoin": "round"
+            }
+        ]
+    },
+    "arrowLeft": {
+        "viewbox": "0 0 24 24",
+        "fill": "none",
+        "paths": [
+            {
+                "d": "M15 19l-7-7 7-7",
+                "stroke": "#6CCDEA",
+                "strokeWidth": "2",
+                "strokeLinecap": "round",
+                "strokeLinejoin": "round"
+            }
+        ]
+    },
+    "arrowRight": {
+        "viewbox": "0 0 24 24",
+        "fill": "none",
+        "paths": [
+            {
+                "d": "M9 5l7 7-7 7",
+                "stroke": "#6CCDEA",
+                "strokeWidth": "2",
+                "strokeLinecap": "round",
+                "strokeLinejoin": "round"
+            }
+        ]
     }
 }
