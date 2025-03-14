@@ -1,8 +1,11 @@
 "use client"
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+    const router = useRouter();
+
     const searchParams = useSearchParams();
     const code = searchParams.get("code");
 
@@ -11,13 +14,17 @@ export default function Login() {
             method: "POST"
         })
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => {
+            router.push("/home");
+        })
         .catch(error => {
             console.error(error);
-        })
+        });
     }, [code]);
 
     return (
-        <div></div>
+        <div>
+            Validando credenciales...
+        </div>
     );
 };
