@@ -9,7 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 
-export default function CallAnalysisPage({ analysisData }) {
+export default function CallAnalysisPage({ analysisData, transcript }) {
   if (!analysisData) {
     return (
       <p className="text-center text-gray-500">No hay análisis disponible.</p>
@@ -36,7 +36,25 @@ export default function CallAnalysisPage({ analysisData }) {
     <div className="container mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold mb-6">Análisis de Llamada</h1>
 
-      {/* Main Summary Card */}
+      {/* Sección del transcript */}
+      <Card className="mb-6">
+        <CardHeader className="pb-1">
+          {" "}
+          {/* Reducimos padding-bottom */}
+          <CardTitle className="text-lg font-bold">
+            Transcripción Completa
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="pt-1 pb-2">
+          {" "}
+          {/* Reducimos padding-top y padding-bottom */}
+          <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-line">
+            {transcript}
+          </p>
+        </CardContent>
+      </Card>
+
+      {/* Resumen de la llamada */}
       <Card className="mb-8">
         <CardHeader className="pb-2">
           <div className="flex justify-between items-center">
