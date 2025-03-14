@@ -1,0 +1,150 @@
+.container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    padding: 40px;
+    background-color: #E8F0F7;
+}
+
+.mainContent {
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.projectTitle {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.projectClient {
+    font-size: 1rem;
+    color: #6C757D;
+    margin-bottom: 20px;
+}
+
+.section {
+    margin-bottom: 20px;
+}
+
+.section h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.section ul {
+    padding-left: 20px;
+}
+
+.pdfButton {
+    background-color: #1D1D1D;
+    color: #FFF;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 20px;  /* Reducir el padding para hacerlo más pequeño */
+    cursor: pointer;
+    width: auto;  /* Para que el ancho se ajuste solo al contenido */
+    margin-top: 20px;
+    text-align: left;  /* Alinear el texto a la izquierda */
+}
+
+.pdfButton:hover {
+    background-color: #292929;
+}
+
+/* Estilo de Recursos */
+.resources {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribuye el contenido para que el botón esté hasta abajo */
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    height: 100%; /* Asegura que el contenedor se expanda adecuadamente */
+}
+
+
+.resources h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.resourceFiles {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.fileCard {
+    background: #F1F1F1;
+    border: 1px solid #DDD;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+}
+
+.addResourceButton {
+    background-color: #1D1D1D;
+    color: #FFF;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 20px;
+    cursor: pointer;
+    width: auto;  /* Para que el ancho se ajuste solo al contenido */
+    margin: 0 auto 0 auto; /* Centra el botón horizontalmente */
+    align-self: center;  /* Alternativa para centrar el botón */
+}
+
+.addResourceButton:hover {
+    background-color: #292929;
+}
+
+.textLight {
+    font-weight: 300; /* Peso más delgado */
+    font-size: 0.95rem; /* Tamaño ligeramente más pequeño */
+    line-height: 1.6; /* Mayor espaciado para mejorar la lectura */
+    color: #1D2026; /* Mantén el color principal del texto */
+}
+
+
+
+
+
+.reporteGeneral h1 {
+    font-size: 1.4rem;  /* Tamaño del título principal */
+    font-weight: 600;  /* Menos grueso que bold pero con énfasis */
+    line-height: 1.4;  
+    text-decoration: underline;  /* Para que tenga el subrayado */
+    margin-bottom: 15px;
+}
+
+.reporteGeneral h2,
+.reporteGeneral h3 {
+    font-size: 0.875rem; /* Tamaño 14px */
+    font-weight: 500; /* Un poco más delgado que bold */
+    line-height: 1.4;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.reporteGeneral .textLight {
+    font-weight: 300;  /* Peso más delgado */
+    font-size: 0.75rem; /* Tamaño 12px */
+    line-height: 1.6;  /* Espaciado cómodo para mayor legibilidad */
+    color: #1D2026;
+}
+
+.reporteGeneral .section {
+    margin-bottom: 20px;
+}
+
+.reporteGeneral .resources .resourceDescription {
+    margin-top: -130px; /* Prueba un valor mayor */
+    margin-bottom: -90px; 
+}
+
