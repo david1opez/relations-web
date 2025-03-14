@@ -1,0 +1,121 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: grid;
+    grid-template-columns: repeat(8, 1fr); /* 8 columnas para mejor ajuste */
+    grid-template-rows: auto auto; /* Dos filas */
+    gap: 10px;  /* Espacio general entre elementos (horizontal y vertical) */
+    justify-content: center;
+    align-items: start; /* Asegura que todas comiencen desde arriba */
+    grid-row-gap: 30px; /* Espacio entre filas */
+    z-index: 1000;
+    padding: 130px;
+}
+
+.summary,
+.timestamps {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Mantiene el contenido alineado hacia arriba */
+    height: 100%; /* Estira ambas cajas para que tengan el mismo tamaño */
+}
+
+.details {
+    position: relative;  /* Añadido para que .closeIcon se posicione dentro de este contenedor */
+    grid-column: 3 / 7;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.summary {
+    grid-column: 2 / 5; 
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.timestamps {
+    grid-column: 5 / 8; 
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.details {
+    grid-column: 3 / 7; /* Ocupará 8 columnas completas */
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.summary {
+    grid-column: 3 / 5; /* Ocupará 4 columnas */
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.timestamps {
+    grid-column: 5 / 7; /* Ocupará las 4 columnas restantes */
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.title {
+    margin-top: 0;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+}
+
+.listItem {
+    margin-bottom: 8px;
+}
+
+.link {
+    text-decoration: none;
+    color: #6CCDEA;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+
+.closeIcon {
+    position: absolute;  /* Se posicionará dentro del contenedor padre (.details) */
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    z-index: 1; /* Asegura que esté por encima del contenido */
+}
+
+.closeIcon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.closeIcon:hover svg path {
+    stroke: #FF0000;  /* Cambia a rojo al pasar el mouse */
+}
