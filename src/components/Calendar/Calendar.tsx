@@ -12,7 +12,6 @@ export default function Calendar({ selectedDate, onDateChange }: CalendarProps) 
     const getStartingDayOfWeek = () => {
         const day = new Date(new Date().getFullYear(), currentMonth, 1).getDay();
 
-
         if(day === 0) return -1;
         else return day - 2;
     };
