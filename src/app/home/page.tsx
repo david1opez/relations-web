@@ -3,8 +3,8 @@ import { useState, createElement } from "react";
 import styles from "./page.module.css";
 
 // COMPONENTS
-import Sidebar from "../components/Sidebar/Sidebar";
-import * as Pages from "./Pages";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import * as Pages from "../Pages";
 
 type PageKeys = keyof typeof Pages;
 
