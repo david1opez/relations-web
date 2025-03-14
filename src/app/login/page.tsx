@@ -7,7 +7,7 @@ export default function Login() {
     const code = searchParams.get("code");
 
     useEffect(() => {
-        fetch(`https://relations-data-api/msft-auth?code=${code}`, {
+        fetch(`https://relations-data-api.vercel.app/msft-auth?code=${code}`, {
             method: "POST"
         })
         .then(response => response.json())
