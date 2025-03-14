@@ -91,9 +91,9 @@
 
 .link {
     text-decoration: none;
-    color: #6CCDEA;
+    color: #000;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .link:hover {
@@ -119,3 +119,6 @@
 .closeIcon:hover svg path {
     stroke: #FF0000;  /* Cambia a rojo al pasar el mouse */
 }
+
+
+
