@@ -12,7 +12,6 @@ export default function Sidebar ({ activeTab, onTabChange }: SidebarProps) {
   const SidebarItems: SidebarItemType[] = [
     { icon: "rocket", text: "Proyectos" },
     { icon: "phone", text: "Llamadas" },
-    { icon: "grid", text: "Dashboard" },
     { icon: "people", text: "Personas" },
     { icon: "question", text: "Tutoriales" },
   ];
