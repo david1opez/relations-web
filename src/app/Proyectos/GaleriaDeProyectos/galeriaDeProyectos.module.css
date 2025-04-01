@@ -12,7 +12,8 @@
     padding: 1rem 1.5rem 2rem 1.5rem;
     display: flex;
     flex-direction: column;
-    width: 20vw;
+    width: 18vw;
+    
     height: 100%;  /* Hace que todas las tarjetas tengan la misma altura */
 }
 
@@ -54,9 +55,10 @@
     font-size: 0.5rem; /* Reducir el tamaño */
     font-weight: 300;  /* Estilo más ligero */
 }
+
 .title {
-    font-size: 1.3rem;
-    line-height: 1.7rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
     font-weight: 500;
     color: #1D2026;
     margin: 10px 0;
@@ -68,14 +70,14 @@
 
 .label {
     font-weight: 300; /* Reducir el grosor */
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     color: #BCBCBC; 
     margin-bottom: 3px;
 }
 
 .info {
     font-family: 'Poppins', sans-serif;
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     line-height: 0.85rem;
     color: #1D2026;
     overflow: hidden;
@@ -92,7 +94,7 @@
     background-color: #1D2026;
     color: #FFFFFF;
     border: none;
-    padding: 8px 20px;
+    padding: 0.5rem 1rem;
     border-radius: 5px;
     cursor: pointer;
     width: auto;
@@ -100,9 +102,11 @@
     font-size: 0.6rem; /* Tamaño más pequeño */
     margin-top: 1.5rem;
 }
+
 .button:hover {
     background-color: #333;
 }
+
 .cardContent {
     flex-grow: 1;  /* Empuja el contenido hacia arriba */
 }

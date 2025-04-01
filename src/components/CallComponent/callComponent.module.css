@@ -14,7 +14,7 @@
 }
 
 .titleContainer {
-    width: 25vw;
+    width: 65%;
 }
 
 .title {
@@ -30,9 +30,11 @@
 .duration {
     font-size: 0.7rem;
     font-weight: 500;
+    width: 100%;
 }
 
 .date {
     font-size: 0.7rem;
     font-weight: 300;
+    width: 100%;
 }
