@@ -1,0 +1,12 @@
+.iconWrapper {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    z-index: 100;
+    cursor: pointer;
+  }
+  
+  .icon {
+    width: 24px;
+    height: 24px;
+  }

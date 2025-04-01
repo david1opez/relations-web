@@ -1,0 +1,27 @@
+.sidebarItemContainer {
+    display: flex;
+    align-items: center;
+    padding: 2vh 30px;
+    cursor: pointer;
+    opacity: 0.5;
+    border-radius: 7px;
+    transition: 0.4s;
+}
+
+.sidebarItemContainer:hover {
+    opacity: 1;
+    transition: 0.2s ease-in-out;
+}
+
+.activeSidebarItemContainer {
+    background-color: #2D323B;
+    cursor: default;
+    opacity: 1;
+}
+
+.sidebarItemText {
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin-left: 15px;
+    color: var(--white);
+}
