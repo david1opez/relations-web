@@ -12,7 +12,7 @@
   --blue: #6CCDEA;
   --gray: #999999;
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: #E6F2F9;
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);

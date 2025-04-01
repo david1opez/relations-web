@@ -5,6 +5,7 @@
     justify-content: left;
     align-items: center;
     padding: 5vh;
+    background-color: var(--backgorund);
 }
 
 .projectsPageIndicator {

@@ -1,7 +1,6 @@
-// Archivo Proyectos.tsx
-
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Proyectos.module.css';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 // COMPONENTS
 import PageIndicator from '@/components/PageIndicator/PageIndicator';
@@ -15,6 +14,11 @@ import ReporteDeLlamadas from './ReporteDeLlamadas/ReporteDeLlamadas';
 import { Project } from './GaleriaDeProyectos/galeriaDeProyectos.interface';
 
 export default function Proyectos() {
+    const router = useRouter();
+    
+    const searchParams = useSearchParams();
+    const access_token = searchParams.get("at");
+
     const [project, setProject] = useState<Project | undefined>();
     const [subpages, setSubpages] = useState<string[]>([]);
     const [currentTab, setCurrentTab] = useState<"Reporte General" | "Reporte de Llamadas">("Reporte General");
@@ -24,6 +28,13 @@ export default function Proyectos() {
         setProject(project);
         setSubpages([project.name]);
     };
+
+    useEffect(() => {
+        if(!access_token) {
+            alert("No se ha proporcionado un token de acceso.");
+            router.push("/");
+        }
+    }, [access_token]);
 
     return (
         <div className={styles.pageContainer}>

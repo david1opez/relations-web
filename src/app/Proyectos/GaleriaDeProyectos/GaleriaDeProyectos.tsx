@@ -36,9 +36,14 @@ export default function GaleriaDeProyectos({ onSelectProject }: GaleriaDeProyect
                         <span className={`${styles.status} ${styles[proyecto.status.toLowerCase()]}`}>
                             {proyecto.status}
                         </span>
-                        <span className={styles.ultimaActualizacion}>
-                            Última Actualización: {proyecto.ultimaActualizacion}
-                        </span>
+                        <div style={{ display: "flex", flexDirection: "column" }}>
+                            <span className={styles.ultimaActualizacion}>
+                                Última Actualización
+                            </span>
+                            <span className={styles.ultimaActualizacion}>
+                                {proyecto.ultimaActualizacion}
+                            </span>
+                        </div>
                     </div>
 
                     <h3 className={styles.title}>{proyecto.nombre}</h3>

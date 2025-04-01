@@ -110,12 +110,11 @@ export default function Llamadas() {
               </h3>
 
               <button
-                className="bg-blue-600 text-white py-1 px-3 text-sm rounded-md hover:bg-blue-700 transition-all 
-    mt-2 self-start" // Cambios aquí para alineación a la izquierda
-                onClick={() => handleSelectCall(call.transcript)}
-              >
-                Analizar
-              </button>
+    className={`${styles.analizarButton} mt-2 self-start`}
+    onClick={() => handleSelectCall(call.transcript)}
+>
+    🔍 Analizar
+</button>
             </div>
           ))}
         </div>

@@ -32,6 +32,5 @@
     background-color: var(--white);
     border-radius: 7px;
     padding: 4vh;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     height: fit-content;
 }
