@@ -8,7 +8,7 @@ export default function ProfileIcon({ className }: { className?: string }) {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push("/Profile");
+    router.push("/MyProfile");
   };
 
   return (

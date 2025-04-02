@@ -15,6 +15,7 @@ export default function Sidebar ({ activeTab, onTabChange }: SidebarProps) {
     { icon: "grid", text: "Dashboard" },
     { icon: "people", text: "Personas" },
     { icon: "question", text: "Tutoriales" },
+    { icon: "question", text: "Admin" },
   ];
 
   return (
