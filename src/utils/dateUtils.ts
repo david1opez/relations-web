@@ -1,5 +1,5 @@
 export const calcDuration = (startDate: number, endDate: number): string => {
-    if (!startDate || !endDate) return "0 m 0s";
+    if (!startDate || !endDate) return "0m 0s";
 
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -8,7 +8,7 @@ export const calcDuration = (startDate: number, endDate: number): string => {
     const minutes = Math.floor(durationInSeconds / 60);
     const seconds = durationInSeconds % 60;
     
-    return `${minutes} m ${seconds}s`;
+    return `${minutes}m ${seconds}s`;
 };
 
 export const parseDate = (dateInMs: number): string => {
