@@ -1,0 +1,126 @@
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    gap: 40px;
+    height: 100vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+  
+  .section {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .searchAdd {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .searchAdd input {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 0.85rem;
+  }
+  
+  /* Estilo base para todos los botones */
+  .button {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .filters {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px; /* ⬅️ antes era 10px */
+  }
+  /* Variaciones */
+  .filters .button,
+  .searchAdd .button {
+    background: #1e293b;
+    color: white;
+  }
+  
+  .secondary {
+    background: #f1f5f9;
+    color: #111827;
+  }
+  
+  .activate {
+    background: #e0f7ec;
+    color: #047857;
+  }
+  
+  .danger {
+    background: #fee2e2;
+    color: #b91c1c;
+    margin-left: 8px;
+  }
+  
+  .userTable,
+  .activityTable {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+  }
+  
+  .userTable th,
+  .userTable td,
+  .activityTable th,
+  .activityTable td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+    font-size: 0.9rem;
+  }
+  
+  .active {
+    background: #d1fae5;
+    color: #047857;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+  }
+  
+  .suspended {
+    background: #fee2e2;
+    color: #b91c1c;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+  }
+  
+  .pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+  
+  .pagination .button {
+    border: 1px solid #ccc;
+    background: white;
+  }
+  
+  .currentPage {
+    background: #1e293b !important;
+    color: white !important;
+  }
+
+  .actionsCell {
+    display: flex;
+    gap: 8px;
+  }

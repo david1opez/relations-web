@@ -253,4 +253,46 @@
             }
         ]
     }
+    ,
+    "user": {
+        "viewbox": "0 0 24 24",
+        "fill": "none",
+        "paths": [
+          {
+            "d": "M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z",
+            "stroke": "#6CCDEA",
+            "strokeWidth": "1.7",
+            "strokeLinecap": "round",
+            "strokeLinejoin": "round"
+          },
+          {
+            "d": "M4 20C4 16.6863 7.13401 14 11 14H13C16.866 14 20 16.6863 20 20",
+            "stroke": "#6CCDEA",
+            "strokeWidth": "1.7",
+            "strokeLinecap": "round",
+            "strokeLinejoin": "round"
+          }
+        ]
+      },
+
+      "admin": {
+        "viewbox": "0 0 24 24",
+        "fill": "none",
+        "paths": [
+          {
+            "d": "M12 2L4 5V11C4 16.5 7.5 20.74 12 22C16.5 20.74 20 16.5 20 11V5L12 2Z",
+            "stroke": "#6CCDEA",
+            "strokeWidth": "1.7",
+            "strokeLinecap": "round",
+            "strokeLinejoin": "round"
+          },
+          {
+            "d": "M12 8L13.09 10.26L15.5 10.63L13.75 12.36L14.18 14.72L12 13.5L9.82 14.72L10.25 12.36L8.5 10.63L10.91 10.26L12 8Z",
+            "stroke": "#6CCDEA",
+            "strokeWidth": "1.5",
+            "strokeLinecap": "round",
+            "strokeLinejoin": "round"
+          }
+        ]
+      }
 }
