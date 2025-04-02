@@ -18,7 +18,7 @@ export default function MyProfile() {
     <div style={{ marginLeft: '20px' }}>
         <PageIndicator
             icon="user"
-            title="Profile"
+            title="Perfil"
             subpages={subpages}
             onPageChange={setSubpages}
         />
@@ -36,22 +36,26 @@ export default function MyProfile() {
             <h2>John Smith</h2>
             <p>john.smith@company.com</p>
             <div className={styles.tags}>
-              <span>Sales Department</span>
-              <span>Manager</span>
+              <span>Departamento de Ventas</span>
+              <span>Gerente</span>
             </div>
-            <small>Last Login: 2/24/2024, 09:15 AM</small>
+            <small>Último inicio de sesión: 24/2/2024, 09:15 AM</small>
           </div>
         </div>
 
         {/* Tabs */}
         <div className={styles.tabs}>
-          {['Overview', 'Settings', 'Security'].map((tab) => (
+          {[
+            { label: 'Resumen', key: 'Overview' },
+            { label: 'Configuración', key: 'Settings' },
+            { label: 'Seguridad', key: 'Security' },
+          ].map((tab) => (
             <span
-              key={tab}
-              className={activeTab === tab ? styles.activeTab : ''}
-              onClick={() => setActiveTab(tab as 'Overview' | 'Settings' | 'Security')}
+              key={tab.key}
+              className={activeTab === tab.key ? styles.activeTab : ''}
+              onClick={() => setActiveTab(tab.key as 'Overview' | 'Settings' | 'Security')}
             >
-              {tab}
+              {tab.label}
             </span>
           ))}
         </div>
@@ -61,39 +65,39 @@ export default function MyProfile() {
           <>
             <div className={styles.metrics}>
               <div className={styles.card}>
-                <p>Calls (7 Days)</p>
+                <p>Llamadas (7 Días)</p>
                 <h3>156</h3>
-                <small>⬈ 8% increase</small>
+                <small>⬈ 8% aumento</small>
               </div>
               <div className={styles.card}>
-                <p>Avg Sentiment</p>
+                <p>Sentimiento Promedio</p>
                 <h3>8.9</h3>
-                <small>⬈ 2.1% increase</small>
+                <small>⬈ 2.1% aumento</small>
               </div>
               <div className={styles.card}>
-                <p>Total Duration</p>
+                <p>Duración Total</p>
                 <h3>42:15</h3>
-                <small>⬊ -3% decrease</small>
+                <small>⬊ -3% disminución</small>
               </div>
             </div>
 
             <div className={styles.activity}>
-              <h4>Recent Activity</h4>
+              <h4>Actividad Reciente</h4>
               <ul>
                 <li>
-                  <strong>Call</strong>
-                  <p>Client Meeting - Project Review</p>
-                  <span>45 min • 2h ago</span>
+                  <strong>Llamada</strong>
+                  <p>Reunión con Cliente - Revisión de Proyecto</p>
+                  <span>45 min • hace 2h</span>
                 </li>
                 <li>
-                  <strong>Training</strong>
-                  <p>Sales Techniques Workshop</p>
-                  <span>2h • 1d ago</span>
+                  <strong>Capacitación</strong>
+                  <p>Taller de Técnicas de Ventas</p>
+                  <span>2h • hace 1 día</span>
                 </li>
                 <li>
-                  <strong>Call</strong>
-                  <p>Team Sync</p>
-                  <span>30 min • 2d ago</span>
+                  <strong>Llamada</strong>
+                  <p>Sincronización de Equipo</p>
+                  <span>30 min • hace 2 días</span>
                 </li>
               </ul>
             </div>
@@ -103,25 +107,25 @@ export default function MyProfile() {
         {/* Settings Section */}
         {activeTab === 'Settings' && (
           <div className={styles.settings}>
-            <h4>Essential Settings</h4>
+            <h4>Configuración Esencial</h4>
 
             <div className={styles.inputGroup}>
-              <label htmlFor="name">Full Name</label>
+              <label htmlFor="name">Nombre Completo</label>
               <input
                 type="text"
                 id="name"
-                placeholder="Enter your name"
+                placeholder="Ingresa tu nombre"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />
             </div>
 
             <div className={styles.inputGroup}>
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email">Correo Electrónico</label>
               <input
                 type="email"
                 id="email"
-                placeholder="Enter your email"
+                placeholder="Ingresa tu correo electrónico"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -129,8 +133,8 @@ export default function MyProfile() {
 
             <div className={styles.toggleGroup}>
               <div>
-                <strong>Notifications</strong>
-                <span>Receive important updates</span>
+                <strong>Notificaciones</strong>
+                <span>Recibe actualizaciones importantes</span>
               </div>
               <div
                 className={`${styles.toggle} ${notifications ? styles.active : ''}`}
@@ -140,8 +144,8 @@ export default function MyProfile() {
 
             <div className={styles.toggleGroup}>
               <div>
-                <strong>Dark Mode</strong>
-                <span>Use dark theme</span>
+                <strong>Modo Oscuro</strong>
+                <span>Usar tema oscuro</span>
               </div>
               <div
                 className={`${styles.toggle} ${darkMode ? styles.active : ''}`}
@@ -154,39 +158,39 @@ export default function MyProfile() {
         {/* Security Section */}
         {activeTab === 'Security' && (
             <div className={styles.settings}>
-                <h4>Security Settings</h4>
+                <h4>Configuración de Seguridad</h4>
 
                 <div className={styles.inputGroup}>
-                <label htmlFor="currentPass">Current Password</label>
+                <label htmlFor="currentPass">Contraseña Actual</label>
                 <input
                     type="password"
                     id="currentPass"
-                    placeholder="Enter current password"
+                    placeholder="Ingresa tu contraseña actual"
                 />
                 </div>
 
                 <div className={styles.inputGroup}>
-                <label htmlFor="newPass">New Password</label>
+                <label htmlFor="newPass">Nueva Contraseña</label>
                 <input
                     type="password"
                     id="newPass"
-                    placeholder="Enter new password"
+                    placeholder="Ingresa tu nueva contraseña"
                 />
                 </div>
 
                 <div className={styles.inputGroup}>
-                <label htmlFor="confirmPass">Confirm New Password</label>
+                <label htmlFor="confirmPass">Confirmar Nueva Contraseña</label>
                 <input
                     type="password"
                     id="confirmPass"
-                    placeholder="Confirm new password"
+                    placeholder="Confirma tu nueva contraseña"
                 />
                 </div>
 
                 <div className={styles.toggleGroup}>
                 <div>
-                    <strong>Two-Factor Authentication</strong>
-                    <span>Enable two-factor authentication</span>
+                    <strong>Autenticación de Dos Factores</strong>
+                    <span>Habilitar autenticación de dos factores</span>
                 </div>
                 <div className={styles.toggle} />
                 </div>
