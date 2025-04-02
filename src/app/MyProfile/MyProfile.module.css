@@ -35,6 +35,7 @@
   height: 80px;
   background: #ccc;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .userInfo h2 {
