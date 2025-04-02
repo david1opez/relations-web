@@ -10,12 +10,12 @@ import { SidebarItemType, SidebarProps } from "./Sidebar.interface";
 
 export default function Sidebar ({ activeTab, onTabChange }: SidebarProps) {
   const SidebarItems: SidebarItemType[] = [
-    { icon: "rocket", text: "Proyectos" },
-    { icon: "phone", text: "Llamadas" },
-    { icon: "people", text: "Personas" },
-    { icon: "question", text: "Tutoriales" },
-    { icon: "user", text: "MyProfile" },
-    { icon: "admin", text: "Admin" },
+    { icon: "rocket", page: "Proyectos", text: "Proyectos" },
+    { icon: "phone", page: "Llamadas", text: "Llamadas" },
+    { icon: "people", page: "Personas", text: "Personas" },
+    { icon: "question", page: "Tutoriales", text: "Tutoriales" },
+    { icon: "user", page: "MyProfile", text: "Mi Perfil" },
+    { icon: "admin", page: "Admin", text: "Admin" },
   ];
 
   return (
@@ -34,8 +34,8 @@ export default function Sidebar ({ activeTab, onTabChange }: SidebarProps) {
             key={index}
             icon={item.icon}
             text={item.text}
-            active={activeTab === item.text}
-            onClick={() => onTabChange(item.text)}
+            active={activeTab === item.page}
+            onClick={() => onTabChange(item.page)}
           />
         ))
       }

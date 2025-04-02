@@ -4,7 +4,8 @@ import * as Pages from "../../app/Pages";
 
 export type SidebarItemType = {
     icon: IconName;
-    text: keyof typeof Pages;
+    page: keyof typeof Pages;
+    text: string;
 };
 
 export type SidebarProps = {
