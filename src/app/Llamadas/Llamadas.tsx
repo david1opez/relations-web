@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Llamadas.module.css";
 
 // COMPONENTS
 import PageIndicator from "../../components/PageIndicator/PageIndicator";
 import CallComponent from "@/components/CallComponent/CallComponent";
+import ActivityIndicator from "@/components/ActivityIndicator/ActivityIndicator";
 
 // UTILS
 import { analyzeCall } from "@/app/CallAnalysisAPI";
+import { calcDuration, parseDate } from "@/utils/dateUtils";
 
 const calls = [
   {
@@ -14,6 +16,7 @@ const calls = [
     title: "Llamada con Soporte - Facturación",
     startDate: 1743525221454,
     endDate: 1743525315578,
+    attendees: ["Cliente", "Agente de Soporte"],
     transcript:
       "Llamé al servicio al cliente porque tenía problemas con mi factura del mes pasado. Me apareció un cobro duplicado y no sabía por qué. El agente fue amable y me explicó que podría tratarse de un error en el sistema. Después de revisar mi cuenta, me indicó que debía esperar hasta la siguiente facturación para que el ajuste se reflejara automáticamente. Sin embargo, cuando pregunté si había una manera de agilizar el proceso, me dijeron que no podían hacer nada. Insistí en que necesitaba el reembolso lo antes posible, pero me dijeron que debía esperar al menos 48 horas para una revisión adicional. Al final, me quedé sin una solución inmediata y con la preocupación de que el problema pudiera repetirse en el futuro.",
   },
@@ -73,18 +76,68 @@ const calls = [
   },
 ];
 
+// TYPES
+type CallDetails = {
+  finalSatisfaction: string;
+  llmInsights: {
+    estado_emocional_final: string;
+    motivo_llamada: string;
+    razon_resolucion: string;
+    resumen: string;
+    se_resolvio: boolean;
+  };
+  ociAnalysis: {
+    documentSentiment: string;
+    lastSentence: string;
+    lastSentiment: string;
+    relevantAspects: Array<{
+      text: string;
+      sentiment: string;
+      confidence: number;
+    }>;
+  };
+};
+
+type Call = {
+  id: string;
+  title: string;
+  startDate: number;
+  endDate: number;
+  transcript: string;
+  attendees?: string[];
+}
+
 export default function Llamadas() {
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const [selectedCall, setSelectedCall] = useState<Call|null>(null);
+  const [callDetails, setCallDetails] = useState<CallDetails|null>(null);
   const [subpages, setSubpages] = useState<string[]>([]);
 
   const handleSelectCall = async (id: string) => {
-    const selectedCall = calls.find((call) => call.id === id);
+    setLoading(true);
 
-    setSubpages([selectedCall?.title || "Llamada"]);
+    const callFound: Call = calls.find((call) => call.id === id) as Call;
 
-    const data = await analyzeCall(selectedCall?.transcript || "");
+    setSelectedCall(callFound);
 
-    console.log(data)
+    setSubpages([callFound?.title || "Llamada"]);
+
+    const data: CallDetails = await analyzeCall(callFound?.transcript || "");
+
+    if (data) setCallDetails(data);
+    else console.error("Error fetching call details");
+
+    setLoading(false);
   };
+
+  useEffect(() => {
+    if(subpages.length === 0) {
+      setCallDetails(null);
+      setSelectedCall(null);
+      setLoading(false);
+    }
+  }, [subpages]);
 
   return (
     <div className={styles.pageContainer}>
@@ -111,27 +164,136 @@ export default function Llamadas() {
         ) : (
           <div className={styles.callDetailsContainer}>
             <div className={styles.leftContainer}>
-              <div className={styles.thirdContainer}>
-                <h3 className={styles.sectionTitle}>Detalles:</h3>
-                <div className={styles.callDetailsContentContainer}></div>
+              <div className={styles.thirdContainer} style={{display: "flex", gap: "1.5rem"}}>
+                <div className={styles.weirdContainer}>
+                  <h3 className={styles.sectionTitle}>Satisfacción:</h3>
+                  <div
+                    className={styles.callDetailsContentContainer}
+                    style={{
+                      border: `2px solid ${callDetails?.finalSatisfaction === "Negativa" ? "var(--red)" : callDetails?.finalSatisfaction === "Positiva" ? "var(--green)" : "var(--white)"}`,
+                    }}
+                  >
+                    {
+                      !loading ? (
+                        <div>
+                          <div className={styles.callDetailsContent}>
+                            <p className={styles.label}>Satisfacción:</p>
+                            <p
+                              className={styles.text}
+                              style={{
+                                color: callDetails?.finalSatisfaction === "Negativa" ? "var(--red)" : callDetails?.finalSatisfaction === "Positiva" ? "var(--green)" : "var(--gray)",
+                              }}
+                            >
+                                {callDetails?.finalSatisfaction}
+                            </p>
+                          </div>
+                          <div className={styles.callDetailsContent} style={{width: "100%"}}>
+                            <p className={styles.label}>Estado emocional final:</p>
+                            <p className={styles.text}>{callDetails?.llmInsights?.estado_emocional_final}</p>
+                          </div>
+                          <div className={styles.callDetailsContent}>
+                            <p className={styles.label}>Se resolvió:</p>
+                            <p className={styles.text}>{callDetails?.llmInsights?.se_resolvio ? "Sí" : "No"}</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <ActivityIndicator color="var(--blue)"/>
+                      )
+                    }
+                  </div>
+                </div>
+                <div className={styles.weirdContainer}>
+                  <h3 className={styles.sectionTitle}>Detalles:</h3>
+                  <div className={styles.callDetailsContentContainer}>
+                    <div className={styles.callDetailsContent}>
+                      <p className={styles.label}>Título:</p>
+                      <p className={styles.text}>{selectedCall?.title}</p>
+                    </div>
+                    <div className={styles.callDetailsContent}>
+                      <p className={styles.label}>Asistentes:</p>
+                      <p className={styles.text}>{selectedCall?.attendees?.join(", ")}</p>
+                    </div>
+                    <div style={{display: "flex", gap: "2rem"}}>
+                      <div className={styles.callDetailsContent}>
+                        <p className={styles.label}>Fecha:</p>
+                        <p className={styles.text}>{parseDate(selectedCall?.startDate || 0)}</p>
+                      </div>
+                      <div className={styles.callDetailsContent}>
+                        <p className={styles.label}>Duración:</p>
+                        <p className={styles.text}>{calcDuration(selectedCall?.startDate || 0, selectedCall?.endDate || 0)}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className={styles.thirdContainer}>
                 <h3 className={styles.sectionTitle}>Resumen:</h3>
-                <div className={styles.callDetailsContentContainer}></div>
+                <div className={styles.callDetailsContentContainer}>
+                  {
+                    !loading ? (
+                      <p className={styles.text}>{callDetails?.llmInsights?.resumen}</p>
+                    ) : (
+                      <ActivityIndicator color="var(--blue)" />
+                    )
+                  }
+                  
+                </div>
               </div>
               <div className={styles.thirdContainer}>
                 <h3 className={styles.sectionTitle}>Palabras clave:</h3>
-                <div className={styles.callDetailsContentContainer}></div>
+                <div className={styles.callDetailsContentContainer}>
+                  {
+                    !loading ? callDetails?.ociAnalysis?.relevantAspects.map((aspect, index) => (
+                      <div key={index} className={styles.aspectContainer}>
+                        <p className={styles.aspectText}>{aspect.text}</p>
+                        <p
+                          className={styles.aspectSentiment}
+                          style={{
+                            border: `1px solid ${aspect.sentiment === "Negative" ? "var(--red)" : aspect.sentiment === "Positive" ? "var(--green)" : "var(--gray)"}`,
+                            color: aspect.sentiment === "Negative" ? "var(--red)" : aspect.sentiment === "Positive" ? "var(--green)" : "var(--gray)",
+                          }}
+                        >
+                          {aspect.sentiment}
+                        </p>
+                      </div>
+                    )) : (
+                      <ActivityIndicator color="var(--blue)" />
+                    )
+                  }
+                </div>
               </div>
             </div>
             <div className={styles.rightContainer}>
               <div className={styles.thirdContainer}>
-                <h3 className={styles.sectionTitle}>Resumen:</h3>
-                <div className={styles.callDetailsContentContainer}></div>
+                <h3 className={styles.sectionTitle}>Resolución:</h3>
+                <div className={styles.callDetailsContentContainer}>
+                  {
+                    !loading ? (
+                      <div>
+                        <div className={styles.callDetailsContent}>
+                          <p className={styles.label}>Motivo de la llamada:</p>
+                          <p className={styles.text}>{callDetails?.llmInsights?.motivo_llamada}</p>
+                        </div>
+                        <div className={styles.callDetailsContent}>
+                          <p className={styles.label}>Resolución:</p>
+                          <p className={styles.text}>{callDetails?.llmInsights?.razon_resolucion}</p>
+                        </div>
+                        <div className={styles.callDetailsContent}>
+                          <p className={styles.label}>Última frase:</p>
+                          <p className={styles.text}>&quot;{callDetails?.ociAnalysis?.lastSentence}&quot;</p>
+                        </div>
+                      </div>
+                    ) : (
+                      <ActivityIndicator color="var(--blue)" />
+                    )
+                  }
+                </div>
               </div>
               <div className={styles.fullContainer}>
                 <h3 className={styles.sectionTitle}>Transcripción:</h3>
-                <div className={styles.callDetailsContentContainer}></div>
+                <div className={styles.callDetailsContentContainer}>
+                  <p className={styles.text}>{selectedCall?.transcript}</p>
+                </div>
               </div>
             </div>
           </div>
