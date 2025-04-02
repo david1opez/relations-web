@@ -14,6 +14,8 @@ export default function Sidebar ({ activeTab, onTabChange }: SidebarProps) {
     { icon: "phone", text: "Llamadas" },
     { icon: "people", text: "Personas" },
     { icon: "question", text: "Tutoriales" },
+    { icon: "user", text: "MyProfile" },
+    { icon: "admin", text: "Admin" },
   ];
 
   return (
