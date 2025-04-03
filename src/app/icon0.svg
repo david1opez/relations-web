@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="412" height="412"><svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="-78.632 -136.682 955.1 959.384" width="475" height="412" fill="#1B242A">
+  <title>Icon light (vector)</title>
+  <style>
+		.s0 { fill: #eaecec } 
+	</style>
+  <rect style="stroke: rgb(0, 0, 0);" x="-125" y="-110" width="900" height="900" rx="200" ry="200"></rect>
+  <g id="SvgjsG1007" transform="translate(-67, 0)">
+    <g id="SvgjsG1006">
+      <g id="SvgjsG1005">
+        <path id="SvgjsPath1004" class="s0" d="m591.2 687q0 0-0.1 0h-390.9q0 0 0 0-0.1 0-0.1 0c-1.1 0-2.1-0.4-2.9-1.1q0 0 0 0-0.3-0.3-0.6-0.6-0.3-0.3-0.5-0.7l-195.5-338.6c-0.8-1.4-0.8-3.2 0-4.6l195.5-338.7q0.1-0.1 0.2-0.2 0 0 0 0 0 0 0 0 0.2-0.4 0.6-0.7 0 0 0 0 0 0 0 0 0.8-0.8 1.8-1.2 0.3-0.1 0.6-0.1 0 0 0 0 0 0 0 0c0.3-0.1 0.7-0.1 0.9-0.1h391q0 0 0 0 0 0 0.1 0c1.1 0 2.1 0.4 2.9 1.1q0 0 0 0 0.3 0.3 0.6 0.6 0.3 0.3 0.5 0.7l195.5 338.6c0.8 1.4 0.8 3.2 0 4.6l-195.5 338.6q-0.1 0.2-0.3 0.4 0 0 0 0 0 0 0 0 0 0 0 0-0.2 0.3-0.4 0.6 0 0 0 0 0 0-0.1 0 0 0 0 0-0.7 0.8-1.8 1.2 0 0 0 0-0.3 0.1-0.6 0.1 0 0 0 0-0.5 0.1-0.9 0.1zm-386.4-9.3h378.4l-378.4-655.3zm-194.8-334l185.5 321.3v-642.6zm585.9-321.3v642.6l185.5-321.3zm-387.7-12.7l378.4 655.3v-655.3z"></path>
+      </g>
+    </g>
+  </g>
+</svg><style>@media (prefers-color-scheme: light) { :root { filter: none; } }
+@media (prefers-color-scheme: dark) { :root { filter: none; } }
+</style></svg>
