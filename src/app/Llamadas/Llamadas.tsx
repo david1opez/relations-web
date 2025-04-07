@@ -288,7 +288,7 @@ export default function Llamadas() {
                 <div className={styles.callDetailsContentContainer}>
                   {
                     !loading ? (
-                      <p className={styles.text}>{callDetails?.llmInsights?.resumen}</p>
+                      <p className={styles.text} style={{fontWeight: 300}}>{callDetails?.llmInsights?.resumen}</p>
                     ) : (
                       <ActivityIndicator color="var(--blue)" />
                     )
@@ -352,7 +352,7 @@ export default function Llamadas() {
               <div className={styles.fullContainer}>
                 <h3 className={styles.sectionTitle} title="Información sobre la Transcripción">Transcripción:</h3>
                 <div className={styles.callDetailsContentContainer}>
-                  <p className={styles.text}>{selectedCall?.transcript}</p>
+                  <p className={styles.text} style={{fontWeight: 300}}>{selectedCall?.transcript}</p>
                 </div>
               </div>
             </div>
