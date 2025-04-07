@@ -160,7 +160,7 @@ export default function Llamadas() {
                 />
               ))}
             </div>
-          </div>
+          </div> 
         ) : (
           <div className={styles.callDetailsContainer}>
             <div className={styles.leftContainer}>
