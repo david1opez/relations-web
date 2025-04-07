@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Relations",
@@ -8,14 +9,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="icon" type="image/svg+xml" href="/icon0.svg"/>
-        <link rel="alternate icon" sizes="16x16" href="/favicon.ico"/>
-      </head>
-      <body>
-        {children}
-      </body>
-    </html>
+    <Suspense>
+      <html lang="en">
+        <head>
+          <link rel="icon" type="image/svg+xml" href="/icon0.svg"/>
+          <link rel="alternate icon" sizes="16x16" href="/favicon.ico"/>
+        </head>
+        <body>
+          {children}
+        </body>
+      </html>
+    </Suspense>
   );
 }

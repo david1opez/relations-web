@@ -4,7 +4,7 @@ import Icons from './Icons.json';
 import { IconProps, IconType } from './Icon.interface';
 
 export default function Icon({ size, color, name, className, style, onClick }: IconProps) {
-    const Icon: IconType | undefined = Icons[name];
+    const Icon: IconType = Icons[name] as IconType;
 
     if (!Icon) {
         console.error(`El icono "${name}" no se encontró en Icons.json`);

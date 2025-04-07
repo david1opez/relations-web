@@ -156,7 +156,7 @@ export default function Llamadas() {
                 <CallComponent
                   key={index}
                   onClick={handleSelectCall}
-                  call={call}
+                  call={call as { id: string; title: string; attendees: string[]; startDate: number; endDate: number; }}
                 />
               ))}
             </div>

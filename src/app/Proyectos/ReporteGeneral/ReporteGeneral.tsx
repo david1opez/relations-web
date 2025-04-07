@@ -2,8 +2,13 @@ import styles from './reporteGeneral.module.css';
 
 // TYPES
 import { Project } from '../GaleriaDeProyectos/galeriaDeProyectos.interface';
+import { useEffect } from 'react';
 
 export default function ReporteGeneral({ project }: { project: Project }) {
+    useEffect(() => {
+        console.log(project);
+    }, []);
+
     return (
         <div className={`${styles.container} ${styles.reporteGeneral}`}>
             {/* Contenido Principal */}

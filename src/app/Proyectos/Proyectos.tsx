@@ -34,6 +34,8 @@ export default function Proyectos() {
             alert("No se ha proporcionado un token de acceso.");
             router.push("/");
         }
+
+        console.log(selectedYear);
     }, [access_token]);
 
     return (
