@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const CLIENT_ID = process.env.CLIENT_ID;
 const REDIRECT_URL = process.env.REDIRECT_URL;
 const TENANT = "common";
-const SCOPE = "openid profile User.Read";
+const SCOPE = "openid profile User.Read"; 
 
 const nextConfig: NextConfig = {
   env: {
