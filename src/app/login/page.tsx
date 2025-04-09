@@ -15,6 +15,11 @@ type AuthResponse = {
   token_type: string;
 };
 
+const CLIENT_ID = process.env.CLIENT_ID;
+const REDIRECT_URL = process.env.REDIRECT_URL;
+const TENANT = "common";
+const SCOPE = "openid profile User.Read";
+
 export default function Login() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -42,7 +47,7 @@ export default function Login() {
   // 👉 Esta función se llama solo si el usuario hace clic
   const handleMicrosoftLogin = () => {
     window.location.href =
-      "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=df25bb12-928b-4419-9a5a-2665b0f16497&response_type=code&redirect_uri=http://localhost:3000/login&response_mode=query&scope=openid%20profile%20email%20offline_access&state=12345";
+      `https://login.microsoftonline.com/${TENANT}/oauth2/v2.0/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URL}&response_mode=query&scope=${SCOPE}`;
   };
 
   // ✅ Mostrar pantalla de carga solo si viene de Microsoft
