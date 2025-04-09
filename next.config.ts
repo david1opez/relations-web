@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/',
-        destination: `https://login.microsoftonline.com/${TENANT}/oauth2/v2.0/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=$https://relations-web.vercel.app/login&response_mode=query&scope=${SCOPE}`,
+        destination: `https://login.microsoftonline.com/${TENANT}/oauth2/v2.0/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=https://relations-web.vercel.app/login&response_mode=query&scope=${SCOPE}`,
         permanent: false,
         basePath: false
       }
