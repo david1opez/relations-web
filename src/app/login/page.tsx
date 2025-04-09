@@ -16,7 +16,6 @@ type AuthResponse = {
 };
 
 const CLIENT_ID = process.env.CLIENT_ID;
-const REDIRECT_URL = process.env.REDIRECT_URL;
 const TENANT = "common";
 const SCOPE = "openid profile User.Read";
 
@@ -47,7 +46,7 @@ export default function Login() {
   // 👉 Esta función se llama solo si el usuario hace clic
   const handleMicrosoftLogin = () => {
     window.location.href =
-      `https://login.microsoftonline.com/${TENANT}/oauth2/v2.0/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URL}&response_mode=query&scope=${SCOPE}`;
+      `https://login.microsoftonline.com/${TENANT}/oauth2/v2.0/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=https://relations-web.vercel.app/login&response_mode=query&scope=${SCOPE}`;
   };
 
   // ✅ Mostrar pantalla de carga solo si viene de Microsoft
