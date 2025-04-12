@@ -9,9 +9,9 @@ export default function Dashboard() {
 
     return (
         <div className={styles.pageContainer}>
-            <PageIndicator
-                icon="grid"
-                title="Dashboard"
+            <PageTitle
+                icon="question"
+                title="Tutoriales"
                 subpages={subpages}
                 onPageChange={setSubpages}
             />

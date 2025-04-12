@@ -1,6 +1,6 @@
-import { IconName } from "../Icon/Icon.interface";
+import { IconName } from "@/types/IconTypes";
 
-export type PageIndicatorProps = {
+export type PageTitleProps = {
     icon: IconName;
     title: string;
     subpages: string[];

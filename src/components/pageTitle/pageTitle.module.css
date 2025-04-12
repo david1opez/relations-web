@@ -1,5 +1,6 @@
 .pageIndicatorContainer {
     display: flex;
+    align-items: flex-end;
     flex-direction: row;
     justify-content: start;
     align-self: flex-start;
@@ -7,7 +8,8 @@
 }
 
 .pageIndicatorTitle {
-    font-size: 1.5rem;
+    font-family: 'LayGrotesk-Semibold', sans-serif;
+    font-size: 1.3rem;
     font-weight: 500;
     margin-left: 0.5rem;
 }
@@ -33,7 +35,7 @@
 }
 
 .subpageTitle {
-    font-size: 0.9rem;
-    font-weight: 400;
-    margin-top: 0.2rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-size: 0.8rem;
 }

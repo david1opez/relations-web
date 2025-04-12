@@ -1,0 +1,23 @@
+.headerTitle {
+    font-family: 'LayGrotesk-Semibold', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.headerDescription {
+    font-weight: 200;
+    margin-bottom: 1.5rem;
+}
+
+.activityCardsContainer {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.contentContainer {
+    display: flex;
+    flex: 1;
+    gap: 1.5rem;
+    height: 100%;
+}

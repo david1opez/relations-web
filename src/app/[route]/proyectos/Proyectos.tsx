@@ -1,10 +1,8 @@
-// Archivo Proyectos.tsx
-
 import { useState } from 'react';
 import styles from './Proyectos.module.css';
 
 // COMPONENTS
-import PageIndicator from '@/components/PageIndicator/PageIndicator';
+import PageTitle from '@/components/pageTitle/PageTitle';
 import Button from '@/components/Button/Button';
 import YearSelector from '@/components/YearSelector/YearSelector';
 import GaleriaDeProyectos from './GaleriaDeProyectos/GaleriaDeProyectos';
@@ -28,7 +26,7 @@ export default function Proyectos() {
     return (
         <div className={styles.pageContainer}>
             <div className={styles.projectsPageIndicator}>
-                <PageIndicator
+                <PageTitle
                     icon="rocket"
                     title="Proyectos"
                     subpages={subpages}
