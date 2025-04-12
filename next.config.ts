@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
   env: {
     CLIENT_ID,
     OBJECT_ID: process.env.OBJECT_ID,
-    REDIRECT_URL
+    // REDIRECT_URL
   },
   // async redirects() {
   //   return [
