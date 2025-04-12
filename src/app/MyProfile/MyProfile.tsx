@@ -16,7 +16,7 @@ export default function MyProfile() {
   return (
     <div className={styles.pageContainer}>
     <div style={{ marginLeft: '20px' }}>
-        <PageIndicator
+        <PageTitle
             icon="user"
             title="Perfil"
             subpages={subpages}

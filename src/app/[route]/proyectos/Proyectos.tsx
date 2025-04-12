@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './Proyectos.module.css';
-import { useRouter, useSearchParams } from 'next/navigation';
 
 // COMPONENTS
-import PageIndicator from '@/components/PageIndicator/PageIndicator';
+import PageTitle from '@/components/pageTitle/PageTitle';
 import Button from '@/components/Button/Button';
 import YearSelector from '@/components/YearSelector/YearSelector';
 import GaleriaDeProyectos from './GaleriaDeProyectos/GaleriaDeProyectos';
@@ -14,11 +13,6 @@ import ReporteDeLlamadas from './ReporteDeLlamadas/ReporteDeLlamadas';
 import { Project } from './GaleriaDeProyectos/galeriaDeProyectos.interface';
 
 export default function Proyectos() {
-    const router = useRouter();
-    
-    const searchParams = useSearchParams();
-    const access_token = searchParams.get("at");
-
     const [project, setProject] = useState<Project | undefined>();
     const [subpages, setSubpages] = useState<string[]>([]);
     const [currentTab, setCurrentTab] = useState<"Reporte General" | "Reporte de Llamadas">("Reporte General");
@@ -29,19 +23,10 @@ export default function Proyectos() {
         setSubpages([project.name]);
     };
 
-    useEffect(() => {
-        if(!access_token) {
-            alert("No se ha proporcionado un token de acceso.");
-            router.push("/");
-        }
-
-        console.log(selectedYear);
-    }, [access_token]);
-
     return (
         <div className={styles.pageContainer}>
             <div className={styles.projectsPageIndicator}>
-                <PageIndicator
+                <PageTitle
                     icon="rocket"
                     title="Proyectos"
                     subpages={subpages}

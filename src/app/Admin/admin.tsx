@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import styles from './admin.module.css';
-import PageIndicator from '../../components/PageIndicator/PageIndicator';
+import PageTitle from '@/components/pageTitle/PageTitle';
 
 export default function Admin() {
   const [subpages, setSubpages] = useState<string[]>([]);
 
   return (
     <div className={styles.pageContainer}>
-      <PageIndicator
+      <PageTitle
         icon="admin"
         title="Administrador"
         subpages={subpages}

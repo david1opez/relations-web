@@ -22,7 +22,7 @@ export default function YearSelector({ onYearChange, className }: YearSelectorPr
                 <Icon
                     name="calendar"
                     size={18}
-                    color="var(--blue)"
+                    color="var(--accent)"
                 />
 
                 <span className={styles.yearText}>{selectedYear}</span>  {/* Texto del año */}
@@ -30,7 +30,7 @@ export default function YearSelector({ onYearChange, className }: YearSelectorPr
                 <Icon 
                     name="arrowDown"
                     size={18}
-                    color="var(--black)"
+                    color="var(--accent)"
                 />
 
                 <select

@@ -9,7 +9,7 @@ export default function Personas() {
 
     return (
         <div className={styles.pageContainer}>
-            <PageIndicator
+            <PageTitle
                 icon="people"
                 title="Personas"
                 subpages={subpages}

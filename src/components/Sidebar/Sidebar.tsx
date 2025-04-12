@@ -1,22 +1,88 @@
 "use client"
-import styles from "./Sidebar.module.css";
+import styles from "./sidebar.module.css";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation"
 import Image from "next/image";
 
 // COMPONENTS
-import SidebarItem from "./SidebarItem/SidebarItem";
+import SidebarItem from "./sidebarPage/SidebarPage";
+import ActivityIndicator from "@/components/ActivityIndicator/ActivityIndicator";
+import OptionsMenu from "@/components/optionsMenu/OptionsMenu";
+
+// UTILS
+import { GetUser } from "@/utils/GetUser";
 
 // TYPES
-import { SidebarItemType, SidebarProps } from "./Sidebar.interface";
+import UserType from "@/types/UserTypes";
+import { SidebarProps, SidebarItemType } from "@/types/SidebarTypes";
 
-export default function Sidebar ({ activeTab, onTabChange }: SidebarProps) {
-  const SidebarItems: SidebarItemType[] = [
-    { icon: "rocket", page: "Proyectos", text: "Proyectos" },
-    { icon: "phone", page: "Llamadas", text: "Llamadas" },
-    { icon: "people", page: "Personas", text: "Personas" },
-    { icon: "question", page: "Tutoriales", text: "Tutoriales" },
-    { icon: "user", page: "MyProfile", text: "Mi Perfil" },
-    { icon: "admin", page: "Admin", text: "Admin" },
-  ];
+export default function Sidebar ({ onPageChange }:  SidebarProps) {
+  const router = useRouter();
+  const { route }: { route: string } = useParams();
+  
+  const [loading, setLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<UserType|null>(null);
+
+  const [activePage, setActivePage] = useState<string>(route);
+  const [pages, setPages] = useState<SidebarItemType[]>([
+    { icon: "house", name: "Inicio" },
+    { icon: "rocket", name: "Proyectos" },
+    { icon: "phone", name: "Llamadas"},
+  ]);
+
+  const handlePageChange = (page: string) => {
+    setActivePage(page);
+    window.history.pushState({}, "", page?.toLowerCase());
+    window.dispatchEvent(new Event("popstate"));
+
+    onPageChange(page);
+  }
+
+  const handlePagesToShow = () => {
+    if (user) {
+      const { role } = user;
+
+      if (role === "admin") {
+        setPages([...pages, { icon: "users", name: "Personas" }]);
+      }
+    }
+  }
+
+  const handleUserLoad = async () => {
+    await GetUser()
+    .then(userData => {
+        setUser(userData);
+
+        if(!userData) {
+            router.push("/?login=true");
+            return;
+        }
+    })
+    .catch(() => {
+        router.push("/login?login=true");
+        return;
+    })
+    .finally(() => setLoading(false))
+  }
+
+  const handleLogOut = () => {
+    localStorage.removeItem("user");
+    router.push("/");
+  };
+
+  useEffect(() => {
+    if (route) {
+      setActivePage(route);
+      onPageChange(activePage);
+    };
+  }, [route]);
+
+  useEffect(() => {    
+    if(!user) handleUserLoad()
+    else handlePagesToShow();
+  }, [user]);
+
+  if(!user) return null;
 
   return (
     <div className={styles.container}>
@@ -28,17 +94,63 @@ export default function Sidebar ({ activeTab, onTabChange }: SidebarProps) {
         className={styles.logo}
       />
 
-      {
-        SidebarItems.map((item, index) => (
-          <SidebarItem
-            key={index}
-            icon={item.icon}
-            text={item.text}
-            active={activeTab === item.page}
-            onClick={() => onTabChange(item.page)}
-          />
-        ))
-      }
+      <div className={styles.userContainer}>
+        {
+            loading ? (
+                <ActivityIndicator/>
+            ) : (
+                <div className={styles.profilePictureContainer}>
+                    {
+                        user?.profilePicture ? (
+                            <Image
+                                src={user?.profilePicture}
+                                alt="Profile Picture"
+                                width={50}
+                                height={50}
+                                className={styles.profilePicture}
+                            />
+                        ) : (
+                            <div className={styles.profilePicture}>
+                                {user?.name?.charAt(0).toUpperCase()}
+                            </div>
+                        )
+                    }
+                </div>
+            )
+        }
+
+        {
+            !loading && (
+                <div>
+                    <p className={styles.userName}>{user?.name || "Random Employee"}</p>
+                    <p className={styles.userRole}>{user?.role || "Random Role"}</p>
+                </div>
+            )
+        }
+
+        {
+            !loading && (
+                <OptionsMenu
+                    options={[{icon: 'exit', name: 'Cerrar Sesión'}]}
+                    onSelect={() => handleLogOut()}
+                />
+            )
+        }
+      </div>
+
+      <div className={styles.pagesContainer}>
+        {
+            pages.map((page, index) => (
+            <SidebarItem
+                key={index}
+                icon={page.icon}
+                pageName={page.name}
+                active={activePage?.toLowerCase() === page?.name?.toLowerCase()}
+                onClick={() => handlePageChange(page.name)}
+            />
+            ))
+        }
+      </div>
     </div>
   );
 };

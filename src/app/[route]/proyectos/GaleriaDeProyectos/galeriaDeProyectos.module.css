@@ -7,7 +7,7 @@
 }
 
 .card {
-    background: #FFFFFF;
+    background: var(--black);
     border-radius: 10px;
     padding: 1rem 1.5rem 2rem 1.5rem;
     display: flex;
@@ -27,31 +27,25 @@
 
 .status {
     border: 1px solid #6CCDEA;
-    border-radius: 3px;
+    border-radius: 100px;
     padding: 2px 8px 1px 8px;
     font-size: 0.55rem;
     font-weight: 500;
     color: #6CCDEA;
 }
 
-.activo {
-    background-color: #E3F7FF;
-}
-
 .completado {
-    background-color: #F0F0F0;  /* Fondo gris claro */
-    border-color: #BCBCBC;       /* Borde gris */
-    color: #999999;  
+    border-color: var(--light-gray);       /* Borde gris */
+    color: var(--light-gray);              /* Texto gris suave */
 }
 
 .inactivo {
-    background-color: #F0F0F0;  /* Fondo gris claro */
-    border-color: #BCBCBC;       /* Borde gris */
-    color: #999999;              /* Texto gris suave */
+    border-color: var(--light-gray);       /* Borde gris */
+    color: var(--light-gray);              /* Texto gris suave */
 }
 
 .ultimaActualizacion {
-    color: var(--gray);
+    color: var(--light-gray);
     font-size: 0.5rem; /* Reducir el tamaño */
     font-weight: 300;  /* Estilo más ligero */
 }
@@ -60,7 +54,7 @@
     font-size: 1rem;
     line-height: 1.5rem;
     font-weight: 500;
-    color: #1D2026;
+    color: var(--white);
     margin: 10px 0;
 }
 
@@ -71,7 +65,7 @@
 .label {
     font-weight: 300; /* Reducir el grosor */
     font-size: 0.65rem;
-    color: #BCBCBC; 
+    color: var(--light-gray); 
     margin-bottom: 3px;
 }
 
@@ -79,7 +73,7 @@
     font-family: 'Poppins', sans-serif;
     font-size: 0.6rem;
     line-height: 0.85rem;
-    color: #1D2026;
+    color: var(--white);
     overflow: hidden;
 }
 
@@ -91,8 +85,8 @@
 
 
 .button {
-    background-color: #1D2026;
-    color: #FFFFFF;
+    background-color: var(--accent);
+    color: var(--black);
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 5px;

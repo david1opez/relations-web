@@ -4,16 +4,15 @@
 .selectWrapper {
     display: flex;
     align-items: center;
-    border: 1px solid var(--black);
     border-radius: 4px;
-    background-color: var(--white);
+    background-color: var(--gray);
     cursor: pointer;
     padding: 0.25rem 0.4rem 0.25rem 0.4rem;
     position: relative;
 }
 
 .yearText {
-    color: var(--black);
+    color: var(--accent);
     font-weight: 500;
     font-size: 0.8rem;
     margin: 0 0.3rem;

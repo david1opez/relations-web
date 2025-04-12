@@ -9,7 +9,7 @@ export default function Tutoriales() {
 
     return (
         <div className={styles.pageContainer}>
-            <PageIndicator
+            <PageTitle
                 icon="question"
                 title="Tutoriales"
                 subpages={subpages}

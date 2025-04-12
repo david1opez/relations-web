@@ -141,7 +141,7 @@ export default function Llamadas() {
 
   return (
     <div className={styles.pageContainer}>
-      <PageIndicator
+      <PageTitle
         title="Llamadas"
         icon="phone"
         subpages={subpages}

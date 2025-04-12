@@ -1,16 +1,66 @@
-.container { 
+.container {
+    position: relative;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     flex-shrink: 0;
     background-color: var(--black);
     color: var(--white);
     height: 100vh;
-    width: 280px;
-    padding: 5vh 0;
+    width: 260px;
 }
 
 .logo {
     object-fit: contain;
-    width: 130px;
-    margin: 0 30px 7vh 30px;
+    width: 110px;
+    height: auto;
+    margin: 2.5rem 2rem;
+}
+
+.userContainer {
+    position: relative;
+    border-top: 1px solid var(--gray);
+    border-bottom: 1px solid var(--gray);
+    display: flex;
+    align-items: center;
+    padding: 2vh 1.5rem;
+    margin-bottom: 2.5rem;
+    cursor: pointer;
+    gap: 1rem;
+}
+
+.profilePictureContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: var(--accent);
+    color: var(--black);
+    font-family: 'LayGrotesk-Semibold';
+    font-size: 1rem;
+    line-height: 1rem;
+}
+
+.userName {
+    font-family: 'LayGrotesk-Semibold';
+    font-size: 0.95rem;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+}
+
+.userRole {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-weight: 200;
+    font-size: 0.7rem;
+    line-height: 1;
+}
+
+.pagesContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }

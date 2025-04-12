@@ -1,12 +1,12 @@
-import styles from "./PageIndicator.module.css";
+import styles from "./pageTitle.module.css";
 
 // COMPONENTS
-import Icon from "../Icon/Icon";
+import Icon from "@/components/Icon/Icon";
 
 // TYPES
-import { PageIndicatorProps } from "./PageIndicator.interface";
+import { PageTitleProps } from "@/types/PageTitleTypes";
 
-export default function PageIndicator({ icon, title, subpages, onPageChange }: PageIndicatorProps) {
+export default function PageIndicator({ icon, title, subpages, onPageChange }: PageTitleProps) {
     const clickablePage = (index: number) => {
         return subpages.length > 1 && index < subpages.length - 1;
     };
@@ -24,9 +24,10 @@ export default function PageIndicator({ icon, title, subpages, onPageChange }: P
         <div className={styles.pageIndicatorContainer}>
             <Icon
                 name={icon}
-                size={35}
-                color="var(--blue)"
+                size={30}
+                color="var(--accent)"
             />
+
             <h1
                 className={[
                     styles.pageIndicatorTitle,
