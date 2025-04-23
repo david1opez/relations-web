@@ -1,8 +1,8 @@
-export const calcDuration = (startDate: number, endDate: number): string => {
-    if (!startDate || !endDate) return "0m 0s";
+export const calcDuration = (startTime: number, endTime: number): string => {
+    if (!startTime || !endTime) return "0m 0s";
 
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+    const start = new Date(startTime);
+    const end = new Date(endTime);
     
     const durationInSeconds = Math.floor((end.getTime() - start.getTime()) / 1000);
     const minutes = Math.floor(durationInSeconds / 60);

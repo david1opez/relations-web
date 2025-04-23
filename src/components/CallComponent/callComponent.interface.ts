@@ -1,10 +1,10 @@
 export type CallComponentProps = {
     call: {
-        id: string;
+        callID: string;
         title: string;
         attendees: string[];
-        startDate: number;
-        endDate: number;
+        startTime: number;
+        endTime: number;
     };
     onClick: (id: string) => void;
 };

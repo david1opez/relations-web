@@ -26,11 +26,11 @@ export default function CallComponent({ call, onClick }: CallComponentProps) {
                     <p className={styles.attendees}>{call?.attendees?.join(", ") || "Rosalinda Vazquez, Irma Galindo, Antonio Mellado"}</p>
                 </div>
                 <div className={styles.durationContainer}>
-                    <p className={styles.duration}>{calcDuration(call?.startDate, call?.endDate)}</p>
-                    <p className={styles.date}>{parseDate(call?.startDate)}</p>
+                    <p className={styles.duration}>{calcDuration(call?.startTime, call?.endTime)}</p>
+                    <p className={styles.date}>{parseDate(call?.startTime)}</p>
                 </div>
 
-                <Button text="Más detalles" onClick={() => onClick(call?.id || "")} />
+                <Button text="Más detalles" onClick={() => onClick(call?.callID || "")} />
             </div>
         </>
     );

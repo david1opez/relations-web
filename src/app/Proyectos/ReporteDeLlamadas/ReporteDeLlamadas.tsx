@@ -28,7 +28,7 @@ export default function ReporteDeLlamadas({ project }: { project: Project }) {
             <div className={styles.contentContainer}>
                 <div className={styles.callsContainer}>
                     {calls.map((call, index) => (
-                        <CallComponent onClick={() => {}} key={index} call={call as unknown as { id: string; title: string; attendees: string[]; startDate: number; endDate: number }} />
+                        <CallComponent onClick={() => {}} key={index} call={call as unknown as { callID: string; title: string; attendees: string[]; startTime: number; endTime: number }} />
                     ))}
                 </div>
 

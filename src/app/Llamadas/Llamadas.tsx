@@ -14,8 +14,8 @@ const calls = [
   {
     id: "1",
     title: "Llamada con Soporte - Facturación",
-    startDate: 1743525221454,
-    endDate: 1743525315578,
+    startTime: 1743525221454,
+    endTime: 1743525315578,
     attendees: ["Cliente", "Agente de Soporte"],
     transcript:
       "Llamé al servicio al cliente porque tenía problemas con mi factura del mes pasado. Me apareció un cobro duplicado y no sabía por qué. El agente fue amable y me explicó que podría tratarse de un error en el sistema. Después de revisar mi cuenta, me indicó que debía esperar hasta la siguiente facturación para que el ajuste se reflejara automáticamente. Sin embargo, cuando pregunté si había una manera de agilizar el proceso, me dijeron que no podían hacer nada. Insistí en que necesitaba el reembolso lo antes posible, pero me dijeron que debía esperar al menos 48 horas para una revisión adicional. Al final, me quedé sin una solución inmediata y con la preocupación de que el problema pudiera repetirse en el futuro.",
@@ -99,17 +99,19 @@ type CallDetails = {
 };
 
 type Call = {
-  id: string;
+  callID: string;
   title: string;
-  startDate: number;
-  endDate: number;
-  transcript: string;
+  startTime: number;
+  endTime: number;
+  summary: string;
   attendees?: string[];
 }
+
 
 export default function Llamadas() {
   const [loading, setLoading] = useState<boolean>(true);
 
+  const [calls, setCalls] = useState<Call[]>([]);
   const [selectedCall, setSelectedCall] = useState<Call|null>(null);
   const [callDetails, setCallDetails] = useState<CallDetails|null>(null);
   const [subpages, setSubpages] = useState<string[]>([]);
@@ -117,13 +119,19 @@ export default function Llamadas() {
   const handleSelectCall = async (id: string) => {
     setLoading(true);
 
-    const callFound: Call = calls.find((call) => call.id === id) as Call;
+    let callFound = calls.find((call) => call.callID === id);
+    try {
+      const response = await fetch(`https://relations-data-api.vercel.app/call/details?callID=${id}`);
+      callFound = await response.json();
+    } catch (error) {
+      console.error("Error fetching call details:", error);
+    }
 
-    setSelectedCall(callFound);
+    setSelectedCall(callFound as Call);
 
     setSubpages([callFound?.title || "Llamada"]);
 
-    const data: CallDetails = await analyzeCall(callFound?.transcript || "");
+    const data: CallDetails = await analyzeCall(callFound?.summary || "");
 
     if (data) setCallDetails(data);
     else console.error("Error fetching call details");
@@ -131,8 +139,22 @@ export default function Llamadas() {
     setLoading(false);
   };
 
+  const fetchCalls = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("https://relations-data-api.vercel.app/call/calls?projectID=1"); 
+      const data: Call[] = await response.json();
+      setCalls(data);
+    } catch (error) {
+      console.error("Error fetching calls:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if(subpages.length === 0) {
+      fetchCalls();
       setCallDetails(null);
       setSelectedCall(null);
       setLoading(false);
@@ -156,7 +178,7 @@ export default function Llamadas() {
                 <CallComponent
                   key={index}
                   onClick={handleSelectCall}
-                  call={call as { id: string; title: string; attendees: string[]; startDate: number; endDate: number; }}
+                  call={call as { callID: string; title: string; attendees: string[]; startTime: number; endTime: number; }}
                 />
               ))}
             </div>
@@ -273,11 +295,11 @@ export default function Llamadas() {
                     <div style={{display: "flex", gap: "2rem"}}>
                       <div className={styles.callDetailsContent}>
                         <p className={styles.label}>Fecha:</p>
-                        <p className={styles.text}>{parseDate(selectedCall?.startDate || 0)}</p>
+                        <p className={styles.text}>{parseDate(selectedCall?.startTime || 0)}</p>
                       </div>
                       <div className={styles.callDetailsContent}>
                         <p className={styles.label}>Duración:</p>
-                        <p className={styles.text}>{calcDuration(selectedCall?.startDate || 0, selectedCall?.endDate || 0)}</p>
+                        <p className={styles.text}>{calcDuration(selectedCall?.startTime || 0, selectedCall?.endTime || 0)}</p>
                       </div>
                     </div>
                   </div>
@@ -352,7 +374,7 @@ export default function Llamadas() {
               <div className={styles.fullContainer}>
                 <h3 className={styles.sectionTitle} title="Información sobre la Transcripción">Transcripción:</h3>
                 <div className={styles.callDetailsContentContainer}>
-                  <p className={styles.text} style={{fontWeight: 300}}>{selectedCall?.transcript}</p>
+                  <p className={styles.text} style={{fontWeight: 300}}>{selectedCall?.summary}</p>
                 </div>
               </div>
             </div>
