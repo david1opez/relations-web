@@ -10,7 +10,7 @@ import ActivityIndicator from "@/components/ActivityIndicator/ActivityIndicator"
 import { analyzeCall } from "@/app/CallAnalysisAPI";
 import { calcDuration, parseDate } from "@/utils/dateUtils";
 
-const calls = [
+/*const calls = [
   {
     id: "1",
     title: "Llamada con Soporte - Facturación",
@@ -74,7 +74,7 @@ const calls = [
     transcript:
       "Recibí mi paquete y, al abrirlo, noté que el producto estaba dañado. Inmediatamente llamé al servicio de entrega para reportar el problema. Me dijeron que debía tomar fotos del paquete y enviarlas por correo para iniciar un reclamo. Luego de revisar la evidencia, me ofrecieron dos opciones: recibir un reemplazo sin costo adicional o un reembolso completo. Opté por el reemplazo, pero me informaron que el nuevo envío tardaría al menos una semana. Aunque aprecié la solución, me preocupó que el empaque no protegiera bien el producto y que esto pudiera volver a ocurrir en el futuro.",
   },
-];
+];*/
 
 // TYPES
 type CallDetails = {
