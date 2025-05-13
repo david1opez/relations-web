@@ -4,10 +4,7 @@ import styles from './callItem.module.css';
 import MetadataItem from '../metadataItem/MetadataItem';
 import Icon from '../icon/Icon';
 
-// TYPES
-import { CallItemProps } from '@/types/CallItemTypes';
-
-export default function CallItem({}: CallItemProps) {
+export default function CallItem() {
     return (
         <div className={styles.container}>
             <Icon

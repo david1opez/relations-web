@@ -1,9 +1,6 @@
 import styles from './call.module.css';
 
-// TYPES
-import { CallProps } from './call.interface'
-
-export default function Call({}: CallProps) {
+export default function Call() {
     return (
         <div>
             Call

@@ -4,7 +4,7 @@ import styles from './notificationsDropdown.module.css';
 
 // COMPONENTS
 import Icon from '@/components/icon/Icon';
-import ActivityIndicator from '../activityIndicator/ActivityIndicator';
+import ActivityIndicator from '@/components/activityIndicator/ActivityIndicator';
 
 // UTILS
 import GetNotifications from '@/utils/GetNotifications';

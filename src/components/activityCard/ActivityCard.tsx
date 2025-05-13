@@ -2,7 +2,7 @@ import styles from './activityCard.module.css';
 import Image from 'next/image';
 
 // COMPONENTS
-import ActivityIndicator from '../activityIndicator/ActivityIndicator';
+import ActivityIndicator from '@/components/activityIndicator/ActivityIndicator';
 
 // TYPES
 import { ActivityCardProps } from '@/types/ActivityCardTypes';
