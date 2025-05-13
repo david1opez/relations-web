@@ -1,4 +1,4 @@
-import Icons from "../components/icon/Icons.json";
+import Icons from "../components/icon/icons.json";
 
 export type IconName = keyof typeof Icons;
 

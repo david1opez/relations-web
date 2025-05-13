@@ -1,4 +1,4 @@
-import Icons from './Icons.json';
+import Icons from './icons.json';
 
 // TYPES
 import { IconProps, IconType } from '@/types/IconTypes';
