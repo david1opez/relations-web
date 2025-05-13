@@ -1,11 +1,12 @@
 .headerTitle {
     font-family: 'LayGrotesk-Semibold', sans-serif;
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin-bottom: 0.5rem;
 }
 
 .headerDescription {
     font-weight: 200;
+    font-size: 0.8rem;
     margin-bottom: 1.5rem;
 }
 

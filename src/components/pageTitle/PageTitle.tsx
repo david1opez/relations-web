@@ -1,7 +1,7 @@
 import styles from "./pageTitle.module.css";
 
 // COMPONENTS
-import Icon from "@/components/Icon/Icon";
+import Icon from "@/components/icon/Icon";
 
 // TYPES
 import { PageTitleProps } from "@/types/PageTitleTypes";

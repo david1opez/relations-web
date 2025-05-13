@@ -1,18 +1,18 @@
 import styles from './recentActivityItem.module.css';
 
 // COMPONENTS
-import Icon from '@/components/Icon/Icon';
+import Icon from '@/components/icon/Icon';
 
 // TYPES
 import { RecentActivityItemProps } from '@/types/RecentActivityItemTypes';
-import MetadataItem from '@/components/metadataItem/MetadataItem';
+import MetadataItem from '../../metadataItem/MetadataItem';
 
 export default function RecentActivityItem({ icon, title, description, time, user }: RecentActivityItemProps) {
     return (
         <div className={styles.container}>
             <Icon
                 name={icon}
-                size={28}
+                size={26}
                 color="var(--light-gray)"
             />
 

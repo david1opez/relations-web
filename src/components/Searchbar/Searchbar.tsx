@@ -1,34 +1,23 @@
-import { useState, useEffect } from 'react';
 import styles from './searchbar.module.css';
 
 // COMPONENTS
-import Icon from '../Icon/Icon';
+import Icon from '../icon/Icon';
 
-// TYPES
-import { SearchbarProps } from './searchbar.interface';
-
-export default function Searchbar({ onChangeValue } : SearchbarProps) {
-    const [searchValue, setSearchValue] = useState('');
-
-    useEffect(() => {
-        onChangeValue(searchValue);
-    }, [searchValue]);
-
+export default function Searchbar({ value, onChange }: { value?: string; onChange?: (value: string) => void;}) {
     return (
         <div className={styles.container}>
             <input
-                type="text"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
+                placeholder='Buscar...'
                 className={styles.input}
-                placeholder="Buscar..."
+                type="text"
+                value={value && value}
+                onChange={(e) => onChange && onChange(e.target.value)}
             />
-
             <Icon
                 name="search"
-                size={18}
-                color="var(--blue)"
+                size={16}
+                color='var(--light-gray)'
             />
         </div>
-    )
+    );
 };

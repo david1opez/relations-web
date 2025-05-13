@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './notificationsDropdown.module.css';
 
 // COMPONENTS
-import Icon from '@/components/Icon/Icon';
-import ActivityIndicator from '../ActivityIndicator/ActivityIndicator';
+import Icon from '@/components/icon/Icon';
+import ActivityIndicator from '../activityIndicator/ActivityIndicator';
 
 // UTILS
 import GetNotifications from '@/utils/GetNotifications';

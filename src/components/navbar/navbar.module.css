@@ -1,0 +1,31 @@
+.container {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    padding: 2rem 4rem 0 4rem;
+    gap: 2rem;
+    top: 0;
+}
+
+.logo {
+    margin-right: auto;
+    width: 6.5rem;
+    height: auto;
+}
+
+.link {
+    font-size: 0.8rem;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.loginButton {
+    margin-left: auto;
+    background-color: var(--accent);
+    font-family: 'LayGrotesk-Medium', sans-serif;
+    border: none;
+    padding: 0.5rem 1.3rem;
+    border-radius: 3px;
+    cursor: pointer;
+}

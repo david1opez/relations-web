@@ -7,11 +7,13 @@
 .metadata {
     color: var(--light-gray);
     font-weight: 300;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     line-height: 1;
 }
 
 .value {
     color: var(--white);
-    margin-left: 0.2rem
+    margin-left: 0.2rem;
+    font-weight: 200;
+    font-size: 0.65rem;
 }

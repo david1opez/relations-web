@@ -1,12 +1,12 @@
 "use client"
-import styles from "./sidebar.module.css";
+import styles from "./Sidebar.module.css";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation"
 import Image from "next/image";
 
 // COMPONENTS
 import SidebarItem from "./sidebarPage/SidebarPage";
-import ActivityIndicator from "@/components/ActivityIndicator/ActivityIndicator";
+import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator";
 import OptionsMenu from "@/components/optionsMenu/OptionsMenu";
 
 // UTILS
@@ -32,7 +32,7 @@ export default function Sidebar ({ onPageChange }:  SidebarProps) {
 
   const handlePageChange = (page: string) => {
     setActivePage(page);
-    window.history.pushState({}, "", page?.toLowerCase());
+    window.history.pushState({}, "", page.toLowerCase());
     window.dispatchEvent(new Event("popstate"));
 
     onPageChange(page);
@@ -145,7 +145,7 @@ export default function Sidebar ({ onPageChange }:  SidebarProps) {
                 key={index}
                 icon={page.icon}
                 pageName={page.name}
-                active={activePage?.toLowerCase() === page?.name?.toLowerCase()}
+                active={activePage.toLowerCase() === page.name.toLowerCase()}
                 onClick={() => handlePageChange(page.name)}
             />
             ))

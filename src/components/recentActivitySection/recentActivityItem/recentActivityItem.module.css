@@ -10,13 +10,13 @@
 
 .title {
     font-family: 'LayGrotesk-Semibold', sans-serif;
-    font-size: 0.9rem;
-    margin-bottom: 0.4rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
 }
 
 .description {
     font-weight: 200;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
 }
 
 .metadataContainer {

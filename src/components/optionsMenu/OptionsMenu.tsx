@@ -3,7 +3,7 @@ import styles from './optionsMenu.module.css';
 import { useState, useRef } from 'react';
 
 // COMPONENTS
-import Icon from '@/components/Icon/Icon';
+import Icon from '../icon/Icon';
 
 // TYPES
 import { OptionsMenuProps } from '@/types/OptionsMenuTypes';

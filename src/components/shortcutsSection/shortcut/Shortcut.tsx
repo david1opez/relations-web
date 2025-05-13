@@ -4,7 +4,7 @@ import styles from './shortcut.module.css';
 // import { useRouter } from 'next/navigation';
 
 // COMPONENTS
-import Icon from '@/components/Icon/Icon';
+import Icon from '@/components/icon/Icon';
 import OptionsMenu from '@/components/optionsMenu/OptionsMenu';
 import IconSelector from '@/components/iconSelector/IconSelector';
 import Input from '@/components/input/Input';
@@ -76,7 +76,7 @@ export default function Shortcut({ icon, id, title, redirect, editable, onDelete
         <div className={styles.container}>
             <Icon
                 name={shortcutData?.icon}
-                size={26}
+                size={24}
                 color="var(--accent)"
             />
 

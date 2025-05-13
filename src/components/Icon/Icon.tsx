@@ -1,15 +1,12 @@
 import Icons from './Icons.json';
 
 // TYPES
-import { IconProps, IconType } from './Icon.interface';
+import { IconProps, IconType } from '@/types/IconTypes';
 
-export default function Icon({ size, color, name, className, style, onClick }: IconProps) {
+export default function Icon({ size, color, name, strokeWidth, className, style, onClick, onMouseEnter, onMouseLeave }: IconProps) {
     const Icon: IconType = Icons[name] as IconType;
 
-    if (!Icon) {
-        console.error(`El icono "${name}" no se encontró en Icons.json`);
-        return null; // Previene que se intente renderizar algo que no existe
-    }
+    if (!Icon) return null;
 
     return (
         <svg
@@ -19,7 +16,11 @@ export default function Icon({ size, color, name, className, style, onClick }: I
             viewBox={Icon.viewbox}
             className={className}
             onClick={onClick && onClick}
-            style={style && style}
+            onMouseEnter={onMouseEnter && onMouseEnter}
+            onMouseLeave={onMouseLeave && onMouseLeave}
+            style={{cursor: onClick ? 'pointer' : 'default', ...style}}
+            role="img"
+            aria-label={name}
         >
             {
                 Icon.paths.map((path, index) => (
@@ -28,7 +29,7 @@ export default function Icon({ size, color, name, className, style, onClick }: I
                         d={path.d}
                         fill={path.fill ? color : 'none'}
                         stroke={color ? color : path.stroke}
-                        strokeWidth={path.strokeWidth}
+                        strokeWidth={strokeWidth ? strokeWidth : path.strokeWidth}
                         strokeLinecap={path.strokeLinecap}
                         strokeLinejoin={path.strokeLinejoin}
                     />

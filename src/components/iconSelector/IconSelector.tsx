@@ -1,10 +1,10 @@
 "use client";
 import { useState } from 'react';
 import styles from './iconSelector.module.css';
-import Icons from '@/components/Icon/Icons.json';
+import Icons from '@/components/icon/Icons.json';
 
 // COMPONENTS
-import Icon from '@/components/Icon/Icon';
+import Icon from '@/components/icon/Icon';
 
 // TYPES
 import { IconSelectorProps } from '@/types/IconSelectorTypes';

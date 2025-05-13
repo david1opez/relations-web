@@ -42,17 +42,17 @@ export default function Inicio() {
 
             <div className={styles.activityCardsContainer}>
                 <ActivityCard
-                    icon='images/blue-house.svg'
+                    icon='images/house.svg'
                     title='Proyectos activos'
                     number={activity?.activeProjects}
                 />
                 <ActivityCard
-                    icon='images/blue-phone.svg'
+                    icon='images/phone.svg'
                     title='Llamadas analizadas'
                     number={activity?.analyzedCalls}
                 />
                 <ActivityCard
-                    icon='images/blue-group.svg'
+                    icon='images/group.svg'
                     title='Equipos'
                     number={activity?.teams}
                 />

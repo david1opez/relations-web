@@ -1,18 +1,18 @@
 import styles from './metadataItem.module.css';
 
 // COMPONENTS
-import Icon from '@/components/Icon/Icon';
+import Icon from '@/components/icon/Icon';
 
 // TYPES
 import { MetadataItemProps } from '@/types/MetadataItemTypes';
 
-export default function MetadataItem({ icon, title, value, className }: MetadataItemProps) {
+export default function MetadataItem({ icon, title, value, color, className }: MetadataItemProps) {
     return (
         <div className={`${styles.container} ${className}`}>
             <Icon
                 name={icon}
                 size={13}
-                color="var(--light-gray)"
+                color={color ? color : 'var(--light-gray)'}
             />
 
             <p className={styles.metadata}>
