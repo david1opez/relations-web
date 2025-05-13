@@ -4,18 +4,14 @@ import styles from './shortcutsSection.module.css';
 // COMPONENTS
 import Shortcut from '@/components/shortcutsSection/shortcut/Shortcut';
 
+// UTILS
+import { GetShortcuts, UpdateShortcuts } from '@/utils/Shortcuts';
+
 // TYPES
 import { ShortcutType } from '@/types/ShortcutTypes';
 
 export default function ShortcutsSection() {
-    const [shortcuts, setShortcuts] = useState<ShortcutType[]>([
-        {
-            id: 'randomId',
-            icon: 'rocket',
-            title: 'Inicio',
-            redirect: [{title: 'Inicio', value: 'inicio'}],
-        },
-    ]);
+    const [shortcuts, setShortcuts] = useState<ShortcutType[]>([]);
 
     const [shortcutsChanged, setShortcutsChanged] = useState(false);
 
@@ -32,12 +28,16 @@ export default function ShortcutsSection() {
         setShortcutsChanged(true);
     };
 
-    const handleSaveShortcuts = () => {
+    const handleSaveShortcuts = async () => {
+        const updatedShortcuts = shortcuts?.map((shortcut) => ({...shortcut, editable: false}));
+
+        UpdateShortcuts(updatedShortcuts);
+        setShortcuts(updatedShortcuts);
         setShortcutsChanged(false);
     };
 
     const handleEditShortcut = (id: string, data: ShortcutType) => {
-        const newShortcuts = shortcuts.map((shortcut) => {
+        const newShortcuts = shortcuts?.map((shortcut) => {
             if (shortcut.id === id) {
                 return { ...shortcut, ...data };
             }
@@ -58,8 +58,12 @@ export default function ShortcutsSection() {
     };
 
     useEffect(() => {
-        console.log(shortcuts)
-    }, [shortcuts]);
+        GetShortcuts()
+        .then((data) => setShortcuts(data))
+        .catch((error) => {
+            console.error("Error fetching shortcuts data:", error);
+        });
+    }, []);
 
     return (
         <div className={styles.container}>

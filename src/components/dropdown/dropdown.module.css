@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    background-color: var(--background);
+    position: relative;
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.select {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background-color: var(--input-background);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+}
+
+.option {
+    padding: 8px;
+    background-color: var(--background);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.option:hover {
+    background-color: var(--gray);
+}
