@@ -43,7 +43,7 @@ export default function Llamadas() {
                 </div>
                 <Searchbar/>
             </div>
-            <div className={styles.procesedCalls}>
+            <div className={styles.processedCalls}>
                 <div className={styles.headerContainer}>
                     <Icon
                         name="activity"
