@@ -1,89 +1,67 @@
-import styles from './llamadas.module.css';
 import { useEffect, useState } from "react";
+import styles from "./llamadas.module.css";
 
 // COMPONENTS
-import Searchbar from '@/components/searchbar/Searchbar';
-import CallItem from '@/components/callItem/CallItem';
+import Searchbar from "@/components/searchbar/Searchbar";
+import CallComponent from "@/components/CallComponent/CallComponent";
 
-import { analyzeCall } from '@/utils/CallAnalysisAPI';
-import { CallItemProps, CallDetails, Call } from '@/types/CallItemTypes';
 
-export default function Llamadas({ id }: { id:string }) {
-    const [loading, setLoading] = useState<boolean>(true);
-    const [calls, setCalls] = useState<Call[]>([]);
-    const [selectedCall, setSelectedCall] = useState<Call|null>(null);
-    const [callDetails, setCallDetails] = useState<CallDetails|null>(null);
-    
-    const fetchCalls = async () => {
-        setLoading(true);
-        try {
-            const response = await fetch("https://relations-data-api.vercel.app/call/calls?projectID=" + id);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response}`);
-            }
-            const data: Call[] = await response.json();
-            setCalls(data);
-        } catch (error) {
-            console.error("Error fetching calls:", error);
-            setCalls([]);
-        } finally {
-            setLoading(false);
-        }
-    };
+// TYPES (ajústalo si tienes una interfaz real)
+interface Call {
+  id: string;
+  title: string;
+  attendees: string[];
+  date: string;
+  duration: string;
+}
 
-    const handleSelectCall = async (id: string) => {
-        setLoading(true);
+export default function Llamadas({ id }: { id: string }) {
+  const [calls, setCalls] = useState<Call[]>([]);
+  const [filteredCalls, setFilteredCalls] = useState<Call[]>([]);
 
-        let callFound = calls.find((call) => call.callID === id);
-        try {
-            const response = await fetch(`https://relations-data-api.vercel.app/call/details?callID=${id}`);
-            callFound = await response.json();
+  useEffect(() => {
+    // Aquí pones el fetch real en tu proyecto
+    const demoCalls: Call[] = Array(5).fill(0).map((_, i) => ({
+      id: `${i}`,
+      title: "Reunión inicial con cliente",
+      attendees: ["María García", "Roberto Sánchez", "Cliente"],
+      date: "10/04/2025",
+      duration: "32m 3s"
+    }));
+    setCalls(demoCalls);
+    setFilteredCalls(demoCalls);
+  }, []);
 
-            setSelectedCall(callFound as Call);
-
-            const data: CallDetails = await analyzeCall(callFound?.summary || "");
-
-            if (data) 
-                setCallDetails(data);
-            else 
-                console.error("Error fetching call details");
-        } catch (error) {
-            console.error("Error fetching call details:", error);
-        }
-        finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-    const loadInitialData = async () => {
-        try {
-            await fetchCalls();
-        } catch (error) {
-            console.error("Error loading initial data:", error);
-        }
-    };
-        loadInitialData();
-    }, [id]);
-
-    return (
-        <div className={styles.container}>
-            <Searchbar/>
-            <div className={styles.container}>
-                {loading ? (
-                    <p>Cargando...</p>
-                ) : calls.length > 0 ? (
-                    calls.map((call) => (
-                        <CallItem
-                            key={call.callID}
-                            call={call}
-                            onClick={() => handleSelectCall(call.callID)}
-                        />
-                    ))
-                ) : (
-                    <p>No hay llamadas disponibles</p>
-                )}
-            </div>
-        </div>
+  const handleSearch = (value: string) => {
+    const filtered = calls.filter(call =>
+      call.title.toLowerCase().includes(value.toLowerCase())
     );
+    setFilteredCalls(filtered);
+  };
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <Searchbar onChangeValue={handleSearch} />
+      </div>
+
+      <div className={styles.callsList}>
+
+      {filteredCalls.map((call) => (
+        <CallComponent
+          key={call.id}
+          call={{
+            id: call.id,
+            title: call.title,
+            attendees: call.attendees,
+            startDate: new Date("2025-04-10T12:00:00").getTime(),
+            endDate: new Date("2025-04-10T12:32:03").getTime()
+          }}
+          onClick={(id) => console.log("Ver detalles de:", id)}
+        />
+      ))}
+
+      </div>
+    </div>
+  );
 }

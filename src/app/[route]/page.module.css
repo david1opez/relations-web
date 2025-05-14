@@ -1,6 +1,23 @@
+
+/* 1) Contenedor principal: dos columnas, altura total, sin scroll aquí */
 .container {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: start;
+  display: flex;
+  height: 100vh;       /* ocupa toda la ventana */
+  overflow: hidden;     /* evita scroll en el wrapper */
+}
+
+/* 2) Sidebar: fijo, no hace scroll */
+.sidebarColumn {
+  flex: 0 0 250px;      /* ancho fijo (ajusta a lo que necesites) */
+  /* opcional: añadir un fondo para que recorte bien */
+  background: var(--dark-gray);
+}
+
+/* 3) Columna de contenido: scroll sólo aquí */
+.contentColumn {
+  flex: 1;              /* ocupa resto del ancho */
+  overflow-y: auto;     /* permite scroll vertical sólo aquí */
+  /* opcional: padding */
+  padding: 1rem 2rem;
+  background: var(--background);
 }

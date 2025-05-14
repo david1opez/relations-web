@@ -19,7 +19,7 @@ export default function Informacion({ id }: { id:string }) {
             </div>
 
             <div className={styles.cardContainer}>
-                <h3 className={styles.cardTitle}>Descripción de la problemática</h3>
+                <h3 className={styles.cardTitle}>Descripción del cliente</h3>
                 <p className={styles.cardContent}>
                     Sed vel turpis eleifend, fermentum diam vitae, rutrum lorem.
                     Cras eget viverra odio, at condimentum orci. Aliquam erat
@@ -34,7 +34,7 @@ export default function Informacion({ id }: { id:string }) {
             </div>
 
             <div className={styles.cardContainer}>
-                <h3 className={styles.cardTitle}>Requerimientos funcionales</h3>
+                <h3 className={styles.cardTitle}>Descripción del cliente</h3>
                 <p className={styles.cardContent}>
                     Sed vel turpis eleifend, fermentum diam vitae, rutrum lorem.
                     Cras eget viverra odio, at condimentum orci. Aliquam erat
@@ -49,7 +49,7 @@ export default function Informacion({ id }: { id:string }) {
             </div>
 
             <div className={styles.cardContainer}>
-                <h3 className={styles.cardTitle}>Requerimientos no funcionales</h3>
+                <h3 className={styles.cardTitle}>Descripción del cliente</h3>
                 <p className={styles.cardContent}>
                     Sed vel turpis eleifend, fermentum diam vitae, rutrum lorem.
                     Cras eget viverra odio, at condimentum orci. Aliquam erat

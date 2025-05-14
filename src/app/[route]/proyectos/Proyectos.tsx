@@ -9,7 +9,7 @@ import ProjectCard from '@/components/projectCard/ProjectCard';
 export default function Proyectos() {
     const router = useRouter();
 
-    const handleProjectClick = (projectId: number) => {
+    const handleProjectClick = (projectId: string) => {
         router.push(`/proyectos?id=${projectId}&tab=informacion`);
     }
 
@@ -24,10 +24,10 @@ export default function Proyectos() {
             <Searchbar/>
 
             <div className={styles.projectsContainer}>
-                <ProjectCard onClick={() => handleProjectClick(1)}/>
-                <ProjectCard onClick={() => handleProjectClick(2)}/>
-                <ProjectCard onClick={() => handleProjectClick(3)}/>
-                <ProjectCard onClick={() => handleProjectClick(4)}/>
+                <ProjectCard onClick={() => handleProjectClick('randomId1')}/>
+                <ProjectCard onClick={() => handleProjectClick('randomId2')}/>
+                <ProjectCard onClick={() => handleProjectClick('randomId3')}/>
+                <ProjectCard onClick={() => handleProjectClick('randomId4')}/>
             </div>
         </div>
     )

@@ -1,57 +1,44 @@
-"use client"
+"use client";
+
 import { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import { useSearchParams } from "next/navigation";
 
-// COMPONENTS
+// COMPONENTES
 import Sidebar from "@/components/sidebar/Sidebar";
 
-// UTILS
-import { GetUser } from "@/utils/GetUser";
-
-// PAGES
+// PÁGINAS
 import Inicio from "./inicio/Inicio";
 import Proyectos from "./proyectos/Proyectos";
 import Proyecto from "./proyecto/Proyecto";
+import PerfilPage from "./perfil/page";
 import Llamadas from "./llamadas/Llamadas";
 
-// TYPES
-import UserType from "@/types/UserTypes";
+export default function RoutePage() {
+  const searchParams = useSearchParams();
+  const [activePage, setActivePage] = useState<string>("");  
+  const [id, setId] = useState<string>("");
 
-export default function App() {
-    const searchParams = useSearchParams();
+  useEffect(() => {
+    const param = searchParams.get("id");
+    setId(param ?? "");
+  }, [searchParams]);
 
-    const [activePage, setActivePage] = useState<string>();
-    const [id, setId] = useState<string>();
-    const [user, setUser] = useState<UserType|null>(null);
+  return (
+    <div className={styles.container}>
+      {/* 1. Columna fija: sólo sidebar */}
+      <div className={styles.sidebarColumn}>
+        <Sidebar onPageChange={setActivePage} />
+      </div>
 
-    useEffect(() => {
-        const id = searchParams.get("id");
-        setId(id || "");
-
-        GetUser().then(userData => {
-            setUser(userData);
-            if(!userData) {
-                window.location.href = "/?login=true";
-                return;
-            }
-        })
-        .catch((e) => {
-            alert(e)
-            window.location.href = "/?login=true";
-        });
-    }, [searchParams]);
-
-    if(!user) return null;
-
-    return (
-        <div className={styles.container}>
-            <Sidebar onPageChange={setActivePage} />
-
-            {activePage?.toLowerCase() === "inicio" && <Inicio />}
-            {activePage?.toLowerCase() === "proyectos" && !id && <Proyectos />}
-            {activePage?.toLowerCase() === "proyectos" && id && <Proyecto id={id}/>}
-            {activePage?.toLowerCase() === "llamadas" && <Llamadas/>}
-        </div>
-    );
+      {/* 2. Columna scrollable: contenido de cada página */}
+      <div className={styles.contentColumn}>
+        {activePage.toLowerCase() === "inicio" && <Inicio />}
+        {activePage.toLowerCase() === "proyectos" && !id && <Proyectos />}
+        {activePage.toLowerCase() === "proyectos" && id && <Proyecto id={id} />}
+        {activePage.toLowerCase() === "perfil" && <PerfilPage />}
+        {activePage.toLowerCase() === "llamadas" && <Llamadas />} {/* ⬅️ Agregado aquí */}
+      </div>
+    </div>
+  );
 }
