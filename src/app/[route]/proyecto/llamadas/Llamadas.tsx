@@ -5,32 +5,57 @@ import styles from "./llamadas.module.css";
 import Searchbar from "@/components/searchbar/Searchbar";
 import CallComponent from "@/components/CallComponent/CallComponent";
 
-
-// TYPES (ajústalo si tienes una interfaz real)
-interface Call {
-  id: string;
-  title: string;
-  attendees: string[];
-  date: string;
-  duration: string;
-}
+import { analyzeCall } from '@/utils/CallAnalysisAPI';
+import { CallItemProps, CallDetails, Call } from '@/types/CallItemTypes';
+import { fetchCalls } from '@/services/callsService';
 
 export default function Llamadas({ id }: { id: string }) {
   const [calls, setCalls] = useState<Call[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [filteredCalls, setFilteredCalls] = useState<Call[]>([]);
+  const [selectedCall, setSelectedCall] = useState<Call | null>(null);
+  const [callDetails, setCallDetails] = useState<CallDetails | null>(null);
+
+  const handleSelectCall = async (id: string) => {
+    setLoading(true);
+
+    let callFound = calls.find((call) => call.callID === id);
+    try {
+      const response = await fetch(`https://relations-data-api.vercel.app/call/details?callID=${id}`);
+      callFound = await response.json();
+
+      setSelectedCall(callFound as Call);
+
+      const data: CallDetails = await analyzeCall(callFound?.summary || "");
+
+      if (data) 
+        setCallDetails(data);
+      else 
+        console.error("Error fetching call details");
+    } catch (error) {
+      console.error("Error fetching call details:", error);
+    }
+    finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    // Aquí pones el fetch real en tu proyecto
-    const demoCalls: Call[] = Array(5).fill(0).map((_, i) => ({
-      id: `${i}`,
-      title: "Reunión inicial con cliente",
-      attendees: ["María García", "Roberto Sánchez", "Cliente"],
-      date: "10/04/2025",
-      duration: "32m 3s"
-    }));
-    setCalls(demoCalls);
-    setFilteredCalls(demoCalls);
-  }, []);
+    const loadInitialData = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchCalls(id);
+        setCalls(data);
+        setFilteredCalls(data);
+        console.log("Calls data:", data);
+      } catch (error) {
+        console.error("Error loading initial data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadInitialData();
+  }, [id]);
 
   const handleSearch = (value: string) => {
     const filtered = calls.filter(call =>
@@ -49,15 +74,8 @@ export default function Llamadas({ id }: { id: string }) {
 
       {filteredCalls.map((call) => (
         <CallComponent
-          key={call.id}
-          call={{
-            id: call.id,
-            title: call.title,
-            attendees: call.attendees,
-            startDate: new Date("2025-04-10T12:00:00").getTime(),
-            endDate: new Date("2025-04-10T12:32:03").getTime(),
-            transcript: "Transcripción de la llamada",
-          }}
+          key={call.callID}
+          call={call}
           onClick={(id) => console.log("Ver detalles de:", id)}
         />
       ))}
