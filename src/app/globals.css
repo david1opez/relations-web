@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'LayGrotesk-Medium';
+  src: url('../../public/fonts/LayGrotesk-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LayGrotesk-Semibold';
+  src: url('../../public/fonts/LayGrotesk-Semibold.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+:root {
+  /* --accent: #C9FE6E; */
+  --accent: #83e2ff;
+  --background: #121212;
+  --gray: #222222;
+  --dark-gray: #121212;
+  --light-gray: #999999;
+  --black: #000000;
+  --white: #FFFFFF;
+  --red: #EA6C6C;
+  --green: #57c65a;
+}
+
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--white);
+  background: var(--background);
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'LayGrotesk-Medium', sans-serif;
+  font-weight: 500;
+}
+
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 2rem;
+  width: 100%;
+  height: 100vh;
+}

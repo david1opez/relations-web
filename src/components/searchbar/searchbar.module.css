@@ -1,0 +1,21 @@
+.container {
+    background-color: var(--gray);
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    padding: 0.4rem 0.8rem 0.4rem 0;
+    gap: 0.5rem;
+}
+
+.input {
+    padding-left: 1rem;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-size: 0.7rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: 200;
+    width: 200px;
+}

@@ -1,0 +1,27 @@
+.container {
+    background-color: var(--dark-gray);
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin-right: 0.5rem;
+    border-radius: 5px;
+    gap: 1rem;
+}
+
+.title {
+    font-family: 'LayGrotesk-Semibold', sans-serif;
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+}
+
+.description {
+    font-weight: 200;
+    font-size: 0.65rem;
+}
+
+.metadataContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-left: auto;
+}

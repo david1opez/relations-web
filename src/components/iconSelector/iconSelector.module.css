@@ -1,0 +1,41 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.label {
+    font-size: 0.7rem;
+    margin-bottom: 0.5rem;
+    color: var(--light-gray);
+}
+
+.selectedIconContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--dark-gray);
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+}
+
+.selectedIconContainer:hover {
+    cursor: pointer;
+    background-color: var(--gray);
+}
+
+.optionsContainer {
+    position: absolute;
+    top: 60%;
+    left: 130%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    background-color: var(--dark-gray);
+    padding: 1rem;
+    border-radius: 5px;
+    overflow-y: auto;
+    max-height: 120px;
+    scrollbar-width: thin;
+}

@@ -1,0 +1,124 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Antes era 2rem */
+}
+
+.section {
+  background-color: #1a1a1a;
+  border-radius: 8px; /* Antes 10px */
+  padding: 1.5rem; /* Antes 2rem */
+}
+
+.sectionTitle {
+  font-size: 1.3rem; /* Antes 1.5rem */
+  color: white;
+  margin-bottom: 0.3rem; /* Más compacto */
+}
+
+.sectionSubtitle {
+  font-size: 0.95rem; /* Antes 1rem */
+  color: #aaaaaa;
+  margin-bottom: 1rem; /* Antes 1.5rem */
+}
+
+.resourcesRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem; /* Antes 1rem */
+}
+
+.resourceCard {
+  background-color: #262626;
+  border: 1px solid #333333;
+  border-radius: 8px; /* Antes 10px */
+  padding: 1rem; /* Antes 1.5rem */
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.iconCircle {
+  background-color: #141414;
+  border-radius: 50%;
+  width: 38px; /* Antes 45px */
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resourceInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.resourceTitle {
+  font-size: 1.05rem; /* Antes 1.2rem */
+  color: white;
+}
+
+.resourceLink {
+  font-size: 0.85rem; /* Antes 0.9rem */
+  color: #aaaaaa;
+  margin-top: 0.2rem;
+}
+
+.addResourceBtn {
+  background: none;
+  border: none;
+  color: #6CCDEA;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+  cursor: pointer;
+  font-size: 0.95rem; /* Antes 1rem */
+}
+
+.addResourceBtn:hover {
+  text-decoration: underline;
+}
+
+/* Nuevo recurso formulario */
+.newResourceCard {
+  background-color: #262626;
+  border: 1px solid #333333;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.newResourceField label {
+  color: #aaaaaa;
+  font-size: 0.85rem;
+  margin-bottom: 0.2rem;
+}
+
+.newResourceField input {
+  width: 100%;
+  background-color: #1a1a1a;
+  border: 1px solid #333333;
+  border-radius: 5px;
+  padding: 0.7rem;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.saveButton {
+  background-color: #6CCDEA;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7rem 1.2rem; /* Un poco más pequeño */
+  margin-top: 0.8rem;
+  align-self: flex-end;
+  cursor: pointer;
+}
+
+.saveButton:hover {
+  background-color: #5bc2d7;
+}

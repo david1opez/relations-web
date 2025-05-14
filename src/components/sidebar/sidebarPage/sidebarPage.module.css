@@ -1,0 +1,24 @@
+.sidebarItemContainer {
+    display: flex;
+    align-items: center;
+    padding: 2vh 2rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.sidebarItemContainer:hover {
+    opacity: 1;
+}
+
+.activeSidebarItemContainer {
+    background-color: var(--gray);
+    cursor: default;
+}
+
+.sidebarItemText {
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin-left: 15px;
+    color: var(--light-gray);
+    font-family: 'LayGrotesk-Medium';
+}

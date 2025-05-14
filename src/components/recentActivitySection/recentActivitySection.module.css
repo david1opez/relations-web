@@ -1,0 +1,50 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: var(--black);
+    width: 100%;
+    padding: 1.5rem;
+    border-radius: 7px;
+}
+
+.header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+}
+
+.header h2 {
+    font-family: 'LayGrotesk-Semibold', sans-serif;
+    font-size: 1rem;
+}
+
+.reloadButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    border: none;
+    cursor: pointer;
+    background-color: var(--accent);
+    font-family: 'LayGrotesk-Semibold', sans-serif;
+    font-size: 0.75rem;
+    line-height: 1;
+    gap: 0.3rem;
+    padding: 0.35rem 0.8rem 0.35rem 1rem;
+    border-radius: 3px;
+}
+
+.recentActivityItemsContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    width: 100%;
+    padding: 0.5rem 0;
+    overflow-y: scroll;
+    max-height: 325px;
+    gap: 1rem;
+    scrollbar-width: thin;
+}

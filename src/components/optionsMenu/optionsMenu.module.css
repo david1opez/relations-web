@@ -1,0 +1,45 @@
+.threeDotsIcon {
+    position: absolute;
+    top: 20%;
+    right: 0.8rem;
+    cursor: pointer;
+}
+
+.threeDotsIcon:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.optionsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: absolute;
+    top: 2.5rem;
+    right: 1.8rem;
+    background-color: var(--gray);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    padding: 0.5rem 0;
+    z-index: 9999;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.35rem;
+    padding: 0.15rem 0.9rem;
+    cursor: pointer;
+}
+
+.optionText {
+    font-size: 0.7rem;
+    line-height: 1;
+    font-weight: 400;
+    color: var(--light-gray);
+}
+
+.optionText:hover {
+    color: var(--white)
+}

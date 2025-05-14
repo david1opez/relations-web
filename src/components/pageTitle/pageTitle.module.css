@@ -1,0 +1,41 @@
+.pageIndicatorContainer {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: row;
+    justify-content: start;
+    align-self: flex-start;
+    margin-bottom: 3.5vh;
+}
+
+.pageIndicatorTitle {
+    font-family: 'LayGrotesk-Semibold', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-left: 0.5rem;
+}
+
+.clickablePageIndicatorTitle {
+    cursor: pointer;
+}
+
+.clickablePageIndicatorTitle:hover {
+    text-decoration: underline;
+}
+
+.subpageContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.subpageDash {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin: 0 0.4rem;
+}
+
+.subpageTitle {
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-size: 0.8rem;
+}

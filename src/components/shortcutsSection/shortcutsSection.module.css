@@ -1,0 +1,51 @@
+.container {
+    width: 50%;
+}
+
+.title {
+    font-family: 'LayGrotesk-Semibold', sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+}
+
+.description {
+    font-size: 0.7rem;
+    font-weight: 200;
+    margin-bottom: 1.5rem;
+}
+
+.shortcutsItemsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    max-height: 33vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.buttonsContainer {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.saveButton {
+    font-family: 'LayGrotesk-Semibold', sans-serif;
+    border: none;
+    background-color: var(--accent);
+    border-radius: 4px;
+    color: var(--black);
+    padding: 0.4rem 1rem;
+    cursor: pointer;
+}
+
+.addButton {
+    font-family: 'LayGrotesk-Semibold', sans-serif;
+    border: none;
+    background-color: var(--background);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    color: var(--accent);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
