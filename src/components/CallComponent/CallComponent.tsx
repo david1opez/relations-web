@@ -70,9 +70,9 @@ export default function CallComponent({ call, onClick, onDelete }: CallComponent
 
         <OptionsMenu
           options={[
-            { icon: 'close', name: 'Eliminar' },
             { icon: 'rocket', name: 'Asignar a proyecto' },
             { icon: 'pencil', name: 'Ver transcripción' },
+            { icon: 'close', name: 'Eliminar' }
           ]} 
           onSelect={(option) => {
             handleMenuItemClick(option === 'Eliminar' ? 'delete' : option === 'Asignar a proyecto' ? 'assign' : 'view');
