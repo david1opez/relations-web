@@ -9,6 +9,7 @@ import PageTitle from "@/components/pageTitle/PageTitle";
 import CallComponent from "@/components/CallComponent/CallComponent";
 import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator";
 import CallDetailsPopup from "@/components/CallComponent/CallDetailsPopup";
+import Searchbar from "@/components/searchbar/Searchbar";
 
 // UTILS
 import { analyzeCall } from "@/app/CallAnalysisAPI";
@@ -199,14 +200,12 @@ export default function Llamadas() {
 
       {subpages.length === 0 ? (
         <div className={styles.contentContainer}>
-          {/* Sección: Tus llamadas */}
+          
           <div className={styles.sectionContainer}>
             <h2 className={styles.listTitle}>Tus llamadas</h2>
-            <input
-              type="text"
-              placeholder="Buscar..."
-              className={styles.searchInput}
-            />
+            
+            <Searchbar/>
+            
             <div className={styles.callsContainer}>
               {tusLlamadas.map((call) => (
                 <CallComponent
@@ -218,14 +217,11 @@ export default function Llamadas() {
             </div>
           </div>
 
-          {/* Sección: Llamadas asignadas */}
           <div className={styles.sectionContainer}>
             <h2 className={styles.listTitle}>Llamadas asignadas</h2>
-            <input
-              type="text"
-              placeholder="Buscar..."
-              className={styles.searchInput}
-            />
+
+            <Searchbar/>
+            
             <div className={styles.callsContainer}>
               {assignedLlamadas.map((call) => (
                 <div key={call.id} className={styles.assignedCall}>
