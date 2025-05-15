@@ -4,7 +4,12 @@ import styles from './callItem.module.css';
 import MetadataItem from '../metadataItem/MetadataItem';
 import Icon from '../icon/Icon';
 
-export default function CallItem() {
+import { CallItemProps } from '@/types/CallItemTypes';
+import { calcDuration, parseDate } from '@/utils/dateUtils';
+
+export default function CallItem({ call, onClick }: CallItemProps) {
+    const duration = calcDuration(call.startTime, call.endTime);
+
     return (
         <div className={styles.container}>
             <Icon
@@ -14,22 +19,22 @@ export default function CallItem() {
                 className={styles.icon}
             />
             <div className={styles.headerContainer}>
-                <p className={styles.callTitle}>Reunión inicial con cliente</p>
+                <p className={styles.callTitle}>{call.title}</p>
                 <MetadataItem
                     title='Asistentes:'
-                    value='Juan, Pedro, Sofía'
+                    value={call.attendees ? call.attendees.join(', ') : 'Sin asistentes'}
                     icon='users'
                 />
             </div>
             <div>
                 <MetadataItem
                     title='Fecha:'
-                    value='2023-10-01'
+                    value={parseDate(call.startTime)}
                     icon='calendar'
                 />
                 <MetadataItem
                     title='Duración:'
-                    value='12m 30s'
+                    value={duration}
                     icon='clock'
                     className={styles.metadataMargin}
                 />

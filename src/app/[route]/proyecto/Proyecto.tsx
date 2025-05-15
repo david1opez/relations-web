@@ -8,21 +8,24 @@ import MetadataItem from '@/components/metadataItem/MetadataItem';
 import Informacion from './informacion/Informacion';
 import Llamadas from './llamadas/Llamadas';
 import Recursos from './recursos/Recursos';
+import Equipos from './equipos/Equipos'; // <<--- Nuevo componente que necesitas crear
 
-const Tabs: ('informacion'|'llamadas'|'recursos')[] = [
+const Tabs: ('informacion'|'llamadas'|'recursos'|'equipos')[] = [
     "informacion",
+    "equipos",
     "llamadas",
     "recursos"
+     // <<--- Lo agregamos aquí
 ];
 
 export default function Proyecto({ id }: { id: string }) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const [activeTab, setActiveTab] = useState<'informacion'|'llamadas'|'recursos'>("informacion");
+    const [activeTab, setActiveTab] = useState<'informacion'|'llamadas'|'recursos'|'equipos'>("informacion");
     
     useEffect(() => {
-        const tab = searchParams.get("tab") as 'informacion'|'llamadas'|'recursos'|null;
+        const tab = searchParams.get("tab") as 'informacion'|'llamadas'|'recursos'|'equipos'|null;
         if (tab) setActiveTab(tab);
         else setActiveTab("informacion");
     }, [searchParams]);
@@ -43,13 +46,13 @@ export default function Proyecto({ id }: { id: string }) {
                 <MetadataItem
                     icon='user'
                     title="Cliente"
-                    value="Juan Pérez"
+                    value="01/01/2023"
                     color='var(--accent)'
                 />
                 <MetadataItem
                     icon='users'
                     title="Miembros"
-                    value="12"
+                    value="01/01/2023"
                     color='var(--accent)'
                 />
                 <MetadataItem
@@ -66,20 +69,6 @@ export default function Proyecto({ id }: { id: string }) {
                 />
             </div>
 
-            {
-                activeTab === "informacion" && (
-                    <div>
-                        <p className={styles.label}>Descripción del proyecto:</p>
-                        <p className={styles.projectDescription}>
-                            Sed vel turpis eleifend, fermentum diam vitae, rutrum lorem. Cras eget viverra odio,
-                            at condimentum orci. Aliquam erat volutpat. Donec mollis justo sapien, eu tempor 
-                            erat dignissim eu. Curabitur lacinia feugiat elit id fringilla. Ut accumsan dui sed
-                            dolor consectetur aliquam. Curabitur venenatis odio at nisi venenatis auctor.
-                        </p>
-                    </div>
-                )
-            }
-
             <div className={styles.tabsContainer}>
                 {
                     Tabs.map((tab, idx) => (
@@ -91,7 +80,8 @@ export default function Proyecto({ id }: { id: string }) {
                             {
                                 tab === "informacion" ? "Información" :
                                 tab === "llamadas" ? "Llamadas" :
-                                tab === "recursos" ? "Recursos" : ""
+                                tab === "recursos" ? "Recursos" :
+                                tab === "equipos" ? "Equipos" : ""
                             }
                         </button>
                     ))
@@ -105,6 +95,8 @@ export default function Proyecto({ id }: { id: string }) {
                     <Llamadas id={id}/>
                 ) : activeTab === "recursos" ? (
                     <Recursos id={id}/>
+                ) : activeTab === "equipos" ? (
+                    <Equipos id={id}/>
                 ) : null
             }
         </div>
