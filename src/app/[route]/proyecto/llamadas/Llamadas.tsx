@@ -42,7 +42,7 @@ export default function Llamadas({ id }: { id: string }) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <Searchbar onChangeValue={handleSearch} />
+        <Searchbar onChange={handleSearch} />
       </div>
 
       <div className={styles.callsList}>
@@ -55,7 +55,8 @@ export default function Llamadas({ id }: { id: string }) {
             title: call.title,
             attendees: call.attendees,
             startDate: new Date("2025-04-10T12:00:00").getTime(),
-            endDate: new Date("2025-04-10T12:32:03").getTime()
+            endDate: new Date("2025-04-10T12:32:03").getTime(),
+            transcript: "Transcripción de la llamada",
           }}
           onClick={(id) => console.log("Ver detalles de:", id)}
         />
