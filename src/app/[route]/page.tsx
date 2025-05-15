@@ -27,20 +27,18 @@ export default function RoutePage() {
 
   return (
     <div className={styles.container}>
-      {/* 1. Columna fija: sólo sidebar */}
       <div className={styles.sidebarColumn}>
         <Sidebar onPageChange={setActivePage} />
       </div>
 
-      {/* 2. Columna scrollable: contenido de cada página */}
       <div className={styles.contentColumn}>
         {activePage.toLowerCase() === "inicio" && <Inicio />}
         {activePage.toLowerCase() === "proyectos" && !id && <Proyectos />}
         {activePage.toLowerCase() === "proyectos" && id && <Proyecto id={id} />}
+        {activePage.toLowerCase() === "llamadas" && <Llamadas />}
         {activePage.toLowerCase() === "perfil" && <PerfilPage />}
-        {activePage.toLowerCase() === "llamadas" && <Llamadas />} {/* ⬅️ Agregado aquí */}
+        {activePage.toLowerCase() === "personas" && <Personas />}
       </div>
-            {activePage?.toLowerCase() === "personas" && <Personas/>}
     </div>
   );
 }
