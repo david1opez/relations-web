@@ -14,6 +14,7 @@ import Inicio from "./inicio/Inicio";
 import Proyectos from "./proyectos/Proyectos";
 import Proyecto from "./proyecto/Proyecto";
 import Llamadas from "./llamadas/Llamadas";
+import Personas from "./personas/Personas";
 
 // TYPES
 import UserType from "@/types/UserTypes";
@@ -52,6 +53,7 @@ export default function App() {
             {activePage?.toLowerCase() === "proyectos" && !id && <Proyectos />}
             {activePage?.toLowerCase() === "proyectos" && id && <Proyecto id={id}/>}
             {activePage?.toLowerCase() === "llamadas" && <Llamadas/>}
+            {activePage?.toLowerCase() === "personas" && <Personas/>}
         </div>
     );
 }

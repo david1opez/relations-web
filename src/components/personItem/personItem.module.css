@@ -1,0 +1,53 @@
+.container {
+    display: flex;
+    align-items: center;
+    background-color: var(--dark-gray);
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    column-gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.dataContainer {
+    margin-right: 1rem;
+}
+
+.label {
+    color: var(--light-gray);
+    font-size: 0.7rem;
+}
+
+.data {
+    font-size: 0.8rem;
+}
+
+.select {
+    color: var(--accent);
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    text-decoration-line: underline;
+    cursor:  pointer;
+}
+
+.option {
+    color: var(--white);
+    background-color: var(--gray);
+}
+
+.deleteButton {
+    margin-left: auto;
+    background: none;
+    border: 2px solid var(--red);
+    color: var(--red);
+    border-radius: 4px;
+    padding: 0.4rem 1rem;
+}
+
+.assignButton {
+    background: none;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    border-radius: 4px;
+    padding: 0.4rem 1rem;
+}
