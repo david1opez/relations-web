@@ -8,7 +8,6 @@ import MetadataItem from "../metadataItem/MetadataItem";
 
 // UTILS
 import { calcDuration, parseDate } from "@/utils/dateUtils";
-import Icon from "../icon/Icon";
 
 interface Call {
   id: string;
