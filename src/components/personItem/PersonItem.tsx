@@ -1,6 +1,23 @@
+import { useState } from 'react';
+
 import styles from './personItem.module.css';
+import Dialog from '../dialog/Dialog';
+import ProjectAssignDialog from '../projectAssignDialog/ProjectAssignDialog';
 
 export default function PersonItem() {
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [isProjectAssignDialogOpen, setIsProjectAssignDialogOpen] = useState(false);
+
+    const handleDelete = () => {
+        // Aquí irá la lógica de eliminación
+        setIsDeleteDialogOpen(false);
+    };
+
+    const handleProjectAssignment = (assignments: any[]) => {
+        // Aquí irá la lógica para guardar las asignaciones
+        console.log('Proyectos asignados:', assignments);
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.dataContainer}>
@@ -31,8 +48,32 @@ export default function PersonItem() {
                 <p className={styles.data}>4</p>
             </div>
 
-            <button className={styles.deleteButton}>Eliminar</button>
-            <button className={styles.assignButton}>Asignar proyectos</button>
+            <button 
+                className={styles.deleteButton}
+                onClick={() => setIsDeleteDialogOpen(true)}
+            >
+                Eliminar
+            </button>
+            <button 
+                className={styles.assignButton}
+                onClick={() => setIsProjectAssignDialogOpen(true)}
+            >
+                Asignar proyectos
+            </button>
+
+            <Dialog
+                isOpen={isDeleteDialogOpen}
+                onClose={() => setIsDeleteDialogOpen(false)}
+                onConfirm={handleDelete}
+                title="Confirmar eliminación"
+                message="¿Estás seguro que quieres eliminar este usuario?"
+            />
+
+            <ProjectAssignDialog
+                isOpen={isProjectAssignDialogOpen}
+                onClose={() => setIsProjectAssignDialogOpen(false)}
+                onConfirm={handleProjectAssignment}
+            />
         </div>
     );
 };
