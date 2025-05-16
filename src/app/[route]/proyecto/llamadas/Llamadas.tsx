@@ -4,11 +4,12 @@ import styles from "./llamadas.module.css";
 // COMPONENTS
 import Searchbar from "@/components/searchbar/Searchbar";
 import CallItem from "@/components/callItem/CallItem";
+import CallDetailsPopup from '@/components/CallComponent/CallDetailsPopup';
 
-import { analyzeCall } from '@/utils/CallAnalysisAPI';
+import { analyzeCall, fetchChaptering } from '@/utils/CallAnalysisAPI';
 import { CallItemProps, CallDetails, Call } from '@/types/CallItemTypes';
 import { fetchCalls } from '@/services/callsService';
-import Call from "@/components/call/Call";
+import { calcDuration } from "@/utils/dateUtils";
 
 export default function Llamadas({ id }: { id: number }) {
   const [calls, setCalls] = useState<Call[]>([]);
@@ -16,23 +17,30 @@ export default function Llamadas({ id }: { id: number }) {
   const [filteredCalls, setFilteredCalls] = useState<Call[]>([]);
   const [selectedCall, setSelectedCall] = useState<Call | null>(null);
   const [callDetails, setCallDetails] = useState<CallDetails | null>(null);
+  const [chapters, setChapters] = useState<any[]>([]);
+  const [showModal, setShowModal] = useState(false);
 
-  const handleSelectCall = async (id: string) => {
+  const handleSelectCall = async (cID: string) => {
     setLoading(true);
 
-    let callFound = calls.find((call) => call.callID === id);
+    let callFound = calls.find((call) => call.callID === cID);
     try {
-      const response = await fetch(`https://relations-data-api.vercel.app/call/details?callID=${id}`);
+      const response = await fetch(`https://relations-data-api.vercel.app/call/details?callID=${cID}`);
       callFound = await response.json();
-
+      console.log(callFound?.summary)
       setSelectedCall(callFound as Call);
 
       const data: CallDetails = await analyzeCall(callFound?.summary || "");
-
+      console.log("Call details:", data);
       if (data) 
         setCallDetails(data);
       else 
         console.error("Error fetching call details");
+
+      // Fetch chapters for the transcript/summary
+      const chapterData = await fetchChaptering(callFound?.summary || "");
+      setChapters(chapterData || []);
+      setShowModal(true);
     } catch (error) {
       console.error("Error fetching call details:", error);
     }
@@ -49,7 +57,6 @@ export default function Llamadas({ id }: { id: number }) {
         setCalls(data);
         setFilteredCalls(data);
         
-        console.log("Calls data:", data);
       } catch (error) {
         console.error("Error loading initial data:", error);
       } finally {
@@ -83,6 +90,19 @@ export default function Llamadas({ id }: { id: number }) {
       ))}
 
       </div>
+
+      {/* Modal for call details */}
+      <CallDetailsPopup
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title={selectedCall?.title || ''}
+        attendees={selectedCall?.attendees || []}
+        date={selectedCall ? new Date(selectedCall.startTime).toLocaleDateString() : ''}
+        duration={selectedCall ? calcDuration(selectedCall.startTime, selectedCall.endTime) : ''}
+        transcript={selectedCall?.summary || ''}
+        chapters={chapters}
+        summary={callDetails?.llmInsights?.resumen || ''}
+      />
     </div>
   );
 }

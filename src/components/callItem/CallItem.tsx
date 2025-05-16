@@ -39,7 +39,10 @@ export default function CallItem({ call, onClick }: CallItemProps) {
                     className={styles.metadataMargin}
                 />
             </div>
-            <button className={styles.button}>
+            <button 
+                className={styles.button}
+                onClick={() => onClick(call.callID)}
+            >
                 Ver detalles
             </button>
         </div>
