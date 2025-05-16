@@ -12,10 +12,8 @@ import Equipos from './equipos/Equipos'; // <<--- Nuevo componente que necesitas
 
 const Tabs: ('informacion'|'llamadas'|'recursos'|'equipos')[] = [
     "informacion",
-    "equipos",
     "llamadas",
     "recursos"
-     // <<--- Lo agregamos aquí
 ];
 
 export default function Proyecto({ id }: { id: number }) {
