@@ -2,14 +2,14 @@
 
 @font-face {
   font-family: 'LayGrotesk-Medium';
-  src: url('../../public/fonts/LayGrotesk-Medium.otf') format('opentype');
+  src: url('/fonts/LayGrotesk-Medium.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'LayGrotesk-Semibold';
-  src: url('../../public/fonts/LayGrotesk-Semibold.otf') format('opentype');
+  src: url('/fonts/LayGrotesk-Semibold.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
 }
