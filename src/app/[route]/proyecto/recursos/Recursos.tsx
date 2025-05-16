@@ -9,7 +9,7 @@ interface Resource {
   link: string;
 }
 
-export default function Recursos({ id }: { id: string }) {
+export default function Recursos({ id }: { id: number }) {
   const [resources, setResources] = useState<Resource[]>([]);
   const [newTitle, setNewTitle] = useState("");
   const [newLink, setNewLink] = useState("");

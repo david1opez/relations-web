@@ -8,15 +8,7 @@ import MetadataItem from "../metadataItem/MetadataItem";
 
 // UTILS
 import { calcDuration, parseDate } from "@/utils/dateUtils";
-
-interface Call {
-  id: string;
-  title: string;
-  startDate: number;
-  endDate: number;
-  transcript: string;
-  attendees: string[];
-}
+import { Call } from "@/types/CallItemTypes";
 
 interface CallComponentProps {
   call: Call;
@@ -30,13 +22,13 @@ export default function CallComponent({ call, onClick, onDelete }: CallComponent
   const handleMenuItemClick = (action: string) => {
     switch (action) {
       case "view":
-        onClick(call.id);
+        onClick(call.callID);
         break;
       case "assign":
         setIsAssignProjectOpen(true);
         break;
       case "delete":
-        onDelete?.(call.id);
+        onDelete?.(call.callID);
         break;
     }
   };
@@ -50,20 +42,20 @@ export default function CallComponent({ call, onClick, onDelete }: CallComponent
         <MetadataItem
           icon="users"
           title="Asistentes:"
-          value={call.attendees.join(", ")}
+          value={(call.attendees ?? []).join(", ")}
         />
 
         <div style={{ display: "flex", gap: "1rem" }}>
           <MetadataItem
             icon="calendar"
             title="Fecha:"
-            value={parseDate(call.startDate)}
+            value={parseDate(call.startTime)}
           />
 
           <MetadataItem
             icon="clock"
             title="Duración:"
-            value={calcDuration(call.startDate, call.endDate)}
+            value={calcDuration(call.startTime, call.endTime)}
           />
         </div>
 
@@ -83,9 +75,9 @@ export default function CallComponent({ call, onClick, onDelete }: CallComponent
         isOpen={isAssignProjectOpen}
         onClose={() => setIsAssignProjectOpen(false)}
         title={call.title}
-        attendees={call.attendees}
-        date={parseDate(call.startDate)}
-        duration={calcDuration(call.startDate, call.endDate)}
+        attendees={call.attendees || []}
+        date={parseDate(call.startTime)}
+        duration={calcDuration(call.startTime, call.endTime)}
       />
     </>
   );

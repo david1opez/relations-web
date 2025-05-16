@@ -1,6 +1,6 @@
 import styles from "./informacion.module.css";
 
-export default function Informacion({ id }: { id:string }) {
+export default function Informacion({ id }: { id: number }) {
     return (
         <div className={styles.container}>
             <div className={styles.cardContainer}>
