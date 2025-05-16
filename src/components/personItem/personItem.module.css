@@ -56,29 +56,37 @@
 */
 
 .container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr 1fr 0.5fr auto auto;
     align-items: center;
     background-color: var(--dark-gray);
     border-radius: 8px;
     padding: 0.7rem 1rem;
-    column-gap: 1.5rem;
+    gap: 1rem;
     margin-bottom: 1rem;
-  }
-  
-  .dataContainer {
-    margin-right: 1rem;
-  }
-  
-  .label {
+    min-height: 70px;
+}
+
+.dataContainer {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.label {
     color: var(--light-gray);
     font-size: 0.7rem;
-  }
-  
-  .data {
+    margin-bottom: 0.2rem;
+    white-space: nowrap;
+}
+
+.data {
     font-size: 0.8rem;
-  }
-  
-  .select {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.select {
     color: var(--accent);
     background: none;
     border: none;
@@ -86,15 +94,16 @@
     text-decoration-line: underline;
     cursor: pointer;
     outline: none;
-  }
-  
-  .option {
+    width: 100%;
+    padding-right: 1rem;
+}
+
+.option {
     color: var(--white);
     background-color: var(--gray);
-  }
-  
-  .deleteButton {
-    margin-left: auto;
+}
+
+.deleteButton {
     background: none;
     border: 2px solid var(--red);
     color: var(--red);
@@ -102,26 +111,27 @@
     padding: 0.4rem 1rem;
     cursor: pointer;
     transition: all 0.2s;
-  }
-  
-  .deleteButton:hover {
+    white-space: nowrap;
+}
+
+.deleteButton:hover {
     background-color: var(--red);
     color: var(--white);
-  }
-  
-  .assignButton {
+}
+
+.assignButton {
     background: none;
     border: 2px solid var(--accent);
     color: var(--accent);
     border-radius: 4px;
     padding: 0.4rem 1rem;
     cursor: pointer;
-    margin-left: 0.5rem;
     transition: all 0.2s;
-  }
-  
-  .assignButton:hover {
+    white-space: nowrap;
+}
+
+.assignButton:hover {
     background-color: var(--accent);
     color: var(--black);
-  }
+}
   
