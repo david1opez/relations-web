@@ -195,29 +195,52 @@ export async function getProjects(): Promise<Project[]> {
 /**
  * Asigna un proyecto a un usuario
  */
-export async function assignProjectToUser(assignment: UserProjectAssignment): Promise<boolean> {
+export async function assignProjectToUser(
+  userId: number,
+  selectedProjects: Array<{ projectID: number; projectRole: string }>,
+) {
   try {
-    const response = await fetch(`${API_BASE_URL}/project/projects/${assignment.projectID}/users`, {
+    // Preparar los datos en el formato que espera el backend
+    const users = [
+      {
+        userID: userId,
+        projectRole: selectedProjects.length > 0 ? selectedProjects[0].projectRole : null,
+      },
+    ]
+
+    // Obtener el ID del proyecto (asumiendo que estamos trabajando con un proyecto específico)
+    const projectId = selectedProjects.length > 0 ? selectedProjects[0].projectID : null
+
+    if (!projectId) {
+      throw new Error("No se seleccionó ningún proyecto")
+    }
+
+    console.log("Enviando solicitud a:", `${API_BASE_URL}/project/projects/${projectId}/users`)
+    console.log("Datos enviados:", JSON.stringify({ users }, null, 2))
+
+    // Realizar la solicitud al backend - AQUÍ ESTÁ EL CAMBIO: Agregamos API_BASE_URL
+    const response = await fetch(`${API_BASE_URL}/project/projects/${projectId}/users`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        userID: assignment.userID,
-        role: assignment.role,
-      }),
+      body: JSON.stringify({ users }),
     })
 
+    // Verificar si la respuesta es exitosa
     if (!response.ok) {
-      const errorText = await response.text()
-      console.error("Error assigning project to user:", errorText)
-      throw new Error(`Error assigning project: ${response.status} ${response.statusText}`)
+      const errorData = await response.json()
+      console.error("Error al asignar proyectos:", errorData)
+      throw new Error(errorData.message || "Error al asignar proyectos")
     }
 
-    return true
+    // Procesar la respuesta exitosa
+    const data = await response.json()
+    console.log("Proyectos asignados correctamente:", data)
+    return data
   } catch (error) {
-    console.error("Error assigning project to user:", error)
-    return false
+    console.error("Error en la solicitud:", error)
+    throw error
   }
 }
 

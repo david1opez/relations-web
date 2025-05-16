@@ -206,12 +206,12 @@ export default function ProjectAssignDialog({
 
       if (assignment.isAssigned && !isCurrentlyAssigned) {
         // Add new assignment
-        await assignProjectToUser({
-          userID: assignment.userID,
-          projectID: assignment.projectID,
-          role: assignment.role,
-          isAssigned: true,
-        })
+        await assignProjectToUser(userId, [
+          {
+            projectID: assignment.projectID,
+            projectRole: assignment.role,
+          },
+        ])
       } else if (!assignment.isAssigned && isCurrentlyAssigned) {
         // Remove existing assignment
         await removeProjectFromUser(assignment.userID, assignment.projectID)
