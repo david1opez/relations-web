@@ -9,7 +9,7 @@ import { analyzeCall } from '@/utils/CallAnalysisAPI';
 import { CallItemProps, CallDetails, Call } from '@/types/CallItemTypes';
 import { fetchCalls } from '@/services/callsService';
 
-export default function Llamadas({ id }: { id: string }) {
+export default function Llamadas({ id }: { id: number }) {
   const [calls, setCalls] = useState<Call[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [filteredCalls, setFilteredCalls] = useState<Call[]>([]);

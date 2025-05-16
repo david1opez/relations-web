@@ -18,11 +18,11 @@ import Personas from "./personas/Personas";
 export default function RoutePage() {
   const searchParams = useSearchParams();
   const [activePage, setActivePage] = useState<string>("");  
-  const [id, setId] = useState<string>("");
+  const [id, setId] = useState<number | null>(null);
 
   useEffect(() => {
     const param = searchParams.get("id");
-    setId(param ?? "");
+    setId(param ? parseInt(param, 10) : null);
   }, [searchParams]);
 
   return (

@@ -18,7 +18,7 @@ const Tabs: ('informacion'|'llamadas'|'recursos'|'equipos')[] = [
      // <<--- Lo agregamos aquí
 ];
 
-export default function Proyecto({ id }: { id: string }) {
+export default function Proyecto({ id }: { id: number }) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -35,7 +35,7 @@ export default function Proyecto({ id }: { id: string }) {
             <PageTitle
                 title="Proyectos"
                 icon="rocket"
-                subpages={[id]}
+                subpages={[id.toString()]}
                 onPageChange={() => router.push('/proyectos')}
             />
 

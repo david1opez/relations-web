@@ -3,7 +3,7 @@
 import styles from "./equipos.module.css";
 import Icon from "@/components/icon/Icon";
 
-export default function Equipos({ id }: { id: string }) {
+export default function Equipos({ id }: { id: number }) {
   return (
     <div className={styles.container}>
       <div className={styles.teamHeader}>
