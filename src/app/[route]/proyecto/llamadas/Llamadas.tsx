@@ -3,11 +3,12 @@ import styles from "./llamadas.module.css";
 
 // COMPONENTS
 import Searchbar from "@/components/searchbar/Searchbar";
-import CallComponent from "@/components/CallComponent/CallComponent";
+import CallItem from "@/components/callItem/CallItem";
 
 import { analyzeCall } from '@/utils/CallAnalysisAPI';
 import { CallItemProps, CallDetails, Call } from '@/types/CallItemTypes';
 import { fetchCalls } from '@/services/callsService';
+import Call from "@/components/call/Call";
 
 export default function Llamadas({ id }: { id: number }) {
   const [calls, setCalls] = useState<Call[]>([]);
@@ -47,6 +48,7 @@ export default function Llamadas({ id }: { id: number }) {
         const data = await fetchCalls(id);
         setCalls(data);
         setFilteredCalls(data);
+        
         console.log("Calls data:", data);
       } catch (error) {
         console.error("Error loading initial data:", error);
@@ -73,10 +75,10 @@ export default function Llamadas({ id }: { id: number }) {
       <div className={styles.callsList}>
 
       {filteredCalls.map((call) => (
-        <CallComponent
+        <CallItem
           key={call.callID}
           call={call}
-          onClick={(id) => console.log("Ver detalles de:", id)}
+          onClick={() => handleSelectCall(call.callID)}
         />
       ))}
 
