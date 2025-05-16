@@ -1,3 +1,4 @@
+/*
 .overlay {
     position: fixed;
     top: 0;
@@ -127,3 +128,148 @@
 .confirmButton:hover {
     background: #0284c7;
 } 
+*/
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .dialog {
+    background: #1a1a1a;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid #333;
+  }
+  
+  .title {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.5rem;
+    color: #ffffff;
+  }
+  
+  .projectList {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 1.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  .projectList::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .projectList::-webkit-scrollbar-track {
+    background: #2a2a2a;
+    border-radius: 4px;
+  }
+  
+  .projectList::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 4px;
+  }
+  
+  .projectItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    border-radius: 4px;
+    background: #2a2a2a;
+    margin-bottom: 0.5rem;
+    border: 1px solid #333;
+  }
+  
+  .projectInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--accent);
+  }
+  
+  .projectName {
+    color: #cccccc;
+    font-size: 1rem;
+  }
+  
+  .roleSelect {
+    background: #333;
+    border: 1px solid #444;
+    color: #cccccc;
+    padding: 0.4rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  .roleSelect:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .cancelButton {
+    padding: 0.5rem 1rem;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: #2a2a2a;
+    color: #cccccc;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .confirmButton {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background: var(--accent);
+    color: var(--black);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .cancelButton:hover {
+    background: #333;
+    border-color: #444;
+  }
+  
+  .confirmButton:hover {
+    opacity: 0.9;
+  }
+  
+  .confirmButton:disabled {
+    background: #555;
+    cursor: not-allowed;
+  }
+  
+  .loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    color: var(--light-gray);
+  }
+  
