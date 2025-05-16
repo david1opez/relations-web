@@ -67,7 +67,7 @@ export default function Llamadas() {
     const loadInitialData = async () => {
       try {
         setLoading(true);
-        const data = await fetchCalls(0);
+        const data = await fetchCalls(3);
         setCalls(data);
         setTusLlamadas(data.slice(0, 5));
         setAssignedLlamadas(data.slice(5));
