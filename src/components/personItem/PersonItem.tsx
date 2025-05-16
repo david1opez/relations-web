@@ -93,7 +93,7 @@ import ProjectAssignDialog from "../projectAssignDialog/ProjectAssignDialog"
 import type { User, Project } from "@/types/UserManagementTypes"
 
 // Utils
-import { updateUserRole, deleteUser, getUserProjects } from "@/utils/UserManagement"
+import { updateUserRole, deleteUserWithRelations, getUserProjects } from "@/utils/UserManagement"
 
 interface PersonItemProps {
   user: User
@@ -119,14 +119,34 @@ export default function PersonItem({ user, onDelete, onRoleChange }: PersonItemP
     loadUserProjects()
   }, [user.userID]) // Cambiado de user.id a user.userID
 
-  const handleDelete = async () => {
-    const success = await deleteUser(user.userID) // Cambiado de user.id a user.userID
-    if (success) {
-      onDelete(user.userID) // Cambiado de user.id a user.userID
-    }
-    setIsDeleteDialogOpen(false)
-  }
+  // Importar la nueva función
 
+
+// Dentro del componente PersonItem
+const handleDelete = async () => {
+    try {
+      setIsLoading(true)
+      
+      console.log(`Iniciando eliminación del usuario: ${user.name} (ID: ${user.userID})`)
+      
+      // Usar la función para eliminar usuario
+      const success = await deleteUserWithRelations(user.userID)
+      
+      if (success) {
+        console.log(`Usuario ${user.name} eliminado correctamente`)
+        onDelete(user.userID)
+        setIsDeleteDialogOpen(false)
+      } else {
+        console.error(`No se pudo eliminar el usuario ${user.name}`)
+        // En lugar de setError, puedes mostrar una alerta
+        alert("No se pudo eliminar el usuario. Por favor, inténtalo de nuevo.")
+      }
+    } catch (err) {
+      console.error("Error al eliminar usuario:", err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
   const handleRoleChange = async (newRole: string) => {
     setRole(newRole as User["role"])
     const updatedUser = await updateUserRole(user.userID, newRole) // Cambiado de user.id a user.userID
@@ -211,3 +231,4 @@ export default function PersonItem({ user, onDelete, onRoleChange }: PersonItemP
     </div>
   )
 }
+

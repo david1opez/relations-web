@@ -1,5 +1,5 @@
 import type { User, Project, UserFormData, UserProjectAssignment } from "@/types/UserManagementTypes"
-
+import { apiRequest, API_BASE_URL2 } from './api-helpers';
 // URL base para la API
 const API_BASE_URL = "https://relations-data-api.vercel.app"
 
@@ -146,23 +146,43 @@ export async function updateUser(userId: number, userData: Partial<UserFormData>
  */
 export async function deleteUser(userId: number): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE_URL}/user/users/${userId}`, {
+    console.log(`Intentando eliminar usuario con ID: ${userId}`);
+    
+    // Construir la URL correcta con el API_BASE_URL
+    const url = `${API_BASE_URL}/user/users/${userId}`;
+    console.log("URL de la solicitud:", url);
+    
+    const response = await fetch(url, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-    })
-
-    if (!response.ok) {
-      const errorText = await response.text()
-      console.error(`Error deleting user ${userId}:`, errorText)
-      throw new Error(`Error deleting user: ${response.status} ${response.statusText}`)
+    });
+    
+    console.log("Código de estado:", response.status);
+    
+    // Intentar obtener el cuerpo de la respuesta
+    let responseBody;
+    try {
+      responseBody = await response.json();
+    } catch (e) {
+      // Si no es JSON, obtener como texto
+      responseBody = await response.text();
     }
-
-    return true
+    
+    console.log("Respuesta del servidor:", responseBody);
+    
+    // Si la respuesta no es exitosa, retornar false en lugar de lanzar un error
+    if (!response.ok) {
+      console.error(`Error al eliminar usuario ${userId}:`, responseBody);
+      return false; // Cambio importante: retornar false en lugar de lanzar error
+    }
+    
+    console.log(`Usuario ${userId} eliminado correctamente`);
+    return true;
   } catch (error) {
-    console.error(`Error deleting user ${userId}:`, error)
-    return false
+    console.error("Error en la función deleteUser:", error);
+    return false;
   }
 }
 
@@ -296,5 +316,52 @@ export async function removeProjectFromUser(userId: number, projectId: number): 
   } catch (error) {
     console.error(`Error removing project ${projectId} from user ${userId}:`, error)
     return false
+  }
+}
+
+/**
+ * Elimina un usuario y todas sus relaciones (proyectos asignados)
+ */
+export async function deleteUserWithRelations(userId: number): Promise<boolean> {
+  try {
+    console.log(`Iniciando proceso de eliminación para usuario ID: ${userId}`);
+    
+    // 1. Obtener los proyectos asignados al usuario
+    let userProjects = [];
+    try {
+      userProjects = await apiRequest(`/project/user-projects?userID=${userId}`);
+      console.log(`Usuario tiene ${userProjects.length} proyectos asignados`);
+    } catch (projectsError) {
+      console.error("Error al obtener proyectos, continuando con la eliminación:", projectsError);
+    }
+    
+    // 2. Eliminar las asignaciones de proyectos
+    if (userProjects && userProjects.length > 0) {
+      for (const project of userProjects) {
+        try {
+          // Actualizar el proyecto para quitar al usuario
+          await apiRequest(`/project/projects/${project.projectID}/users`, "PATCH", {
+            users: [] // Array vacío para eliminar todas las asignaciones
+          });
+          console.log(`Asignación del proyecto ${project.projectID} eliminada correctamente`);
+        } catch (projectError) {
+          console.error(`Error al eliminar asignación del proyecto ${project.projectID}:`, projectError);
+          // Continuamos con los demás proyectos
+        }
+      }
+    }
+    
+    // 3. Ahora eliminar el usuario
+    try {
+      await apiRequest(`/user/users/${userId}`, "DELETE");
+      console.log(`Usuario ${userId} eliminado correctamente`);
+      return true;
+    } catch (deleteError) {
+      console.error(`Error al eliminar usuario ${userId}:`, deleteError);
+      return false;
+    }
+  } catch (error) {
+    console.error(`Error general al eliminar usuario ${userId}:`, error);
+    return false;
   }
 }
