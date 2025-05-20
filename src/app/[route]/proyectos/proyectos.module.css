@@ -4,3 +4,28 @@
     margin-top: 4vh;
     gap: 1.5rem;
 }
+
+.searchContainer {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    width: 100%;
+  }
+  
+  .noProjects {
+    width: 100%;
+    text-align: center;
+    padding: 3rem;
+    color: var(--light-gray);
+    font-size: 1rem;
+    background-color: var(--black);
+    border-radius: 8px;
+  }
+  

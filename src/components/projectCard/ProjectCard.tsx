@@ -1,64 +1,89 @@
-import styles from './projectCard.module.css';
+"use client"
+
+import styles from "./projectCard.module.css"
 
 // COMPONENTS
-import MetadataItem from '../metadataItem/MetadataItem';
-import OptionsMenu from '../optionsMenu/OptionsMenu';
+import MetadataItem from "../metadataItem/MetadataItem"
+import OptionsMenu from "../optionsMenu/OptionsMenu"
+
+// UTILS
+import { parseDate } from "@/utils/dateUtils"
 
 // TYPES
-import { ProjectCardProps } from '@/types/ProjectCardTypes';
+type Project = {
+  projectID: number
+  name: string
+  description: string | null
+  startDate: number | null
+  endDate: number | null
+  status?: "active" | "completed" | "pending"
+  members?: number
+  client?: string
+}
 
-export default function ProjectCard({ onClick }: ProjectCardProps) {
-    return (
-        <div className={styles.container}>
-            <div className={styles.header}>
-                <h2 className={styles.title}>Plataforma eCommerce</h2>
-                <p className={styles.status}>Activo</p>
-            </div>
+type ProjectCardProps = {
+  project: Project
+  onClick?: () => void
+}
 
-            <p className={styles.description}>
-                Desarrollo de una plataforma de comercio electrónico
-                con integración de pagos y gestión de...
-            </p>
+export default function ProjectCard({ project, onClick }: ProjectCardProps) {
+  const getStatusLabel = (status?: string) => {
+    switch (status) {
+      case "active":
+        return "Activo"
+      case "completed":
+        return "Completado"
+      case "pending":
+        return "Pendiente"
+      default:
+        return "Activo"
+    }
+  }
 
-            <MetadataItem
-                icon='user'
-                title='Cliente:'
-                value='Sunlight Logistics'
-                color='var(--accent)'
-            />
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h2 className={styles.title}>{project.name}</h2>
+        <p className={styles.status}>{getStatusLabel(project.status)}</p>
+      </div>
 
-            <div className={styles.metadataContainer}>
-                <MetadataItem
-                    icon='users'
-                    title='Miembros:'
-                    value='28'
-                    color='var(--accent)'
-                />
-                <MetadataItem
-                    icon='calendar'
-                    title='Inicio:'
-                    value='12/10/2023'
-                    color='var(--accent)'
-                />
-                <MetadataItem
-                    icon='clock'
-                    title='Entrega:'
-                    value='12/10/2023'
-                    color='var(--accent)'
-                />
-            </div>
+      <p className={styles.description}>
+        {project.description
+          ? project.description.length > 100
+            ? `${project.description.substring(0, 100)}...`
+            : project.description
+          : "Sin descripción"}
+      </p>
 
-            <button
-                className={styles.detailsButton}
-                onClick={onClick}
-            >
-                Ver detalles
-            </button>
+      <MetadataItem icon="user" title="Cliente:" value={project.client || "None"} color="var(--accent)" />
 
-            <OptionsMenu
-                onSelect={() => {}}
-                options={[]}
-            />
-        </div>
-    );
-};
+      <div className={styles.metadataContainer}>
+        <MetadataItem icon="users" title="Miembros:" value={project.members?.toString() || "0"} color="var(--accent)" />
+        <MetadataItem
+          icon="calendar"
+          title="Inicio:"
+          value={project.startDate ? parseDate(project.startDate) : "No definido"}
+          color="var(--accent)"
+        />
+        <MetadataItem
+          icon="clock"
+          title="Entrega:"
+          value={project.endDate ? parseDate(project.endDate) : "No definido"}
+          color="var(--accent)"
+        />
+      </div>
+
+      <button className={styles.detailsButton} onClick={onClick}>
+        Ver detalles
+      </button>
+
+      <OptionsMenu
+        onSelect={() => {}}
+        options={[
+          { icon: "pencil", name: "Editar proyecto" },
+          { icon: "close", name: "Eliminar proyecto" },
+        ]}
+      />
+    </div>
+  )
+}

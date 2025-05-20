@@ -49,3 +49,23 @@
     color: var(--black);
     font-weight: 600;
 }
+
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    width: 100%;
+  }
+  
+  .errorContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 100%;
+    background-color: var(--black);
+    border-radius: 8px;
+    color: var(--light-gray);
+    font-size: 1rem;
+  }
