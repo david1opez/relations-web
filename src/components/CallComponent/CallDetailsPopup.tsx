@@ -34,7 +34,7 @@ export default function CallDetailsPopup({
     if (!isOpen) return null;
 
     return (
-        <div className={styles.overlay} onClick={onClose}>
+        <div className={styles.overlay} onClick={onClose} data-testid="overlay">
             <div className={styles.modalContainer} onClick={e => e.stopPropagation()}>
                 <button className={styles.closeButton} onClick={onClose}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
