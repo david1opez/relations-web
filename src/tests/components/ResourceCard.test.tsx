@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import ResourceCard from '@/components/resourceCard/ResourceCard';
 
 describe('ResourceCard Component', () => {
-  it('renders the component text', () => {
+  it('renders ResourceCard text', () => {
     render(<ResourceCard />);
     expect(screen.getByText('ResourceCard')).toBeInTheDocument();
   });

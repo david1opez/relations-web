@@ -66,7 +66,7 @@ export default function NotificationsDropdown() {
             
             {
                 notifications.some((notification) => !notification.isRead) && (
-                    <div className={styles.notificationDot}></div>
+                    <div className={styles.notificationDot} data-testid="notification-dot"></div>
                 )
             }
 

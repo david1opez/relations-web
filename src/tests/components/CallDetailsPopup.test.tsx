@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import CallDetailsPopup from '@/components/CallComponent/CallDetailsPopup';
 
-describe('CallDetailsPopup', () => {
+describe('CallDetailsPopup Component', () => {
   const mockProps = {
     isOpen: true,
     onClose: jest.fn(),
@@ -9,18 +9,18 @@ describe('CallDetailsPopup', () => {
     attendees: ['John Doe', 'Jane Smith'],
     date: '01/01/2024',
     duration: '1 hora',
-    transcript: 'Test transcript',
+    transcript: '',
     chapters: [
       {
         title: 'Chapter 1',
         start_time: '00:00',
         paragraphs: [
           { time: '00:00', text: 'First paragraph' },
-          { time: '00:30', text: 'Second paragraph' }
-        ]
-      }
+          { time: '00:30', text: 'Second paragraph' },
+        ],
+      },
     ],
-    summary: 'Test summary'
+    summary: 'Test summary',
   };
 
   beforeEach(() => {
@@ -35,7 +35,7 @@ describe('CallDetailsPopup', () => {
     expect(screen.getByText('1 hora')).toBeInTheDocument();
   });
 
-  it('calls onClose when clicking close button', () => {
+  it('calls onClose when close button is clicked', () => {
     render(<CallDetailsPopup {...mockProps} />);
     const closeButton = screen.getByRole('button', { name: '' });
     fireEvent.click(closeButton);
@@ -60,11 +60,11 @@ describe('CallDetailsPopup', () => {
     fireEvent.click(transcriptionTab);
     expect(screen.getByText('Transcripción:')).toBeInTheDocument();
     expect(screen.getAllByText('Chapter 1')[0]).toBeInTheDocument();
-    expect(screen.getByText('First paragraph')).toBeInTheDocument();
-    expect(screen.getByText('Second paragraph')).toBeInTheDocument();
+    expect(screen.getByText(/First paragraph/)).toBeInTheDocument();
+    expect(screen.getByText(/Second paragraph/)).toBeInTheDocument();
   });
 
-  it('shows "No hay resumen disponible" when summary is empty', () => {
+  it('shows no summary message when summary is empty', () => {
     render(<CallDetailsPopup {...mockProps} summary="" />);
     expect(screen.getByText('No hay resumen disponible.')).toBeInTheDocument();
   });

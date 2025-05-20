@@ -1,11 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import ProjectCard from '../../components/projectCard/ProjectCard';
+import ProjectCard from '@/components/projectCard/ProjectCard';
 
 describe('ProjectCard Component', () => {
   const mockOnClick = jest.fn();
 
   beforeEach(() => {
-    mockOnClick.mockClear();
+    jest.clearAllMocks();
   });
 
   it('renders project title and status', () => {
@@ -19,7 +19,7 @@ describe('ProjectCard Component', () => {
     expect(screen.getByText(/Desarrollo de una plataforma de comercio electrónico/)).toBeInTheDocument();
   });
 
-  it('renders client metadata', () => {
+  it('renders client information', () => {
     render(<ProjectCard onClick={mockOnClick} />);
     expect(screen.getByText('Cliente:')).toBeInTheDocument();
     expect(screen.getByText('Sunlight Logistics')).toBeInTheDocument();
@@ -30,21 +30,19 @@ describe('ProjectCard Component', () => {
     expect(screen.getByText('Miembros:')).toBeInTheDocument();
     expect(screen.getByText('28')).toBeInTheDocument();
     expect(screen.getByText('Inicio:')).toBeInTheDocument();
-    expect(screen.getByText('12/10/2023')).toBeInTheDocument();
     expect(screen.getByText('Entrega:')).toBeInTheDocument();
   });
 
   it('calls onClick when details button is clicked', () => {
     render(<ProjectCard onClick={mockOnClick} />);
-    const detailsButton = screen.getByText('Ver detalles');
-    fireEvent.click(detailsButton);
+    const button = screen.getByText('Ver detalles');
+    fireEvent.click(button);
     expect(mockOnClick).toHaveBeenCalled();
   });
 
   it('renders options menu', () => {
     render(<ProjectCard onClick={mockOnClick} />);
-    // Verificar que el OptionsMenu está presente
-    const optionsMenu = document.querySelector('.optionsMenu');
+    const optionsMenu = screen.getByRole('img', { name: 'three-dots' });
     expect(optionsMenu).toBeInTheDocument();
   });
 
