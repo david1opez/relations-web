@@ -1,0 +1,7 @@
+.chart {
+  background: var(--dark-gray);
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 100%;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+} 

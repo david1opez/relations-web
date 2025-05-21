@@ -14,6 +14,7 @@ import Proyecto from "./proyecto/Proyecto";
 import PerfilPage from "./perfil/page";
 import Llamadas from "./llamadas/Llamadas";
 import Personas from "./personas/Personas";
+import Admin from "./admin/Admin";
 
 export default function RoutePage() {
   const searchParams = useSearchParams();
@@ -38,6 +39,7 @@ export default function RoutePage() {
         {activePage.toLowerCase() === "llamadas" && <Llamadas />}
         {activePage.toLowerCase() === "perfil" && <PerfilPage />}
         {activePage.toLowerCase() === "personas" && <Personas />}
+        {activePage.toLowerCase() === "admin" && <Admin />}
       </div>
     </div>
   );

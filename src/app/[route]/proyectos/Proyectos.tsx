@@ -108,9 +108,6 @@ export default function Proyectos() {
     <div className="pageContainer">
       <PageTitle title="Proyectos" icon="rocket" subpages={[]} />
       <div className={styles.topBar}>
-        <button className={styles.addButton} onClick={() => setShowAddPopup(true)}>
-          + Agregar Proyecto
-        </button>
         <div className={styles.searchContainer}>
           <Searchbar value={searchTerm} onChange={handleSearch} />
         </div>
@@ -123,6 +120,12 @@ export default function Proyectos() {
         </div>
       ) : (
         <div className={styles.projectsContainer}>
+          {/* Add Project Card */}
+          <div className={styles.addProjectCard} onClick={() => setShowAddPopup(true)}>
+            <div className={styles.addIcon}>+</div>
+            <div className={styles.addText}>Crear proyecto</div>
+          </div>
+          {/* Project Cards */}
           {filteredProjects.length > 0 ? (
             filteredProjects.map((project) => (
               <ProjectCard
