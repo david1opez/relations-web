@@ -8,8 +8,6 @@ const API_BASE_URL = "https://relations-data-api.vercel.app"
  */
 export async function getUsers(): Promise<User[]> {
   try {
-    console.log("Fetching users from:", `${API_BASE_URL}/user/users`)
-
     const response = await fetch(`${API_BASE_URL}/user/users`, {
       method: "GET",
       headers: {
@@ -17,7 +15,6 @@ export async function getUsers(): Promise<User[]> {
       },
     })
 
-    console.log("Response status:", response.status)
 
     if (!response.ok) {
       const errorText = await response.text()
@@ -26,7 +23,6 @@ export async function getUsers(): Promise<User[]> {
     }
 
     const data = await response.json()
-    console.log("Users fetched successfully:", data)
     return data
   } catch (error) {
     console.error("Error fetching users:", error)
@@ -145,22 +141,16 @@ export async function updateUser(userId: number, userData: Partial<UserFormData>
  * Elimina un usuario
  */
 export async function deleteUser(userId: number): Promise<boolean> {
-  try {
-    console.log(`Intentando eliminar usuario con ID: ${userId}`);
-    
+  try {    
     // Construir la URL correcta con el API_BASE_URL
-    const url = `${API_BASE_URL}/user/users/${userId}`;
-    console.log("URL de la solicitud:", url);
-    
+    const url = `${API_BASE_URL}/user/users/${userId}`;    
     const response = await fetch(url, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
     });
-    
-    console.log("Código de estado:", response.status);
-    
+        
     // Intentar obtener el cuerpo de la respuesta
     let responseBody;
     try {
@@ -169,16 +159,12 @@ export async function deleteUser(userId: number): Promise<boolean> {
       // Si no es JSON, obtener como texto
       responseBody = await response.text();
     }
-    
-    console.log("Respuesta del servidor:", responseBody);
-    
+      
     // Si la respuesta no es exitosa, retornar false en lugar de lanzar un error
     if (!response.ok) {
       console.error(`Error al eliminar usuario ${userId}:`, responseBody);
       return false; // Cambio importante: retornar false en lugar de lanzar error
     }
-    
-    console.log(`Usuario ${userId} eliminado correctamente`);
     return true;
   } catch (error) {
     console.error("Error en la función deleteUser:", error);
@@ -235,9 +221,6 @@ export async function assignProjectToUser(
       throw new Error("No se seleccionó ningún proyecto")
     }
 
-    console.log("Enviando solicitud a:", `${API_BASE_URL}/project/projects/${projectId}/users`)
-    console.log("Datos enviados:", JSON.stringify({ users }, null, 2))
-
     // Realizar la solicitud al backend - AQUÍ ESTÁ EL CAMBIO: Agregamos API_BASE_URL
     const response = await fetch(`${API_BASE_URL}/project/projects/${projectId}/users`, {
       method: "PATCH",
@@ -256,7 +239,6 @@ export async function assignProjectToUser(
 
     // Procesar la respuesta exitosa
     const data = await response.json()
-    console.log("Proyectos asignados correctamente:", data)
     return data
   } catch (error) {
     console.error("Error en la solicitud:", error)
@@ -295,11 +277,8 @@ export async function getUserProjects(userId: number): Promise<Project[]> {
  */
 export async function removeProjectFromUser(userId: number, projectId: number): Promise<boolean> {
   try {
-    console.log(`Removing user ${userId} from project ${projectId}`)
-
     // Log the URL for debugging
     const url = `${API_BASE_URL}/project/projects/${projectId}/users`
-    console.log("Request URL:", url)
 
     // IMPORTANT: The backend expects an empty users array or users with projectRole
     // It will REPLACE all existing user assignments with what we send
@@ -328,8 +307,6 @@ export async function removeProjectFromUser(userId: number, projectId: number): 
           }))
       : []
 
-    console.log("Sending updated users list:", JSON.stringify(updatedUsers, null, 2))
-
     // Send the updated list (without the removed user)
     const response = await fetch(url, {
       method: "PATCH",
@@ -339,17 +316,12 @@ export async function removeProjectFromUser(userId: number, projectId: number): 
       body: JSON.stringify({ users: updatedUsers }),
     })
 
-    // Log the response status
-    console.log(`Response status: ${response.status}`)
-
     // Try to get the response body for more detailed error information
     let responseBody
     try {
       responseBody = await response.json()
-      console.log("Response body:", responseBody)
     } catch (e) {
       const textResponse = await response.text()
-      console.log("Response text:", textResponse)
     }
 
     if (!response.ok) {
@@ -357,7 +329,6 @@ export async function removeProjectFromUser(userId: number, projectId: number): 
       return false
     }
 
-    console.log(`Successfully removed user ${userId} from project ${projectId}`)
     return true
   } catch (error) {
     console.error(`Error removing project ${projectId} from user ${userId}:`, error)
@@ -369,14 +340,11 @@ export async function removeProjectFromUser(userId: number, projectId: number): 
  * Elimina un usuario y todas sus relaciones (proyectos asignados)
  */
 export async function deleteUserWithRelations(userId: number): Promise<boolean> {
-  try {
-    console.log(`Iniciando proceso de eliminación para usuario ID: ${userId}`);
-    
+  try {    
     // 1. Obtener los proyectos asignados al usuario
     let userProjects = [];
     try {
       userProjects = await apiRequest(`/project/user-projects?userID=${userId}`);
-      console.log(`Usuario tiene ${userProjects.length} proyectos asignados`);
     } catch (projectsError) {
       console.error("Error al obtener proyectos, continuando con la eliminación:", projectsError);
     }
@@ -389,7 +357,6 @@ export async function deleteUserWithRelations(userId: number): Promise<boolean> 
           await apiRequest(`/project/projects/${project.projectID}/users`, "PATCH", {
             users: [] // Array vacío para eliminar todas las asignaciones
           });
-          console.log(`Asignación del proyecto ${project.projectID} eliminada correctamente`);
         } catch (projectError) {
           console.error(`Error al eliminar asignación del proyecto ${project.projectID}:`, projectError);
           // Continuamos con los demás proyectos
@@ -400,7 +367,6 @@ export async function deleteUserWithRelations(userId: number): Promise<boolean> 
     // 3. Ahora eliminar el usuario
     try {
       await apiRequest(`/user/users/${userId}`, "DELETE");
-      console.log(`Usuario ${userId} eliminado correctamente`);
       return true;
     } catch (deleteError) {
       console.error(`Error al eliminar usuario ${userId}:`, deleteError);
