@@ -1,7 +1,7 @@
 import type { User, Project, UserFormData, UserProjectAssignment } from "@/types/UserManagementTypes"
 import { apiRequest, API_BASE_URL2 } from './api-helpers';
 // URL base para la API
-const API_BASE_URL = "http://localhost:3001"
+const API_BASE_URL = "https://relations-data-api.vercel.app"
 
 /**
  * Obtiene todos los usuarios
