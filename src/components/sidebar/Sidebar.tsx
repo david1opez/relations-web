@@ -28,6 +28,7 @@ export default function Sidebar ({ onPageChange }:  SidebarProps) {
     { icon: "house", name: "Inicio" },
     { icon: "rocket", name: "Proyectos" },
     { icon: "phone", name: "Llamadas"},
+    { icon: "activity", name: "Admin" },
   ]);
 
   const handlePageChange = (page: string) => {

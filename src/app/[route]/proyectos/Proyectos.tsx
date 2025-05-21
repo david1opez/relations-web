@@ -9,6 +9,7 @@ import PageTitle from "@/components/pageTitle/PageTitle"
 import Searchbar from "@/components/searchbar/Searchbar"
 import ProjectCard from "@/components/projectCard/ProjectCard"
 import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator"
+import AddProjectPopup from "./AddProjectPopup"
 
 // TYPES
 type Project = {
@@ -28,6 +29,7 @@ export default function Proyectos() {
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
+  const [showAddPopup, setShowAddPopup] = useState(false)
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -105,10 +107,12 @@ export default function Proyectos() {
   return (
     <div className="pageContainer">
       <PageTitle title="Proyectos" icon="rocket" subpages={[]} />
-
-      <div className={styles.searchContainer}>
-        <Searchbar value={searchTerm} onChange={handleSearch} />
+      <div className={styles.topBar}>
+        <div className={styles.searchContainer}>
+          <Searchbar value={searchTerm} onChange={handleSearch} />
+        </div>
       </div>
+      <AddProjectPopup isOpen={showAddPopup} onClose={() => setShowAddPopup(false)} onProjectAdded={() => setShowAddPopup(false)} />
 
       {loading ? (
         <div className={styles.loadingContainer}>
@@ -116,6 +120,12 @@ export default function Proyectos() {
         </div>
       ) : (
         <div className={styles.projectsContainer}>
+          {/* Add Project Card */}
+          <div className={styles.addProjectCard} onClick={() => setShowAddPopup(true)}>
+            <div className={styles.addIcon}>+</div>
+            <div className={styles.addText}>Crear proyecto</div>
+          </div>
+          {/* Project Cards */}
           {filteredProjects.length > 0 ? (
             filteredProjects.map((project) => (
               <ProjectCard

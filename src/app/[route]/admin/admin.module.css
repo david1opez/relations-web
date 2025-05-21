@@ -1,0 +1,190 @@
+.kpiRow {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.card {
+  background: var(--black);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  min-width: 260px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cardTitle {
+  font-size: 0.7rem;
+  color: var(--white);
+  margin-bottom: 0.5rem;
+}
+
+.cardDescription {
+  font-size: 0.7rem;
+  color: var(--light-gray);
+}
+
+.cardValue {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.2rem;
+  font-family: 'LayGrotesk-Bold', sans-serif;
+}
+
+.cardSub {
+  font-size: 0.95rem;
+  color: var(--success);
+  margin-bottom: 0.2rem;
+}
+
+.cardNegative {
+  color: var(--danger);
+}
+
+.chartSection {
+  background: var(--black);
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+}
+
+.chartTitle {
+  font-size: 1.1rem;
+  color: var(--white);
+  margin-bottom: 1.2rem;
+}
+
+.callListsContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2.5rem;
+}
+
+.callListSection {
+  background: var(--dark-gray);
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+.callListTitle {
+  font-size: 1.1rem;
+  color: var(--white);
+  margin-bottom: 1.2rem;
+}
+
+.searchContainer {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  background: var(--gray);
+  border: none;
+  border-radius: 6px;
+  color: var(--white);
+  font-family: var(--font-poppins);
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--light-gray);
+}
+
+.callItem {
+  background: var(--gray);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.callItemHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.callItemTitle {
+  font-size: 1rem;
+  color: var(--white);
+}
+
+.callItemDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.callItemDetail {
+  display: flex;
+  align-items: center;
+  color: var(--light-gray);
+  font-size: 0.85rem;
+}
+
+.callItemDetailIcon {
+  margin-right: 0.5rem;
+}
+
+.callItemFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.satisfactionTag {
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  background-color: var(--success);
+  color: var(--white);
+}
+
+.satisfactionTagNegative {
+  background-color: var(--danger);
+}
+
+.viewDetailsButton {
+  background: transparent;
+  border: 1px solid var(--light-gray);
+  color: var(--light-gray);
+  padding: 0.4rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.viewDetailsButton:hover {
+  border-color: var(--white);
+  color: var(--white);
+}
+
+.actionButton {
+  background: transparent;
+  border: 1px solid var(--light-gray);
+  color: var(--light-gray);
+  padding: 0.4rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.actionButton:hover {
+  border-color: var(--white);
+  color: var(--white);
+}
+
+.actionButtonIcon {
+  margin-right: 0.5rem;
+}
