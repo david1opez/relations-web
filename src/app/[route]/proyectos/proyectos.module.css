@@ -29,3 +29,27 @@
     border-radius: 8px;
   }
   
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.addButton {
+  background-color: var(--accent);
+  color: var(--black);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'LayGrotesk-Semibold', sans-serif;
+  font-weight: 600;
+  padding: 0.7rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.addButton:hover {
+  background-color: var(--blue);
+  color: var(--white);
+}
+  
