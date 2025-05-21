@@ -28,7 +28,7 @@ type Project = {
   client?: string
 }
 
-const Tabs: ("informacion" | "llamadas" | "recursos" | "equipos")[] = ["informacion", "llamadas", "recursos", "equipos"]
+const Tabs: ("informacion" | "llamadas" | "recursos" | "equipos")[] = ["informacion", "llamadas", "recursos"]
 
 export default function Proyecto({ id }: { id: number }) {
   const router = useRouter()
