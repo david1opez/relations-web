@@ -12,7 +12,7 @@ interface ProjectAssignDialogProps {
   isOpen: boolean
   onClose: () => void
   onConfirm: (assignments: UserProjectAssignment[]) => void
-  userId: number // Cambiado de string a number
+  userId: number 
   currentProjects: Project[]
 }
 
@@ -57,10 +57,10 @@ export default function ProjectAssignDialog({
 
       // Initialize assignments for all projects
       const initialAssignments = (allProjects || []).map((project) => {
-        const isCurrentlyAssigned = currentProjects.some((cp) => cp.projectID === project.projectID) // Cambiado de cp.id a cp.projectID
+        const isCurrentlyAssigned = currentProjects.some((cp) => cp.projectID === project.projectID)
         return {
           userID: userId,
-          projectID: project.projectID, // Cambiado de project.id a project.projectID
+          projectID: project.projectID, 
           role: "colaborator" as const,
           isAssigned: isCurrentlyAssigned,
         }
