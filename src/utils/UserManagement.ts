@@ -1,7 +1,7 @@
 import type { User, Project, UserFormData, UserProjectAssignment } from "@/types/UserManagementTypes"
 import { apiRequest, API_BASE_URL2 } from './api-helpers';
 // URL base para la API
-const API_BASE_URL = "https://relations-data-api.vercel.app"
+const API_BASE_URL = "http://localhost:3001"
 
 /**
  * Obtiene todos los usuarios
@@ -14,7 +14,6 @@ export async function getUsers(): Promise<User[]> {
         "Content-Type": "application/json",
       },
     })
-
 
     if (!response.ok) {
       const errorText = await response.text()
@@ -249,7 +248,7 @@ export async function assignProjectToUser(
 /**
  * Obtiene los proyectos asignados a un usuario
  */
-export async function getUserProjects(userId: number): Promise<Project[]> {
+export async function getUserProjects(userId: number): Promise<UserProjectAssignment[]> {
   try {
     const response = await fetch(`${API_BASE_URL}/project/user-projects?userID=${userId}`, {
       method: "GET",
@@ -351,7 +350,8 @@ export async function deleteUserWithRelations(userId: number): Promise<boolean> 
     
     // 2. Eliminar las asignaciones de proyectos
     if (userProjects && userProjects.length > 0) {
-      for (const project of userProjects) {
+      for (const userProject of userProjects) {
+        const project = userProject.project;
         try {
           // Actualizar el proyecto para quitar al usuario
           await apiRequest(`/project/projects/${project.projectID}/users`, "PATCH", {
@@ -375,5 +375,37 @@ export async function deleteUserWithRelations(userId: number): Promise<boolean> 
   } catch (error) {
     console.error(`Error general al eliminar usuario ${userId}:`, error);
     return false;
+  }
+}
+
+/**
+ * Actualiza las asignaciones de proyectos de un usuario
+ */
+export async function updateUserProjectAssignments(
+  userId: number,
+  projects: Array<{ projectID: number; projectRole: string }>
+): Promise<boolean> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/user/users/projects`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userID: userId,
+        projects
+      })
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error('Error updating project assignments:', errorText)
+      throw new Error(`Error updating project assignments: ${response.status} ${response.statusText}`)
+    }
+
+    return true
+  } catch (error) {
+    console.error('Error updating project assignments:', error)
+    return false
   }
 }

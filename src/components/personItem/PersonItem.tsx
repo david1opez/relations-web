@@ -1,6 +1,3 @@
-
-
-
 import { useState, useEffect } from "react"
 import styles from "./personItem.module.css"
 
@@ -24,25 +21,10 @@ export default function PersonItem({ user, onDelete, onRoleChange }: PersonItemP
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isProjectAssignDialogOpen, setIsProjectAssignDialogOpen] = useState(false)
   const [role, setRole] = useState(user.role)
-  const [assignedProjects, setAssignedProjects] = useState<Project[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    const loadUserProjects = async () => {
-      setIsLoading(true)
-      const projects = await getUserProjects(user.userID) // Cambiado de user.id a user.userID
-      setAssignedProjects(projects)
-      setIsLoading(false)
-    }
-
-    loadUserProjects()
-  }, [user.userID]) // Cambiado de user.id a user.userID
-
-  // Importar la nueva función
-
-
 // Dentro del componente PersonItem
-const handleDelete = async () => {
+  const handleDelete = async () => {
     try {
       setIsLoading(true)
       
@@ -57,7 +39,6 @@ const handleDelete = async () => {
         setIsDeleteDialogOpen(false)
       } else {
         console.error(`No se pudo eliminar el usuario ${user.name}`)
-        // En lugar de setError, puedes mostrar una alerta
         alert("No se pudo eliminar el usuario. Por favor, inténtalo de nuevo.")
       }
     } catch (err) {
@@ -66,20 +47,13 @@ const handleDelete = async () => {
       setIsLoading(false)
     }
   }
+  
   const handleRoleChange = async (newRole: string) => {
     setRole(newRole as User["role"])
-    const updatedUser = await updateUserRole(user.userID, newRole) // Cambiado de user.id a user.userID
+    const updatedUser = await updateUserRole(user.userID, newRole) 
     if (updatedUser) {
-      onRoleChange(user.userID, newRole) // Cambiado de user.id a user.userID
+      onRoleChange(user.userID, newRole) 
     }
-  }
-
-  const handleProjectAssignment = async (assignments: any[]) => {
-    // The actual assignment is handled in the ProjectAssignDialog component
-    // Here we just close the dialog and refresh the projects
-    setIsProjectAssignDialogOpen(false)
-    const projects = await getUserProjects(user.userID) // Cambiado de user.id a user.userID
-    setAssignedProjects(projects)
   }
 
   return (
@@ -120,11 +94,6 @@ const handleDelete = async () => {
         </select>
       </div>
 
-      <div className={styles.dataContainer}>
-        <p className={styles.label}>Proyectos asignados:</p>
-        <p className={styles.data}>{isLoading ? "Cargando..." : assignedProjects.length}</p>
-      </div>
-
       <button className={styles.deleteButton} onClick={() => setIsDeleteDialogOpen(true)}>
         Eliminar
       </button>
@@ -143,9 +112,7 @@ const handleDelete = async () => {
       <ProjectAssignDialog
         isOpen={isProjectAssignDialogOpen}
         onClose={() => setIsProjectAssignDialogOpen(false)}
-        onConfirm={handleProjectAssignment}
-        userId={user.userID} // Cambiado de user.id a user.userID
-        currentProjects={assignedProjects}
+        userId={user.userID} 
       />
     </div>
   )

@@ -1,7 +1,7 @@
 // utils/api-helpers.ts
 
 // URL base para la API
-export const API_BASE_URL2 = "https://relations-data-api.vercel.app"
+export const API_BASE_URL2 = "http://localhost:3001"
 
 /**
  * Realiza una solicitud a la API con manejo de errores mejorado

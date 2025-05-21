@@ -1,35 +1,3 @@
-/*
-import { useState, useEffect } from "react";
-import styles from "./personas.module.css";
-
-// COMPONENTS
-import PageTitle from "@/components/pageTitle/PageTitle";
-import Searchbar from "@/components/searchbar/Searchbar";
-import PersonItem from "@/components/personItem/PersonItem";
-
-export default function Personas() {
-    return (
-        <div className="pageContainer">
-            <PageTitle
-                title="Personas"
-                icon="users"
-                subpages={[]}
-            />
-
-            <div className={styles.headerContainer}>
-                <Searchbar/>
-                <button className={styles.addButton}>Agregar personas</button>
-            </div>
-
-            <div className={styles.scrollContainer}>
-                <PersonItem/>
-                <PersonItem/>
-            </div>
-        </div>
-    )
-}
-    */
-
 
 import { useState, useEffect } from "react"
 import styles from "./personas.module.css"
@@ -147,8 +115,8 @@ export default function Personas() {
 
   const handleDeleteUser = (userId: number) => {
     // Cambiado de string a number
-    setUsers((prev) => prev.filter((user) => user.userID !== userId)) // Cambiado de user.id a user.userID
-    setFilteredUsers((prev) => prev.filter((user) => user.userID !== userId)) // Cambiado de user.id a user.userID
+    setUsers((prev) => prev.filter((user) => user.userID !== userId)) 
+    setFilteredUsers((prev) => prev.filter((user) => user.userID !== userId)) 
   }
 
   const handleRoleChange = (userId: number, newRole: string) => {
@@ -197,7 +165,7 @@ export default function Personas() {
         {filteredUsers.length > 0 ? (
           filteredUsers.map((user) => (
             <PersonItem
-              key={user.userID} // Cambiado de user.id a user.userID
+              key={user.userID} 
               user={user}
               onDelete={handleDeleteUser}
               onRoleChange={handleRoleChange}
@@ -214,7 +182,6 @@ export default function Personas() {
         )}
       </div>
 
-      {/* Add User Dialog, message is using JSX, its supposed to not change something important*/}
       <Dialog
         isOpen={isAddDialogOpen}
         onClose={() => setIsAddDialogOpen(false)}
