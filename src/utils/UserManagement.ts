@@ -295,23 +295,69 @@ export async function getUserProjects(userId: number): Promise<Project[]> {
  */
 export async function removeProjectFromUser(userId: number, projectId: number): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE_URL}/project/projects/${projectId}/users`, {
+    console.log(`Removing user ${userId} from project ${projectId}`)
+
+    // Log the URL for debugging
+    const url = `${API_BASE_URL}/project/projects/${projectId}/users`
+    console.log("Request URL:", url)
+
+    // IMPORTANT: The backend expects an empty users array or users with projectRole
+    // It will REPLACE all existing user assignments with what we send
+    // To remove a specific user, we need to get all current users, then send back everyone EXCEPT the one to remove
+
+    // First, get all current users for this project
+    const currentProjectUsers = await fetch(`${API_BASE_URL}/project/projects/${projectId}/users`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => {
+        console.error("Error fetching current project users:", err)
+        return []
+      })
+
+    // Filter out the user we want to remove
+    const updatedUsers = Array.isArray(currentProjectUsers)
+      ? currentProjectUsers
+          .filter((user) => user.userID !== userId)
+          .map((user) => ({
+            userID: user.userID,
+            projectRole: user.projectRole || "colaborator",
+          }))
+      : []
+
+    console.log("Sending updated users list:", JSON.stringify(updatedUsers, null, 2))
+
+    // Send the updated list (without the removed user)
+    const response = await fetch(url, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        userID: userId,
-        remove: true,
-      }),
+      body: JSON.stringify({ users: updatedUsers }),
     })
 
-    if (!response.ok) {
-      const errorText = await response.text()
-      console.error(`Error removing project ${projectId} from user ${userId}:`, errorText)
-      throw new Error(`Error removing project: ${response.status} ${response.statusText}`)
+    // Log the response status
+    console.log(`Response status: ${response.status}`)
+
+    // Try to get the response body for more detailed error information
+    let responseBody
+    try {
+      responseBody = await response.json()
+      console.log("Response body:", responseBody)
+    } catch (e) {
+      const textResponse = await response.text()
+      console.log("Response text:", textResponse)
     }
 
+    if (!response.ok) {
+      console.error(`Error removing project ${projectId} from user ${userId}`)
+      return false
+    }
+
+    console.log(`Successfully removed user ${userId} from project ${projectId}`)
     return true
   } catch (error) {
     console.error(`Error removing project ${projectId} from user ${userId}:`, error)
