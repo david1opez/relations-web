@@ -32,7 +32,6 @@ export default function PerfilPage() {
               <span>Ventas</span>
               <span>Gerente</span>
             </div>
-            <span className={styles.lastLogin}>Último ingreso: 24/2/2024 09:15 AM</span>
           </div>
         </div>
 
@@ -72,6 +71,8 @@ export default function PerfilPage() {
                 <small className={styles.negative}>⬊ 3% vs mes anterior</small>
               </div>
             </div>
+            {/*
+            Unfinished, dont delete
             <div className={styles.activity}>
               <h4>Actividad reciente</h4>
               <ul>
@@ -91,7 +92,7 @@ export default function PerfilPage() {
                   <span>30 minutos • hace 2 días</span>
                 </li>
               </ul>
-            </div>
+            </div>*/}
           </>
         )}
 
@@ -116,16 +117,18 @@ export default function PerfilPage() {
                 onChange={e => setEmail(e.target.value)}
               />
             </div>
+            {/*
+            Unfinished, dont delete
             <div className={styles.toggleGroup}>
-              <div>
+               <div>
                 <strong>Notificaciones por correo</strong>
                 <span>Recibe actualizaciones sobre tus llamadas y actividades</span>
-              </div>
+              </div> 
               <div
                 className={`${styles.toggle} ${notifications ? styles.active : ""}`}
                 onClick={() => setNotifications(!notifications)}
               />
-            </div>
+            </div>*/}
           </div>
         )}
       </div>
