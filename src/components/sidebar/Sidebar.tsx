@@ -100,7 +100,11 @@ export default function Sidebar ({ onPageChange }:  SidebarProps) {
             loading ? (
                 <ActivityIndicator/>
             ) : (
-                <div className={styles.profilePictureContainer}>
+                <div 
+                    className={styles.profilePictureContainer}
+                    onClick={() => handlePageChange("Perfil")}
+                    style={{ cursor: 'pointer' }}
+                >
                     {
                         user?.profilePicture ? (
                             <Image
@@ -122,7 +126,10 @@ export default function Sidebar ({ onPageChange }:  SidebarProps) {
 
         {
             !loading && (
-                <div>
+                <div 
+                    onClick={() => handlePageChange("Perfil")}
+                    style={{ cursor: 'pointer' }}
+                >
                     <p className={styles.userName}>{user?.name || "Random Employee"}</p>
                     <p className={styles.userRole}>{user?.role || "Random Role"}</p>
                 </div>
