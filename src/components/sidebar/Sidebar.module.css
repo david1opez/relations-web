@@ -27,6 +27,16 @@
     margin-bottom: 2.5rem;
     cursor: pointer;
     gap: 1rem;
+    border-radius: 0px;
+    transition: background-color 0.2s;
+}
+
+.userContainer:hover {
+    background-color: var(--gray);
+}
+
+.userContainer.active {
+    background-color: var(--gray);
 }
 
 .profilePictureContainer {

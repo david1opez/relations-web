@@ -95,7 +95,7 @@ export default function Sidebar ({ onPageChange }:  SidebarProps) {
         className={styles.logo}
       />
 
-      <div className={styles.userContainer}>
+      <div className={`${styles.userContainer} ${activePage.toLowerCase() === 'perfil' ? styles.active : ''}`}>
         {
             loading ? (
                 <ActivityIndicator/>
