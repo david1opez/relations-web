@@ -21,11 +21,16 @@ type Project = {
   projectID: number
   name: string
   description: string | null
+  problemDescription:  string | null
+  reqFuncionales:  string | null
+  reqNoFuncionales:  string | null
   startDate: number | null
   endDate: number | null
   status?: "active" | "completed" | "pending"
   members?: number
+  clientEmail?: string
   client?: string
+  clientDescription?: string
 }
 
 const Tabs: ("informacion" | "llamadas" | "recursos" | "equipos")[] = ["informacion", "llamadas", "recursos"]
@@ -45,25 +50,47 @@ export default function Proyecto({ id }: { id: number }) {
   }, [searchParams])
 
   useEffect(() => {
-    // Simulate loading
-    setLoading(true)
+    const fetchProject = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`https://relations-data-api.vercel.app/project/projects/${id}`);
+        if (!response.ok) {
+          throw new Error(`Error fetching project: ${response.status}`);
+        }
+        const data = await response.json();
 
-    // Use static data instead of fetching from API
-    setTimeout(() => {
-      setProject({
-        projectID: id,
-        name: "Plataforma eCommerce móvil",
-        description:
-          "Desarrollo de una plataforma de comercio electrónico con integración de pagos y gestión de inventario.",
-        startDate: Date.now() - 30 * 24 * 60 * 60 * 1000, // 30 days ago
-        endDate: Date.now() + 60 * 24 * 60 * 60 * 1000, // 60 days in future
-        members: 28,
-        client: "Sunlight Logistics",
-        status: "active",
-      })
-      setLoading(false)
-    }, 500)
-  }, [id])
+        const userResponse = await fetch(
+          `https://relations-data-api.vercel.app/project/projects/${data.projectID}`,
+        );
+        let members = 0;
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+          members = userData.length || 0;
+        }
+        setProject({
+          projectID: data.projectID,
+          name: data.name,
+          description: data.description,
+          problemDescription: data.problemDescription,
+          reqFuncionales: data.reqFuncionales,
+          reqNoFuncionales: data.reqNoFuncionales,
+          startDate: data.startDate ? new Date(data.startDate).getTime() : null,
+          endDate: data.endDate ? new Date(data.endDate).getTime() : null,
+          client: data.client?.organization || "sin cliente asignado",
+          clientEmail: data.clientEmail || "sin cliente asignado",
+          clientDescription: data.client?.description || "sin cliente asignado",
+          status: "active",
+      });
+    } catch (error) {
+      console.error(`Error fetching project ${id}:`, error);
+    } finally {
+      setLoading(false);
+    }
+    };
+    if (id) {
+      fetchProject();
+    }
+    }, [id]);
 
   if (loading) {
     return (

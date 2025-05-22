@@ -16,12 +16,18 @@ type Project = {
   projectID: number
   name: string
   description: string | null
+  problemDescription:  string | null
+  reqFuncionales:  string | null
+  reqNoFuncionales:  string | null
   startDate: number | null
   endDate: number | null
   status?: "active" | "completed" | "pending"
   members?: number
+  clientEmail?: string
   client?: string
 }
+
+
 
 export default function Proyectos() {
   const router = useRouter()
@@ -45,18 +51,18 @@ export default function Proyectos() {
 
         // For each project, fetch the members count
         const projectsWithMembers = await Promise.all(
-          data.map(async (project: Project) => {
+          data.map(async (project: any) => { // cambio de project a any para usar client join
             try {
               // Fetch users assigned to this project
               const userResponse = await fetch(
-                `https://relations-data-api.vercel.app/project/projects/${project.projectID}/users`,
+                `https://relations-data-api.vercel.app/project/projects/${project.projectID}`,
               )
               if (userResponse.ok) {
                 const userData = await userResponse.json()
                 return {
                   ...project,
                   members: userData.length || 0,
-                  client: "Sunlight Logistics", // Default client since it's not in the database yet
+                  client: project.client?.organization || "sin cliente asignado", 
                   status: "active", // Default status
                 }
               }
@@ -67,7 +73,7 @@ export default function Proyectos() {
             return {
               ...project,
               members: 0,
-              client: "None",
+              client: project.client?.organization || "sin cliente asignado",
               status: "active" as const,
             }
           }),

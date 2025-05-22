@@ -14,10 +14,14 @@ type Project = {
   projectID: number
   name: string
   description: string | null
+  problemDescription:  string | null
+  reqFuncionales:  string | null
+  reqNoFuncionales:  string | null
   startDate: number | null
   endDate: number | null
   status?: "active" | "completed" | "pending"
   members?: number
+  clientEmail?: string
   client?: string
 }
 
