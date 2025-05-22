@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react"
 import styles from "./personas.module.css"
 
@@ -6,14 +5,16 @@ import styles from "./personas.module.css"
 import PageTitle from "@/components/pageTitle/PageTitle"
 import Searchbar from "@/components/searchbar/Searchbar"
 import PersonItem from "@/components/personItem/PersonItem"
-import Dialog from "@/components/dialog/Dialog"
+import AddPersonDialog from "@/components/addPersonDialog/AddPersonDialog"
 
 // Types
-import type { User, UserFormData } from "@/types/UserManagementTypes"
+import type { User } from "@/types/UserManagementTypes"
+import type { Department } from "@/utils/DepartmentManagement"
 
 // Utils
-import { getUsers, createUser } from "@/utils/UserManagement"
+import { getUsers } from "@/utils/UserManagement"
 import { GetUser } from "@/utils/GetUser"
+import { getDepartments } from "@/utils/DepartmentManagement"
 
 export default function Personas() {
   const [users, setUsers] = useState<User[]>([])
@@ -22,15 +23,7 @@ export default function Personas() {
   const [isLoading, setIsLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(false)
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
-
-  // Form state for adding a new user
-  const [newUserData, setNewUserData] = useState<UserFormData>({
-    name: "",
-    email: "",
-    password: "",
-    role: "colaborator",
-    departmentID: undefined,
-  })
+  const [departments, setDepartments] = useState<Department[]>([])
 
   useEffect(() => {
     const checkUserAndLoadData = async () => {
@@ -41,7 +34,7 @@ export default function Personas() {
 
         if (currentUser?.role === "admin") {
           setIsAdmin(true)
-          await loadUsers()
+          await Promise.all([loadUsers(), loadDepartments()])
         } else {
           console.log("User is not admin:", currentUser?.role)
         }
@@ -54,6 +47,15 @@ export default function Personas() {
 
     checkUserAndLoadData()
   }, [])
+
+  const loadDepartments = async () => {
+    try {
+      const data = await getDepartments()
+      setDepartments(data)
+    } catch (error) {
+      console.error("Error loading departments:", error)
+    }
+  }
 
   const loadUsers = async () => {
     setIsLoading(true)
@@ -85,44 +87,18 @@ export default function Personas() {
     }
   }
 
-  const handleAddUser = async () => {
-    if (!newUserData.name || !newUserData.email || !newUserData.password) {
-      // Show validation error
-      return
-    }
-
-    setIsLoading(true)
-    const createdUser = await createUser(newUserData)
-
-    if (createdUser) {
-      setUsers((prev) => [...prev, createdUser])
-      setFilteredUsers((prev) => [...prev, createdUser])
-
-      // Reset form
-      setNewUserData({
-        name: "",
-        email: "",
-        password: "",
-        role: "colaborator",
-        departmentID: undefined,
-      })
-
-      setIsAddDialogOpen(false)
-    }
-
-    setIsLoading(false)
+  const handleAddUserSuccess = (newUser: User) => {
+    setUsers((prev) => [...prev, newUser])
+    setFilteredUsers((prev) => [...prev, newUser])
   }
 
   const handleDeleteUser = (userId: number) => {
-    // Cambiado de string a number
     setUsers((prev) => prev.filter((user) => user.userID !== userId)) 
     setFilteredUsers((prev) => prev.filter((user) => user.userID !== userId)) 
   }
 
   const handleRoleChange = (userId: number, newRole: string) => {
-    // Cambiado de string a number
     setUsers((prev) => prev.map((user) => (user.userID === userId ? { ...user, role: newRole as User["role"] } : user)))
-
     setFilteredUsers((prev) =>
       prev.map((user) => (user.userID === userId ? { ...user, role: newRole as User["role"] } : user)),
     )
@@ -182,78 +158,11 @@ export default function Personas() {
         )}
       </div>
 
-      <Dialog
+      <AddPersonDialog
         isOpen={isAddDialogOpen}
         onClose={() => setIsAddDialogOpen(false)}
-        onConfirm={handleAddUser}
-        title="Agregar nuevo usuario"
-        message={
-          <div className={styles.addUserForm}>
-            <div className={styles.formGroup}>
-              <label htmlFor="name">Nombre:</label>
-              <input
-                id="name"
-                type="text"
-                value={newUserData.name}
-                onChange={(e) => setNewUserData((prev) => ({ ...prev, name: e.target.value }))}
-                placeholder="Nombre completo"
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="email">Correo:</label>
-              <input
-                id="email"
-                type="email"
-                value={newUserData.email}
-                onChange={(e) => setNewUserData((prev) => ({ ...prev, email: e.target.value }))}
-                placeholder="correo@ejemplo.com"
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="password">Contraseña:</label>
-              <input
-                id="password"
-                type="password"
-                value={newUserData.password}
-                onChange={(e) => setNewUserData((prev) => ({ ...prev, password: e.target.value }))}
-                placeholder="Contraseña"
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="role">Rol:</label>
-              <select
-                id="role"
-                value={newUserData.role}
-                onChange={(e) => setNewUserData((prev) => ({ ...prev, role: e.target.value as User["role"] }))}
-              >
-                <option value="colaborator">Colaborador</option>
-                <option value="support">Soporte</option>
-                <option value="teamLead">Líder de Equipo</option>
-                <option value="projectLead">Líder de Proyecto</option>
-                <option value="admin">Administrador</option>
-              </select>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="departmentID">Departamento ID:</label>
-              <input
-                id="departmentID"
-                type="number"
-                value={newUserData.departmentID || ""}
-                onChange={(e) =>
-                  setNewUserData((prev) => ({
-                    ...prev,
-                    departmentID: e.target.value ? Number.parseInt(e.target.value) : undefined,
-                  }))
-                }
-                placeholder="ID del departamento (opcional)"
-              />
-            </div>
-          </div>
-        }
+        onSuccess={handleAddUserSuccess}
+        departments={departments}
       />
     </div>
   )
