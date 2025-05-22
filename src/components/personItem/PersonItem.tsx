@@ -60,17 +60,19 @@ export default function PersonItem({ user, onDelete, onRoleChange }: PersonItemP
     <div className={styles.container}>
       <div className={styles.dataContainer}>
         <p className={styles.label}>Nombre:</p>
-        <p className={styles.data}>{user.name}</p>
+        <p className={styles.data} title={user.name}>{user.name}</p>
       </div>
 
       <div className={styles.dataContainer}>
         <p className={styles.label}>Correo:</p>
-        <p className={styles.data}>{user.email}</p>
+        <p className={styles.data} title={user.email}>{user.email}</p>
       </div>
 
       <div className={styles.dataContainer}>
         <p className={styles.label}>Departamento:</p>
-        <p className={styles.data}>{user.department ? user.department.name : "No asignado"}</p>
+        <p className={styles.data} title={user.department ? user.department.name : "No asignado"}>
+          {user.department ? user.department.name : "No asignado"}
+        </p>
       </div>
 
       <div className={styles.dataContainer}>
