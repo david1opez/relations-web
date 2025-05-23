@@ -84,6 +84,10 @@
   gap: 16px;
 }
 
+.formRow .formGroup {
+  flex: 1;
+}
+
 .label {
   display: block;
   font-size: 14px;
@@ -141,6 +145,282 @@
   color: var(--white);
 } 
 
+.dropdownContainer {
+  position: relative;
+  z-index: 20;
+}
 
+.dropdownInput {
+  position: relative;
+  cursor: pointer;
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: #fff;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
+.dropdownInputActive {
+  border-color: #b4e1f8;
+  box-shadow: 0 0 0 2px rgba(180, 225, 248, 0.2);
+}
 
+.dropdownInput:hover {
+  border-color: #666;
+  background-color: #333;
+}
+
+.dropdownIcon {
+  color: #999;
+  transition: transform 0.2s ease;
+}
+
+.dropdownInputActive .dropdownIcon {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 30;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.searchContainer {
+  padding: 8px;
+  border-bottom: 1px solid #444;
+  position: sticky;
+  top: 0;
+  background-color: #2a2a2a;
+  z-index: 2;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: #333;
+  color: #fff;
+  font-size: 14px;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #b4e1f8;
+}
+
+.dropdownItem {
+  padding: 12px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #3a3a3a;
+  transition: all 0.15s ease;
+}
+
+.dropdownItem:last-child {
+  border-bottom: none;
+}
+
+.dropdownItem:hover {
+  background-color: #3a3a3a;
+}
+
+.dropdownItem:active {
+  background-color: #444;
+}
+
+.clientInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.clientName {
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.clientMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: #999;
+}
+
+.clientEmail {
+  color: #b4e1f8;
+}
+
+.clientOrg {
+  position: relative;
+  padding-left: 12px;
+}
+
+.clientOrg::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #666;
+}
+
+.selectedClient {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.selectedClientName {
+  font-weight: 500;
+}
+
+.selectedClientOrg {
+  color: #999;
+  font-size: 14px;
+}
+
+.clientDescription {
+  margin-top: 8px;
+  padding: 12px 14px;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #ccc;
+  border-left: 3px solid #b4e1f8;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.changeClientBtn {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  color: #b4e1f8;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.changeClientBtn:hover {
+  background-color: rgba(180, 225, 248, 0.1);
+  text-decoration: underline;
+}
+
+.dropdownLoading {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #999;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(180, 225, 248, 0.3);
+  border-radius: 50%;
+  border-top-color: #b4e1f8;
+  animation: spin 1s linear infinite;
+}
+
+.buttonSpinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  border-top-color: #000;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.dropdownEmpty {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: #999;
+}
+
+.addClientBtn {
+  background: none;
+  border: 1px solid #b4e1f8;
+  color: #b4e1f8;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.addClientBtn:hover {
+  background-color: rgba(180, 225, 248, 0.1);
+}
+
+/* Scrollbar personalizado */
+.dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dropdown::-webkit-scrollbar-track {
+  background: #222;
+  border-radius: 8px;
+}
+
+.dropdown::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 8px;
+}
+
+.dropdown::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
+}
+
+.modalContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modalContainer::-webkit-scrollbar-track {
+  background: #222;
+}
+
+.modalContainer::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 8px;
+}
+
+.modalContainer::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
+}
