@@ -48,10 +48,20 @@ export default function Proyectos() {
         }
 
         const data = await response.json()
+        console.log("Proyectos recibidos del backend:", data);
+        data.forEach((project: any, idx: number) => {
+          console.log(`Proyecto ${idx}:`, project);
+          if (project.client) {
+            console.log(`-> client:`, project.client);
+            console.log(`-> client.name:`, project.client.name);
+          } else {
+            console.log("-> client: null");
+          }
+        });
 
         // For each project, fetch the members count
         const projectsWithMembers = await Promise.all(
-          data.map(async (project: any) => { // cambio de project a any para usar client join
+          data.map(async (project: any) => {
             try {
               // Fetch users assigned to this project
               const userResponse = await fetch(
@@ -62,7 +72,6 @@ export default function Proyectos() {
                 return {
                   ...project,
                   members: userData.length || 0,
-                  client: project.client?.organization || "sin cliente asignado", 
                   status: "active", // Default status
                 }
               }
@@ -73,7 +82,6 @@ export default function Proyectos() {
             return {
               ...project,
               members: 0,
-              client: project.client?.organization || "sin cliente asignado",
               status: "active" as const,
             }
           }),

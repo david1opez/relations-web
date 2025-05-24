@@ -105,20 +105,32 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
     e.preventDefault()
     setLoading(true)
 
-    try {
-      // Preparar los datos del proyecto
-      const projectData = {
-        name,
-        description,
-        clientEmail: selectedClient?.email || null,
-        problemDescription,
-        reqFuncionales,
-        reqNoFuncionales,
-        startDate: startDate ? new Date(startDate).toISOString() : null,
-        endDate: endDate ? new Date(endDate).toISOString() : null,
-        users: [],
-      }
+    // DEPURACIÓN: Mostrar el cliente seleccionado y los datos a enviar
+    console.log("selectedClient:", selectedClient);
+    if (!selectedClient) {
+      alert("Debes seleccionar un cliente del listado.");
+      setLoading(false);
+      return;
+    }
+    const projectData = {
+      name,
+      description,
+      client: selectedClient ? {
+        email: selectedClient.email,
+        name: selectedClient.name,
+        organization: selectedClient.organization,
+        description: selectedClient.description
+      } : null,
+      problemDescription,
+      reqFuncionales,
+      reqNoFuncionales,
+      startDate: startDate ? new Date(startDate).toISOString() : null,
+      endDate: endDate ? new Date(endDate).toISOString() : null,
+      users: [],
+    }
+    console.log("projectData:", projectData);
 
+    try {
       // Enviar los datos a la API
       const response = await fetch("https://relations-data-api.vercel.app/project/projects", {
         method: "POST",

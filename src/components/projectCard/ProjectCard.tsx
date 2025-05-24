@@ -22,7 +22,7 @@ type Project = {
   status?: "active" | "completed" | "pending"
   members?: number
   clientEmail?: string
-  client?: string
+  client?: string | { name?: string }
 }
 
 type ProjectCardProps = {
@@ -59,7 +59,7 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
           : "Sin descripción"}
       </p>
 
-      <MetadataItem icon="user" title="Cliente:" value={project.client || "None"} color="var(--accent)" />
+      <MetadataItem icon="user" title="Cliente:" value={typeof project.client === 'object' && project.client?.name ? project.client.name : "sin cliente asignado"} color="var(--accent)" />
 
       <div className={styles.metadataContainer}>
         <MetadataItem icon="users" title="Miembros:" value={project.members?.toString() || "0"} color="var(--accent)" />
