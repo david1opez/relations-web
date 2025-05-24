@@ -15,6 +15,7 @@ import PerfilPage from "./perfil/page";
 import Llamadas from "./llamadas/Llamadas";
 import Personas from "./personas/Personas";
 import Admin from "./admin/Admin";
+import Clientes from "./clientes/Clientes";
 
 export default function RoutePage() {
   const searchParams = useSearchParams();
@@ -39,6 +40,7 @@ export default function RoutePage() {
         {activePage.toLowerCase() === "llamadas" && <Llamadas />}
         {activePage.toLowerCase() === "perfil" && <PerfilPage />}
         {activePage.toLowerCase() === "personas" && <Personas />}
+        {activePage.toLowerCase() === "clientes" && <Clientes />}
         {activePage.toLowerCase() === "admin" && <Admin />}
       </div>
     </div>

@@ -1,0 +1,51 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 2fr auto;
+  align-items: center;
+  background-color: var(--dark-gray);
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  min-height: 70px;
+}
+
+.dataContainer {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.label {
+  color: var(--light-gray);
+  font-size: 0.7rem;
+  margin-bottom: 0.2rem;
+  white-space: nowrap;
+}
+
+.data {
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.deleteButton {
+  background: none;
+  border: 2px solid var(--red);
+  color: var(--red);
+  border-radius: 4px;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.deleteButton:hover {
+  background-color: var(--red);
+  color: var(--white);
+}
+
+.deleteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+} 

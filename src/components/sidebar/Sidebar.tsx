@@ -44,7 +44,11 @@ export default function Sidebar ({ onPageChange }:  SidebarProps) {
       const { role } = user;
 
       if (role === "admin") {
-        setPages([...pages, { icon: "users", name: "Personas" }]);
+        setPages([
+          ...pages,
+          { icon: "users", name: "Personas" },
+          { icon: "users", name: "Clientes" }
+        ]);
       }
     }
   }
