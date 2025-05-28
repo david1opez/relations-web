@@ -32,4 +32,5 @@ export type Call = {
   summary: string;
   attendees?: string[];
   details? : CallDetails;
+  analyzed?: boolean;
 }

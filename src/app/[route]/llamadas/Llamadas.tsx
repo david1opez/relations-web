@@ -23,54 +23,37 @@ export default function Llamadas() {
   const [callDetails, setCallDetails] = useState<CallDetails | null>(null);
   const [subpages, setSubpages] = useState<string[]>([]);
   const [isTranscriptOpen, setIsTranscriptOpen] = useState(false);
-  const [calls, setCalls] = useState<Call[]>([]);
 
-  // Secciones "Tus llamadas" y "Llamadas asignadas"
-  const [tusLlamadas, setTusLlamadas] = useState<Call[]>([]);
-  const [assignedLlamadas, setAssignedLlamadas] = useState<Call[]>([]);
-
-  const handleSelectCall = async (id: string) => {
-    setLoading(true);
-    const callFound = calls.find((c) => c.callID === id)!;
-    setSelectedCall(callFound);
-    setIsTranscriptOpen(true);
-    const data = await analyzeCall(callFound.summary);
-    setCallDetails(data);
-    setLoading(false);
-  };
+  const [analyzed, setAnalyzed] = useState<Call[]>([]);
+  const [notAnalyzed, setNotAnalyzed] = useState<Call[]>([]);
 
   const handleViewDetails = async (id: string) => {
     setLoading(true);
-    const callFound = calls.find((c) => c.callID === id)!;
-    setSelectedCall(callFound);
-    setSubpages([callFound.title]);
-    const data = await analyzeCall(callFound.summary);
-    setCallDetails(data);
+    //PENDING
     setLoading(false);
   };
 
-  // Aceptar llamada asignada → la mueve a "Tus llamadas"
-  const handleAcceptAssigned = (id: string) => {
-    const call = assignedLlamadas.find((c) => c.callID === id);
-    if (!call) return;
-    setTusLlamadas((prev) => [...prev, call]);
-    setAssignedLlamadas((prev) => prev.filter((c) => c.callID !== id));
+  const handleDelete = async (id: string) => {
+    setLoading(true);
+    //PENDING
+    setLoading(false);
   };
 
-  // Eliminar llamada asignada
-  const handleDeleteAssigned = (id: string) => {
-    setAssignedLlamadas((prev) => prev.filter((c) => c.callID !== id));
-  };
+  const handleAnalyze = (id: string) => {
+    const call = notAnalyzed.find((call) => call.callID === id);
+    setAnalyzed((prev) => [...prev, call!]);
+    setNotAnalyzed((prev) => prev.filter((call) => call.callID !== id));
+  }
 
-  // Reset de vista detalle → listado
+
+  
   useEffect(() => {
     const loadInitialData = async () => {
       try {
         setLoading(true);
         const data = await fetchCalls(3);
-        setCalls(data);
-        setTusLlamadas(data.slice(0, 5));
-        setAssignedLlamadas(data.slice(5));
+        setAnalyzed(data.filter((call)=>call.analyzed));
+        setNotAnalyzed(data.filter((call)=>!call.analyzed));
       } catch (error) {
         console.error("Error loading initial data:", error);
       } finally {
@@ -98,11 +81,12 @@ export default function Llamadas() {
             <Searchbar/>
             
             <div className={styles.callsContainer}>
-              {tusLlamadas.map((call) => (
+              {notAnalyzed.map((call) => (
                 <CallComponent
                   key={call.callID}
                   call={call}
-                  onClick={handleSelectCall}
+                  onClick={(id) => {}}
+                  onAnalyze={() => handleAnalyze(call.callID)}
                 />
               ))}
             </div>
@@ -114,7 +98,7 @@ export default function Llamadas() {
             <Searchbar/>
             
             <div className={styles.callsContainer}>
-              {assignedLlamadas.map((call) => (
+              {analyzed.map((call) => (
                 <div key={call.callID} className={styles.assignedCall}>
                   <div className={styles.callInfo}>
                     <p className={styles.callTitle}>{call.title}</p>
@@ -129,7 +113,7 @@ export default function Llamadas() {
                   <div className={styles.callActions}>
                     <button
                       className={styles.deleteButton}
-                      onClick={() => handleDeleteAssigned(call.callID)}
+                      onClick={() => handleDelete(call.callID)}
                     >
                       Eliminar
                     </button>

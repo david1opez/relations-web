@@ -14,18 +14,29 @@ interface CallComponentProps {
   call: Call;
   onClick: (id: string) => void;
   onDelete?: (id: string) => void;
+  onAnalyze?: (id: string) => void;
 }
 
-export default function CallComponent({ call, onClick, onDelete }: CallComponentProps) {
+export default function CallComponent({ call, onClick, onDelete, onAnalyze }: CallComponentProps) {
   const [isAssignProjectOpen, setIsAssignProjectOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleMenuItemClick = (action: string) => {
     switch (action) {
       case "view":
         onClick(call.callID);
         break;
-      case "assign":
-        setIsAssignProjectOpen(true);
+      case "analyze":
+        setLoading(true);
+        setTimeout(() => {
+          //call api to analyze call
+          setLoading(false);
+          onAnalyze?.(call.callID);
+
+        }
+        , 5000); // Simulate API call delay
+
+        //onAnalyze?.(call.callID);
         break;
       case "delete":
         onDelete?.(call.callID);
@@ -37,6 +48,11 @@ export default function CallComponent({ call, onClick, onDelete }: CallComponent
     <>
       <div className={styles.callCard}>
 
+        {loading && (
+          <div className={styles.loadingOverlay}>
+            <div className={styles.spinner} />
+          </div>
+        )}
         <h3 className={styles.callTitle}>{call.title}</h3>
 
         <MetadataItem
@@ -66,7 +82,11 @@ export default function CallComponent({ call, onClick, onDelete }: CallComponent
             { icon: 'close', name: 'Eliminar' }
           ]} 
           onSelect={(option) => {
-            handleMenuItemClick(option === 'Eliminar' ? 'delete' : option === 'Asignar a proyecto' ? 'assign' : 'view');
+            handleMenuItemClick(
+              option === 'Analizar' ? 'analyze' : 
+              option === 'Ver transcripción' ? 'view' : 
+              option === 'Eliminar' ? 'delete' : ''
+            );
           }}
         />
       </div>
