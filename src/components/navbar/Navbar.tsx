@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from '../link/Link';
 
 const CLIENT_ID = 'df25bb12-928b-4419-9a5a-2665b0f16497';
-const REDIRECT_URL = 'http://relations-web.vercel.app/login';
+const REDIRECT_URL = 'https://relations-web.vercel.app/login';
 const TENANT = "common";
 const SCOPE = "openid profile User.Read";
 
