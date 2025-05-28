@@ -66,6 +66,7 @@
   border: 2px dashed var(--gray);
   transition: border-color 0.2s, background 0.2s;
   margin-bottom: 0.5rem;
+  max-width: 100%;
 }
 .addProjectCard:hover {
   border-color: var(--accent);
