@@ -14,7 +14,7 @@ export default function Navbar() {
     const router = useRouter();
     
     const handleLogin = () => {
-        router.push(`https://login.microsoftonline.com/${TENANT}/oauth2/v2.0/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URL}&response_mode=query&scope=${SCOPE}`);
+        // router.push(`https://login.microsoftonline.com/${TENANT}/oauth2/v2.0/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URL}&response_mode=query&scope=${SCOPE}`);
     }
 
     return (
