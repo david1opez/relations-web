@@ -1,23 +1,42 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import styles from "./login.module.css";
+import { Login } from "@/utils/GetUser";
 
 // TYPES
 type AuthResponse = {
-  access_token: string;
-  expires_in: number;
-  ext_expires_in: number;
-  id_token: string;
-  scope: string;
-  token_type: string;
+  profile: {
+    "@odata.context": string;
+    businessPhones: string[];
+    displayName: string;
+    givenName: string;
+    id: string;
+    jobTitle: string | null;
+    mail: string | null;
+    mobilePhone: string | null;
+    officeLocation: string | null;
+    preferredLanguage: string;
+    surname: string;
+    userPrincipalName: string;
+  };
+  tokens: {
+    access_token: string;
+    expires_in: number;
+    ext_expires_in: number;
+    id_token: string;
+    scope: string;
+    token_type: string;
+  };
 };
 
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
+
+  const [userData, setUserData] = useState<AuthResponse | null>(null);
 
   useEffect(() => {
     if (code) {
@@ -27,17 +46,29 @@ export default function LoginPage() {
       )
         .then((r) => r.json())
         .then((data: AuthResponse) => {
-          console.log("Auth response:", data);
-          // router.push(`/home?at=${data.access_token}`);
+          setUserData(data);
+
+          setTimeout(() => {
+            router.push("/inicio");
+          }, 2000);
         })
         .catch(console.error);
     }
   }, [code, router]);
 
   if (code) {
-    return   <div className={styles.validating}>
-    <span className="spinner"></span> Validando credenciales…
-  </div>
+    if (userData) {
+      return (
+      <div className={styles.validating}>
+        <span>¡Bienvenido, {userData.profile.displayName}!</span>
+      </div>
+      );
+    }
+    return (
+      <div className={styles.validating}>
+      <span className="spinner"></span> Validando credenciales…
+      </div>
+    );
   }
 
   return (
