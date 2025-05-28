@@ -132,6 +132,7 @@ export default function Llamadas() {
           selectedCall={selectedCall}
           callDetails={callDetails}
           loading={loading}
+          onClose={() => setShowDetails(false)}
         />
       )}
     </div>
