@@ -16,8 +16,8 @@ export default function Llamadas({ id }: { id: number }) {
   const [loading, setLoading] = useState<boolean>(true);
   const [filteredCalls, setFilteredCalls] = useState<Call[]>([]);
   const [selectedCall, setSelectedCall] = useState<Call | null>(null);
-  const [callDetails, setCallDetails] = useState<CallDetails | null>(null);
   const [chapters, setChapters] = useState<any[]>([]);
+  const [summary, setSummary] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
 
   const handleSelectCall = async (cID: string) => {
@@ -30,16 +30,11 @@ export default function Llamadas({ id }: { id: number }) {
       console.log(callFound?.summary)
       setSelectedCall(callFound as Call);
 
-      const data: CallDetails = await analyzeCall(callFound?.summary || "");
-      console.log("Call details:", data);
-      if (data) 
-        setCallDetails(data);
-      else 
-        console.error("Error fetching call details");
-
       // Fetch chapters for the transcript/summary
       const chapterData = await fetchChaptering(callFound?.summary || "");
       setChapters(chapterData || []);
+      //get summary from call
+      //pending 
       setShowModal(true);
     } catch (error) {
       console.error("Error fetching call details:", error);
@@ -101,7 +96,7 @@ export default function Llamadas({ id }: { id: number }) {
         duration={selectedCall ? calcDuration(selectedCall.startTime, selectedCall.endTime) : ''}
         transcript={selectedCall?.summary || ''}
         chapters={chapters}
-        summary={callDetails?.llmInsights?.resumen || ''}
+        summary={summary}
       />
     </div>
   );
