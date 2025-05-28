@@ -28,13 +28,13 @@ export default function Navbar() {
             />
 
             <Link href="/">
-                <p className={styles.link}>¿Cómo funciona?</p>
+                <p className={styles.link}></p>
             </Link>
             <Link href="/">
-                <p className={styles.link}>Accesos y permisos</p>
+                <p className={styles.link}></p>
             </Link>
             <Link href="/">
-                <p className={styles.link}>FAQ</p>
+                <p className={styles.link}></p>
             </Link>
 
             <button
