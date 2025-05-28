@@ -85,4 +85,20 @@
   font-weight: 600;
   text-align: center;
 }
+
+.projectsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 0.7rem 0.7rem; /* Espacio mínimo entre filas y columnas */
+  margin-top: 2.5rem;
+  justify-items: center;
+}
+
+.headerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem; /* Más espacio debajo del header */
+}
   
