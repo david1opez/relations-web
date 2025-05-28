@@ -47,12 +47,13 @@ export default function Home() {
             className={styles.cardIllustration}
           />
           <h2 className={styles.cardTitle}>
-            Análisis de proyectos
+            Proyectos
           </h2>
           <p className={styles.cardDescription}>
-            Detecta automáticamente los requisitos de proyecto, generando
-            resúmenes claros, estructurados y listos para tu equipo de
-            propuesta.
+            Divide las llamadas en capítulos, extrae los requisitos
+            y organiza la información de manera eficiente para
+            facilitar la gestión de proyectos y el onboarding
+            de nuevos miembros.
           </p>
         </div>
 
@@ -65,12 +66,12 @@ export default function Home() {
             className={styles.cardIllustration}
           />
           <h2 className={styles.cardTitle}>
-            Análisis de soporte técnico
+            Soporte
           </h2>
           <p className={styles.cardDescription}>
-            Detecta automáticamente los requisitos de proyecto, generando
-            resúmenes claros, estructurados y listos para tu equipo de
-            propuesta.
+            Identifica el motivo de las llamadas de soporte, si se 
+            resolvieron adecuadamente y otras métricas clave para
+            la toma de decisiones y la mejora continua de tu equipo.
           </p>
         </div>
       </div>
