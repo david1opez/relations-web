@@ -88,7 +88,7 @@ export default function Clientes() {
   if (isLoading) {
     return (
       <div className="pageContainer">
-        <PageTitle title="Clientes" icon="users" subpages={[]} />
+        <PageTitle title="Clientes" icon="star" subpages={[]} />
         <div className={styles.loadingContainer}>
           <p>Cargando clientes...</p>
         </div>
@@ -99,7 +99,7 @@ export default function Clientes() {
   if (!isAdmin) {
     return (
       <div className="pageContainer">
-        <PageTitle title="Clientes" icon="users" subpages={[]} />
+        <PageTitle title="Clientes" icon="star" subpages={[]} />
         <div className={styles.unauthorizedContainer}>
           <p>No tienes permisos para acceder a esta sección.</p>
         </div>
@@ -109,7 +109,7 @@ export default function Clientes() {
 
   return (
     <div className="pageContainer">
-      <PageTitle title="Clientes" icon="users" subpages={[]} />
+      <PageTitle title="Clientes" icon="star" subpages={[]} />
 
       <div className={styles.headerContainer}>
         <Searchbar value={searchTerm} onChange={handleSearch} />

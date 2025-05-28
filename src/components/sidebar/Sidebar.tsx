@@ -47,7 +47,7 @@ export default function Sidebar ({ onPageChange }:  SidebarProps) {
         setPages([
           ...pages,
           { icon: "users", name: "Personas" },
-          { icon: "users", name: "Clientes" }
+          { icon: "star", name: "Clientes" }
         ]);
       }
     }
