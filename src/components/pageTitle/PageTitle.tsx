@@ -6,7 +6,7 @@ import Icon from "@/components/icon/Icon";
 // TYPES
 import { PageTitleProps } from "@/types/PageTitleTypes";
 
-export default function PageIndicator({ icon, title, subpages, onPageChange }: PageTitleProps) {
+export default function PageIndicator({ icon, title, subpages, onPageChange, onBack }: PageTitleProps) {
     const clickablePage = (index: number) => {
         return subpages.length > 1 && index < subpages.length - 1;
     };
@@ -33,7 +33,7 @@ export default function PageIndicator({ icon, title, subpages, onPageChange }: P
                     styles.pageIndicatorTitle,
                     subpages.length > 0 ? styles.clickablePageIndicatorTitle : ""
                 ].join(" ")}
-                onClick={() => changePage(-1)}
+                onClick={() => onBack ? onBack() : changePage(-1)}
             >
                 {title}
             </h1>

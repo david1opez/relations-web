@@ -27,7 +27,6 @@ export default function Llamadas({ id }: { id: number }) {
     try {
       const response = await fetch(`https://relations-data-api.vercel.app/call/details?callID=${cID}`);
       callFound = await response.json();
-      console.log(callFound?.summary)
       setSelectedCall(callFound as Call);
 
       // Fetch chapters for the transcript/summary

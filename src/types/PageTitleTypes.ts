@@ -5,4 +5,5 @@ export type PageTitleProps = {
     title: string;
     subpages: string[];
     onPageChange?: (subpages: string[]) => void;
+    onBack?: () => void;
 };
