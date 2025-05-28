@@ -87,7 +87,7 @@ export default function Sidebar ({ onPageChange }:  SidebarProps) {
     else handlePagesToShow();
   }, [user]);
 
-  if(!user) return null;
+  // if(!user) return null;
 
   return (
     <div className={styles.container}>
