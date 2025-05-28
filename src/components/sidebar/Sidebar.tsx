@@ -59,12 +59,12 @@ export default function Sidebar ({ onPageChange }:  SidebarProps) {
         setUser(userData);
 
         if(!userData) {
-            router.push("/?login=true");
+            // router.push("/?login=true");
             return;
         }
     })
     .catch(() => {
-        router.push("/login?login=true");
+        // router.push("/login?login=true");
         return;
     })
     .finally(() => setLoading(false))
