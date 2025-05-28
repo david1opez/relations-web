@@ -135,43 +135,42 @@ export default function Proyectos() {
   return (
     <div className="pageContainer">
       <PageTitle title="Proyectos" icon="rocket" subpages={[]} />
-
-      <div className={styles.headerContainer}>
-        <Searchbar value={searchTerm} onChange={handleSearch} />
-        <button className={styles.addButton} onClick={() => setShowAddPopup(true)}>
-          Agregar proyecto
-        </button>
+      <div className={styles.topBar}>
+        <div className={styles.searchContainer}>
+          <Searchbar value={searchTerm} onChange={handleSearch} />
+        </div>
       </div>
+      <AddProjectPopup isOpen={showAddPopup} onClose={() => setShowAddPopup(false)} onProjectAdded={() => setShowAddPopup(false)} />
 
-      <div className={styles.projectsGrid}>
-        {filteredProjects.length > 0 ? (
-          filteredProjects.map((project) => (
-            <ProjectCard
-              key={project.projectID}
-              project={project}
-              onClick={() => handleProjectClick(project.projectID)}
-              onDelete={handleDeleteProject}
-            />
-          ))
-        ) : (
-          <div className={styles.emptyState}>
-            {searchTerm ? (
-              <div className={styles.emptyState}>No se encontraron proyectos que coincidan con: {searchTerm}</div>
-            ) : (
-              <div className={styles.emptyState}>No hay proyectos registrados. Agrega uno nuevo.</div>
-            )}
+      {loading ? (
+        <div className={styles.loadingContainer}>
+          <ActivityIndicator size={40} color="var(--accent)" />
+        </div>
+      ) : (
+        <div className={styles.projectsContainer}>
+          {/* Add Project Card */}
+          <div className={styles.addProjectCard} onClick={() => setShowAddPopup(true)}>
+            <div className={styles.addIcon}>+</div>
+            <div className={styles.addText}>Crear proyecto</div>
           </div>
-        )}
-      </div>
-
-      <AddProjectPopup
-        isOpen={showAddPopup}
-        onClose={() => setShowAddPopup(false)}
-        onProjectAdded={() => {
-          fetchProjects()
-          setShowAddPopup(false)
-        }}
-      />
+          {/* Project Cards */}
+          {filteredProjects.length > 0 ? (
+            filteredProjects.map((project) => (
+              <ProjectCard
+                key={project.projectID}
+                project={project}
+                onClick={() => handleProjectClick(project.projectID)}
+              />
+            ))
+          ) : (
+            <div className={styles.noProjects}>
+              {searchTerm
+                ? "No se encontraron proyectos que coincidan con la búsqueda."
+                : "No hay proyectos disponibles."}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
