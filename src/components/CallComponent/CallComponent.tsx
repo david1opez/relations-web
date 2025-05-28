@@ -61,7 +61,7 @@ export default function CallComponent({ call, onClick, onDelete }: CallComponent
 
         <OptionsMenu
           options={[
-            { icon: 'rocket', name: 'Asignar a proyecto' },
+            { icon: 'rocket', name: 'Analizar' },
             { icon: 'pencil', name: 'Ver transcripción' },
             { icon: 'close', name: 'Eliminar' }
           ]} 

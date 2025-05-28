@@ -93,7 +93,7 @@ export default function Llamadas() {
         <div className={styles.contentContainer}>
           
           <div className={styles.sectionContainer}>
-            <h2 className={styles.listTitle}>Tus llamadas</h2>
+            <h2 className={styles.listTitle}>Por analizar</h2>
             
             <Searchbar/>
             
@@ -109,7 +109,7 @@ export default function Llamadas() {
           </div>
 
           <div className={styles.sectionContainer}>
-            <h2 className={styles.listTitle}>Llamadas asignadas</h2>
+            <h2 className={styles.listTitle}>Analizadas</h2>
 
             <Searchbar/>
             
