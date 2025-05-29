@@ -26,6 +26,9 @@ export default function Llamadas() {
 
   const [analyzed, setAnalyzed] = useState<Call[]>([]);
   const [notAnalyzed, setNotAnalyzed] = useState<Call[]>([]);
+  // Add these new states for filtered results
+  const [filteredAnalyzed, setFilteredAnalyzed] = useState<Call[]>([]);
+  const [filteredNotAnalyzed, setFilteredNotAnalyzed] = useState<Call[]>([]);
 
   const handleViewDetails = async (id: string) => {
     setLoading(true);
@@ -42,17 +45,58 @@ export default function Llamadas() {
 
   const handleAnalyze = (id: string) => {
     const call = notAnalyzed.find((call) => call.callID === id);
+    if (!call) return;
     setAnalyzed((prev) => [...prev, call!]);
+    setFilteredAnalyzed((prev) => [...prev, call!]);
     setNotAnalyzed((prev) => prev.filter((call) => call.callID !== id));
+    setFilteredNotAnalyzed((prev) => prev.filter((call) => call.callID !== id));
   }
+
+  // Add search handlers for both sections
+  const handleSearchAnalyzed = (value: string) => {
+    if (value.trim() === "") {
+      setFilteredAnalyzed(analyzed);
+    } else {
+      const searchTerm = value.toLowerCase();
+      const filtered = analyzed.filter((call) =>
+        (call.title.toLowerCase() || '').includes(searchTerm) ||
+        (call.summary?.toLowerCase() || '').includes(searchTerm) ||
+        call.attendees?.some(attendee => 
+          (attendee?.toLowerCase() || '').includes(searchTerm)
+        )
+      );
+      setFilteredAnalyzed(filtered);
+    }
+  };
+
+  const handleSearchNotAnalyzed = (value: string) => {
+    if (value.trim() === "") {
+      setFilteredNotAnalyzed(notAnalyzed);
+    } else {
+      const searchTerm = value.toLowerCase();
+      const filtered = notAnalyzed.filter((call) =>
+        (call.title.toLowerCase() || '').includes(searchTerm) ||
+        (call.summary?.toLowerCase() || '').includes(searchTerm) ||
+        call.attendees?.some(attendee => 
+          (attendee?.toLowerCase() || '').includes(searchTerm)
+        )
+      );
+      setFilteredNotAnalyzed(filtered);
+    }
+  };
 
   useEffect(() => {
     const loadInitialData = async () => {
       try {
         setLoading(true);
         const data = await fetchCalls(3);
-        setAnalyzed(data.filter((call)=>call.analyzed));
-        setNotAnalyzed(data.filter((call)=>!call.analyzed));
+        const analyzedCalls = data.filter((call) => call.analyzed);
+        const notAnalyzedCalls = data.filter((call) => !call.analyzed);
+        setAnalyzed(analyzedCalls);
+        setNotAnalyzed(notAnalyzedCalls);
+        // Initialize filtered arrays
+        setFilteredAnalyzed(analyzedCalls);
+        setFilteredNotAnalyzed(notAnalyzedCalls);
       } catch (error) {
         console.error("Error loading initial data:", error);
       } finally {
@@ -73,14 +117,13 @@ export default function Llamadas() {
 
       {!showDetails ? (
         <div className={styles.contentContainer}>
-          
           <div className={styles.sectionContainer}>
             <h2 className={styles.listTitle}>Por analizar</h2>
             
-            <Searchbar/>
+            <Searchbar onChange={handleSearchNotAnalyzed}/>
             
             <div className={styles.callsContainer}>
-              {notAnalyzed.map((call) => (
+              {filteredNotAnalyzed.map((call) => (
                 <CallComponent
                   key={call.callID}
                   call={call}
@@ -94,10 +137,10 @@ export default function Llamadas() {
           <div className={styles.sectionContainer}>
             <h2 className={styles.listTitle}>Analizadas</h2>
 
-            <Searchbar/>
+            <Searchbar onChange={handleSearchAnalyzed}/>
 
             <div className={styles.callsContainer}>
-              {analyzed.map((call) => (
+              {filteredAnalyzed.map((call) => (
                 <CallItem
                   key={call.callID}
                   call={call}
