@@ -87,8 +87,8 @@ export default function Llamadas() {
       try {
         setLoading(true);
         const data = await fetchCalls(3);
-        const analyzedCalls = data.filter((call) => call.analyzed);
-        const notAnalyzedCalls = data.filter((call) => !call.analyzed);
+        const analyzedCalls = data.filter((call) => call.isAnalyzed);
+        const notAnalyzedCalls = data.filter((call) => !call.isAnalyzed);
         setAnalyzed(analyzedCalls);
         setNotAnalyzed(notAnalyzedCalls);
         // Initialize filtered arrays
