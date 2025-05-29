@@ -16,6 +16,7 @@ import { analyzeCall } from "@/app/CallAnalysisAPI";
 import { calcDuration, parseDate } from "@/utils/dateUtils";
 import { Call, CallDetails } from "@/types/CallItemTypes";
 import { fetchCalls } from '@/services/callsService';
+import CallItem from "@/components/callItem/CallItem";
 
 export default function Llamadas() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -94,35 +95,14 @@ export default function Llamadas() {
             <h2 className={styles.listTitle}>Analizadas</h2>
 
             <Searchbar/>
-            
+
             <div className={styles.callsContainer}>
               {analyzed.map((call) => (
-                <div key={call.callID} className={styles.assignedCall}>
-                  <div className={styles.callInfo}>
-                    <p className={styles.callTitle}>{call.title}</p>
-                    <p className={styles.callAttendees}>
-                      Asistentes: {call.attendees?.join(", ")}
-                    </p>
-                    <div className={styles.callMeta}>
-                      <span>{parseDate(call.startTime)}</span>
-                      <span>{calcDuration(call.startTime, call.endTime)}</span>
-                    </div>
-                  </div>
-                  <div className={styles.callActions}>
-                    <button
-                      className={styles.deleteButton}
-                      onClick={() => handleDelete(call.callID)}
-                    >
-                      Eliminar
-                    </button>
-                    <button
-                      className={styles.acceptButton}
-                      onClick={() => handleViewDetails(call.callID)}
-                    >
-                      Detalles
-                    </button>
-                  </div>
-                </div>
+                <CallItem
+                  key={call.callID}
+                  call={call}
+                  onClick={handleViewDetails}
+                />
               ))}
             </div>
           </div>
