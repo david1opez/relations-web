@@ -7,13 +7,10 @@ import styles from "./llamadas.module.css";
 // COMPONENTS
 import PageTitle from "@/components/pageTitle/PageTitle";
 import CallComponent from "@/components/CallComponent/CallComponent";
-import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator";
 import CallInsightsPopup from "@/components/CallComponent/CallInsightsPopup";
 import Searchbar from "@/components/searchbar/Searchbar";
 
 // UTILS
-import { analyzeCall } from "@/app/CallAnalysisAPI";
-import { calcDuration, parseDate } from "@/utils/dateUtils";
 import { Call, CallDetails } from "@/types/CallItemTypes";
 import { fetchCalls } from '@/services/callsService';
 import CallItem from "@/components/callItem/CallItem";
