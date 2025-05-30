@@ -65,7 +65,7 @@ export default function Llamadas() {
       await analyzeCall(call.callID, call.summary);
 
       // 2. Llamar al endpoint que marca isAnalyzed = true en la BD
-      await fetch("http://localhost:3001/call/markAnalyzed", {
+      await fetch("https://relations-data-api.vercel.app/call/markAnalyzed", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ callID: call.callID }),

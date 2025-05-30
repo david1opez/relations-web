@@ -2,7 +2,7 @@ import { Call } from '@/types/CallItemTypes';
 
 export async function fetchCalls(projectId: number): Promise<Call[]> {
   try {
-    const url = `http://localhost:3001/call/calls?projectID=${projectId}`;      
+    const url = `https://relations-data-api.vercel.app/call/calls?projectID=${projectId}`;      
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response}`);
