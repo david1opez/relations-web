@@ -76,18 +76,18 @@ export default function Admin() {
     const previousDuration = hasPreviousData ? callHistory.averageDurations[previousIndex] : currentDuration
     const durationDiff = hasPreviousData ? currentDuration - previousDuration : 0
 
-    const currentResolution = callHistory.resolvedPercentages[lastIndex]
-    const previousResolution = hasPreviousData ? callHistory.resolvedPercentages[previousIndex] : currentResolution
-    const resolutionDiff = hasPreviousData ? currentResolution - previousResolution : 0
+    const currentResolution = Number(callHistory.resolvedPercentages[lastIndex].toFixed(2))
+    const previousResolution = hasPreviousData ? Number(callHistory.resolvedPercentages[previousIndex].toFixed(2)) : currentResolution
+    const resolutionDiff = hasPreviousData ? Number((currentResolution - previousResolution).toFixed(2)) : 0
 
-    const currentSatisfaction = callHistory.positiveSentimentPercentages[lastIndex]
-    const previousSatisfaction = hasPreviousData ? callHistory.positiveSentimentPercentages[previousIndex] : currentSatisfaction
-    const satisfactionDiff = hasPreviousData ? currentSatisfaction - previousSatisfaction : 0
+    const currentSatisfaction = Number(callHistory.positiveSentimentPercentages[lastIndex].toFixed(2))
+    const previousSatisfaction = hasPreviousData ? Number(callHistory.positiveSentimentPercentages[previousIndex].toFixed(2)) : currentSatisfaction
+    const satisfactionDiff = hasPreviousData ? Number((currentSatisfaction - previousSatisfaction).toFixed(2)) : 0
 
     const formatDuration = (seconds: number) => {
       if (seconds === 0) return '0s'
       const minutes = Math.floor(seconds / 60)
-      const remainingSeconds = seconds % 60
+      const remainingSeconds = Number((seconds % 60).toFixed(2))
       return minutes > 0 ? `${minutes}m ${remainingSeconds}s` : `${remainingSeconds}s`
     }
 
@@ -101,16 +101,16 @@ export default function Admin() {
       },
       {
         title: "Porcentaje de resolución de problemas",
-        value: `${currentResolution}%`,
-        sub: hasPreviousData ? `${resolutionDiff > 0 ? '+' : ''}${resolutionDiff.toFixed(1)}%` : 'Sin datos previos',
+        value: `${currentResolution.toFixed(2)}%`,
+        sub: hasPreviousData ? `${resolutionDiff > 0 ? '+' : ''}${resolutionDiff.toFixed(2)}%` : 'Sin datos previos',
         subDesc: hasPreviousData ? "Comparado con el período anterior" : "No hay datos para comparar",
         negative: resolutionDiff < 0,
       },
       {
         title: "Porcentaje de satisfacción",
-        value: `${currentSatisfaction}%`,
-        sub: hasPreviousData ? `${satisfactionDiff > 0 ? '+' : ''}${satisfactionDiff.toFixed(1)}%` : 'Sin datos previos',
-        subDesc: `Positiva: ${currentSatisfaction}% | Negativa: ${(100 - currentSatisfaction).toFixed(1)}%`,
+        value: `${currentSatisfaction.toFixed(2)}%`,
+        sub: hasPreviousData ? `${satisfactionDiff > 0 ? '+' : ''}${satisfactionDiff.toFixed(2)}%` : 'Sin datos previos',
+        subDesc: `Positiva: ${currentSatisfaction.toFixed(2)}% | Negativa: ${(100 - currentSatisfaction).toFixed(2)}%`,
         negative: satisfactionDiff < 0,
       },
     ]
