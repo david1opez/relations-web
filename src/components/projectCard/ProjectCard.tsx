@@ -121,7 +121,7 @@ export default function ProjectCard({ project, onClick, onDelete }: ProjectCardP
       />
 
       <div className={styles.metadataContainer}>
-        <MetadataItem icon="users" title="Miembros:" value={project.members?.toString() || "0"} color="var(--accent)" />
+        <MetadataItem icon="users" title="Miembros:" value={project.members?.toString() || "99"} color="var(--accent)" />
         <MetadataItem
           icon="calendar"
           title="Inicio:"

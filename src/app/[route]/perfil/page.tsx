@@ -21,18 +21,35 @@ export default function PerfilPage() {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    // Validar tipo de archivo
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('Solo se permiten archivos JPEG, PNG y GIF');
+      return;
+    }
+
+    // Validar tamaño (5MB máximo)
+    const maxSize = 5 * 1024 * 1024; // 5MB en bytes
+    if (file.size > maxSize) {
+      alert('La imagen no debe superar los 5MB');
+      return;
+    }
+
     setLoading(true);
     const formData = new FormData();
     formData.append('image', file);
 
     try {
-      const response = await fetch('https://relations-data-api.vercel.app/upload-profile-picture', {
-        method: 'POST',
+      const response = await fetch('https://relations-data-api.vercel.app/users/upload-profile-picture', {
+        method: 'PATCH',
         body: formData,
         credentials: 'include'
       });
 
-      if (!response.ok) throw new Error('Error al subir la imagen');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al subir la imagen');
+      }
 
       const data = await response.json();
       
@@ -40,20 +57,30 @@ export default function PerfilPage() {
       const updatedUser = await GetUser();
       setUser(updatedUser);
       
-      // Actualizar el usuario en localStorage
-      const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
-      localStorage.setItem('user', JSON.stringify({
-        ...currentUser,
-        profilePicture: data.profilePicture
-      }));
+      // Actualizar el usuario en localStorage de manera más segura
+      try {
+        const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+        const updatedUserData = {
+          ...currentUser,
+          profilePicture: data.user.profilePicture // Cambio aquí para usar data.user
+        };
+        localStorage.setItem('user', JSON.stringify(updatedUserData));
+      } catch (storageError) {
+        console.error('Error updating localStorage:', storageError);
+        // No interrumpimos la experiencia del usuario si falla localStorage
+      }
 
     } catch (error) {
       console.error('Error:', error);
-      alert('Error al subir la imagen');
+      alert(error instanceof Error ? error.message : 'Error al subir la imagen');
     } finally {
       setLoading(false);
+      // Limpiar el input file para permitir subir la misma imagen de nuevo si es necesario
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
-  };
+};
 
   const handleImageClick = () => {
     fileInputRef.current?.click();

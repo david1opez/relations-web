@@ -42,51 +42,26 @@ export default function Proyectos() {
   const fetchProjects = async () => {
     try {
       setLoading(true)
-      const response = await fetch("https://relations-data-api.vercel.app/project/projects")
+      const [projectsResponse, membersCountResponse] = await Promise.all([
+        fetch("https://relations-data-api.vercel.app/project/projects"),
+        fetch("https://relations-data-api.vercel.app/project/projects/members-count")
+      ])
 
-      if (!response.ok) {
-        throw new Error(`Error fetching projects: ${response.status}`)
+      if (!projectsResponse.ok) {
+        throw new Error(`Error fetching projects: ${projectsResponse.status}`)
       }
 
-      const data = await response.json()
-      console.log("Proyectos recibidos del backend:", data);
-      data.forEach((project: any, idx: number) => {
-        console.log(`Proyecto ${idx}:`, project);
-        if (project.client) {
-          console.log(`-> client:`, project.client);
-          console.log(`-> client.name:`, project.client.name);
-        } else {
-          console.log("-> client: null");
-        }
-      });
+      const projects = await projectsResponse.json()
+      const membersCounts = await membersCountResponse.json()
 
-      // For each project, fetch the members count
-      const projectsWithMembers = await Promise.all(
-        data.map(async (project: any) => {
-          try {
-            // Fetch users assigned to this project
-            const userResponse = await fetch(
-              `https://relations-data-api.vercel.app/project/projects/${project.projectID}`,
-            )
-            if (userResponse.ok) {
-              const userData = await userResponse.json()
-              return {
-                ...project,
-                members: userData.length || 0,
-                status: "active", // Default status
-              }
-            }
-          } catch (error) {
-            console.error(`Error fetching members for project ${project.projectID}:`, error)
-          }
-
-          return {
-            ...project,
-            members: 0,
-            status: "active" as const,
-          }
-        }),
-      )
+      console.log("Proyectos recibidos del backend:", projects)
+      
+      // Map projects with their member counts
+      const projectsWithMembers = projects.map((project: any) => ({
+        ...project,
+        members: membersCounts[project.projectID] || 0,
+        status: "active" // Default status
+      }))
 
       setProjects(projectsWithMembers)
       setFilteredProjects(projectsWithMembers)
