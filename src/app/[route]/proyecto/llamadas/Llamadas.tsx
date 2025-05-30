@@ -19,9 +19,10 @@ export default function Llamadas({ id }: { id: number }) {
   const [chapters, setChapters] = useState<any[]>([]);
   const [summary, setSummary] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
+  const [loadingCallIdx, setLoadingCallIdx] = useState<number | null>(null);
 
-  const handleSelectCall = async (cID: string) => {
-    setLoading(true);
+  const handleSelectCall = async (cID: string, idx: number) => {
+    setLoadingCallIdx(idx);
 
     let callFound = calls.find((call) => call.callID === cID);
     try {
@@ -36,10 +37,11 @@ export default function Llamadas({ id }: { id: number }) {
       //pending 
       setShowModal(true);
     } catch (error) {
+      setLoadingCallIdx(null);
       console.error("Error fetching call details:", error);
     }
     finally {
-      setLoading(false);
+      setLoadingCallIdx(null);
     }
   };
 
@@ -75,17 +77,17 @@ export default function Llamadas({ id }: { id: number }) {
 
       <div className={styles.callsList}>
 
-      {filteredCalls.map((call) => (
+      {filteredCalls.map((call, idx) => (
         <CallItem
           key={call.callID}
           call={call}
-          onClick={() => handleSelectCall(call.callID)}
+          loading={loadingCallIdx == idx}
+          onClick={() => handleSelectCall(call.callID, idx)}
         />
       ))}
 
       </div>
 
-      {/* Modal for call details */}
       <CallDetailsPopup
         isOpen={showModal}
         onClose={() => setShowModal(false)}
