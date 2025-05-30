@@ -1,7 +1,7 @@
 .projectsContainer {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 1.5rem;
+    column-gap: 1.5rem;
     margin-top: 1vh;
 }
 
@@ -41,8 +41,8 @@
   border: none;
   border-radius: 8px;
   font-size: 1rem;
-  font-family: 'LayGrotesk-Semibold', sans-serif;
-  font-weight: 600;
+  font-family: 'LayGrotesk-Medium', sans-serif;
+  font-weight: 500;
   padding: 0.7rem 1.5rem;
   cursor: pointer;
   transition: background 0.2s;
@@ -67,23 +67,33 @@
   transition: border-color 0.2s, background 0.2s;
   margin-bottom: 0.5rem;
   max-width: 100%;
+    max-height: 235px;
 }
 .addProjectCard:hover {
   border-color: var(--accent);
   background: #23272b;
 }
 .addIcon {
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   color: var(--accent);
   margin-bottom: 0.5rem;
-  font-weight: 700;
-  line-height: 1;
+  font-weight: 300;
+  line-height: 1rem;
+  border: 2px solid var(--light-gray);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0.1rem;
+
 }
 .addText {
-  color: var(--white);
-  font-size: 1.1rem;
-  font-family: 'LayGrotesk-Semibold', sans-serif;
-  font-weight: 600;
+  color: var(--light-gray);
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
   text-align: center;
 }
   
