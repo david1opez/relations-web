@@ -28,7 +28,7 @@ export function parseVTT(vttContent: string): string {
         const textLines = lines.slice(timeLineIndex + 1).join(' ');
         // Extract the speaker using a regex that matches <v SpeakerName>
         const speakerMatch = textLines.match(/<v\s+([^>]+)>/);
-        let speaker = speakerMatch ? speakerMatch[1] : 'Unknown';
+        const speaker = speakerMatch ? speakerMatch[1] : 'Unknown';
         // Remove the tags from the text
         const cleanedText = textLines.replace(/<[^>]+>/g, '').trim();
         
