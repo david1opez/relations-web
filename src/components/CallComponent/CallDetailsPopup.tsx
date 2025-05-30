@@ -30,7 +30,7 @@ export default function CallDetailsPopup({
     chapters = [],
     summary = '',
 }: CallDetailsPopupProps) {
-    const [activeTab, setActiveTab] = React.useState<'resumen' | 'transcripcion'>('resumen');
+    const [activeTab, setActiveTab] = React.useState<'resumen' | 'transcripcion'>(summary ? 'resumen' : 'transcripcion');
     if (!isOpen) return null;
 
     return (
@@ -67,12 +67,14 @@ export default function CallDetailsPopup({
                 </div>
 
                 <div className={styles.tabs}>
-                    <button
-                        className={`${styles.tab} ${activeTab === 'resumen' ? styles.activeTab : ''}`}
-                        onClick={() => setActiveTab('resumen')}
-                    >
-                        Resumen
-                    </button>
+                    {summary && (
+                        <button
+                            className={`${styles.tab} ${activeTab === 'resumen' ? styles.activeTab : ''}`}
+                            onClick={() => setActiveTab('resumen')}
+                        >
+                            Resumen
+                        </button>
+                    )}
                     <button
                         className={`${styles.tab} ${activeTab === 'transcripcion' ? styles.activeTab : ''}`}
                         onClick={() => setActiveTab('transcripcion')}
@@ -82,10 +84,10 @@ export default function CallDetailsPopup({
                 </div>
 
                 <div className={styles.tabContentContainer}>
-                    {activeTab === 'resumen' ? (
+                    {activeTab === 'resumen' && summary ? (
                         <div className={styles.summary}>
                             <h3>Resumen de la Llamada:</h3>
-                            <p>{summary || 'No hay resumen disponible.'}</p>
+                            <p>{summary}</p>
                         </div>
                     ) : (
                         <div style={{ display: 'flex', gap: 24 }}>
