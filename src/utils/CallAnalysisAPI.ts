@@ -57,3 +57,20 @@ export const fetchChaptering = async (transcript: string) => {
   }
 };
 
+export interface CallHistoryResponse {
+  intervals: string[];
+  averageDurations: number[];
+  positiveSentimentPercentages: number[];
+  resolvedPercentages: number[];
+}
+
+export async function getCallHistory(projectId: number, interval: 'daily' | 'weekly' | 'monthly'): Promise<CallHistoryResponse> {
+  const response = await fetch(`https://relations-data-api.vercel.app/call/history?projectID=${projectId}&interval=${interval}`);
+  
+  if (!response.ok) {
+    throw new Error('Failed to fetch call history data');
+  }
+
+  return response.json();
+}
+

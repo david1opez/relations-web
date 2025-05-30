@@ -3,13 +3,39 @@ import { Line, LineChart, Tooltip, XAxis, YAxis } from "recharts"
 interface LineChartProps {
   data: number[]
   labels: string[]
+  type?: 'duration' | 'percentage'
 }
 
-export function LineChartComponent({ data, labels }: LineChartProps) {
+export function LineChartComponent({ data, labels, type = 'duration' }: LineChartProps) {
   const chartData = data.map((value, index) => ({
     value,
     label: labels[index],
   }))
+
+  const formatValue = (value: number) => {
+    if (type === 'duration') {
+      const minutes = Math.floor(value / 60)
+      const seconds = value % 60
+      return `${minutes}m ${seconds}s`
+    }
+    return `${value}%`
+  }
+
+  const formatYAxis = (value: number) => {
+    if (type === 'duration') {
+      return `${Math.floor(value / 60)}m`
+    }
+    return `${value}%`
+  }
+
+  const formatTooltip = (value: number) => {
+    if (type === 'duration') {
+      const minutes = Math.floor(value / 60)
+      const seconds = value % 60
+      return [`${minutes}m ${seconds}s`, "Duración"]
+    }
+    return [`${value}%`, "Porcentaje"]
+  }
 
   return (
     <div className="h-[300px] w-full">
@@ -20,19 +46,19 @@ export function LineChartComponent({ data, labels }: LineChartProps) {
           tick={{ fontSize: 12 }}
         />
         <YAxis
-          tickFormatter={(value) => `${value}m`}
-          domain={["dataMin - 2", "dataMax + 2"]}
+          tickFormatter={formatYAxis}
+          domain={type === 'duration' ? ["dataMin - 2", "dataMax + 2"] : [0, 100]}
           stroke="var(--light-gray)"
           tick={{ fontSize: 12 }}
         />
         <Tooltip
           contentStyle={{
-        backgroundColor: "var(--gray)",
-        borderColor: "var(--light-gray)",
-        color: "var(--white)",
+            backgroundColor: "var(--gray)",
+            borderColor: "var(--light-gray)",
+            color: "var(--white)",
           }}
           labelStyle={{ color: "var(--light-gray)", fontSize: 12 }}
-          formatter={(value) => [`${value}m`, "Duración"]}
+          formatter={formatTooltip}
         />
         <Line
           type="monotone"

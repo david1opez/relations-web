@@ -1,73 +1,118 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import styles from "./admin.module.css"
 
 // COMPONENTS
 import PageTitle from "@/components/pageTitle/PageTitle"
 import { Tabs } from "@/components/tabs/Tabs"
 import { LineChartComponent } from "@/components/lineChart/LineChart"
+import Dropdown from "@/components/dropdown/Dropdown"
 
-const KPI_DATA = [
-  {
-    title: "Duración promedio de la llamada",
-    value: "22m 36s",
-    sub: "-1m 12s",
-    subDesc: "Comparado con el mes anterior",
-    negative: true,
-  },
-  {
-    title: "Porcentaje de resolución de problemas",
-    value: "87.5%",
-    sub: "+2.3%",
-    subDesc: "Comparado con el mes anterior",
-    negative: false,
-  },
-  {
-    title: "Porcentaje de satisfacción",
-    value: "92.1%",
-    sub: "+4.7%",
-    subDesc: "Positiva: 92.1% | Negativa: 7.9%",
-    negative: false,
-  },
-]
+// UTILS
+import { getCallHistory, CallHistoryResponse } from "@/utils/CallAnalysisAPI"
 
 const TABS = ["Duración promedio", "Resolución de problemas", "Satisfacción"]
+const INTERVAL_OPTIONS = ['Diario', 'Semanal', 'Mensual']
 
-const CHART_DATA = [24.8, 24.2, 25.7, 23.9, 22.5, 21.2, 19.8, 20.7, 22.1, 20.3, 20.9, 21.4, 21.8, 21.7]
-const CHART_LABELS = [
-  "01/05",
-  "02/05",
-  "03/05",
-  "04/05",
-  "05/05",
-  "06/05",
-  "07/05",
-  "08/05",
-  "09/05",
-  "10/05",
-  "11/05",
-  "12/05",
-  "13/05",
-  "14/05",
-]
+const INTERVAL_MAP = {
+  'Diario': 'daily',
+  'Semanal': 'weekly',
+  'Mensual': 'monthly'
+} as const
 
-const RESOLUTION_DATA = [82, 83, 86, 85, 84, 87, 88, 86, 85, 87, 89, 90, 88, 87]
-const SATISFACTION_DATA = [90, 88, 92, 91, 89, 93, 94, 92, 90, 91, 93, 95, 92, 91]
+type IntervalType = typeof INTERVAL_MAP[keyof typeof INTERVAL_MAP]
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState(0)
+  const [callHistory, setCallHistory] = useState<CallHistoryResponse | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [selectedInterval, setSelectedInterval] = useState<IntervalType>('daily')
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        const data = await getCallHistory(3, selectedInterval)
+        setCallHistory(data)
+        setError(null)
+      } catch (err) {
+        setError('Error al cargar los datos de llamadas')
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [selectedInterval])
+
+  const getKpiData = () => {
+    if (!callHistory || callHistory.intervals.length === 0) return []
+
+    const lastIndex = callHistory.intervals.length - 1
+    const previousIndex = lastIndex - 1
+
+    // If we only have one interval, we can't calculate differences
+    const hasPreviousData = previousIndex >= 0
+
+    const currentDuration = callHistory.averageDurations[lastIndex]
+    const previousDuration = hasPreviousData ? callHistory.averageDurations[previousIndex] : currentDuration
+    const durationDiff = hasPreviousData ? currentDuration - previousDuration : 0
+
+    const currentResolution = callHistory.resolvedPercentages[lastIndex]
+    const previousResolution = hasPreviousData ? callHistory.resolvedPercentages[previousIndex] : currentResolution
+    const resolutionDiff = hasPreviousData ? currentResolution - previousResolution : 0
+
+    const currentSatisfaction = callHistory.positiveSentimentPercentages[lastIndex]
+    const previousSatisfaction = hasPreviousData ? callHistory.positiveSentimentPercentages[previousIndex] : currentSatisfaction
+    const satisfactionDiff = hasPreviousData ? currentSatisfaction - previousSatisfaction : 0
+
+    const formatDuration = (seconds: number) => {
+      if (seconds === 0) return '0s'
+      const minutes = Math.floor(seconds / 60)
+      const remainingSeconds = seconds % 60
+      return minutes > 0 ? `${minutes}m ${remainingSeconds}s` : `${remainingSeconds}s`
+    }
+
+    return [
+      {
+        title: "Duración promedio de la llamada",
+        value: formatDuration(currentDuration),
+        sub: hasPreviousData ? `${durationDiff > 0 ? '+' : ''}${formatDuration(Math.abs(durationDiff))}` : 'Sin datos previos',
+        subDesc: hasPreviousData ? "Comparado con el período anterior" : "No hay datos para comparar",
+        negative: durationDiff > 0,
+      },
+      {
+        title: "Porcentaje de resolución de problemas",
+        value: `${currentResolution}%`,
+        sub: hasPreviousData ? `${resolutionDiff > 0 ? '+' : ''}${resolutionDiff.toFixed(1)}%` : 'Sin datos previos',
+        subDesc: hasPreviousData ? "Comparado con el período anterior" : "No hay datos para comparar",
+        negative: resolutionDiff < 0,
+      },
+      {
+        title: "Porcentaje de satisfacción",
+        value: `${currentSatisfaction}%`,
+        sub: hasPreviousData ? `${satisfactionDiff > 0 ? '+' : ''}${satisfactionDiff.toFixed(1)}%` : 'Sin datos previos',
+        subDesc: `Positiva: ${currentSatisfaction}% | Negativa: ${(100 - currentSatisfaction).toFixed(1)}%`,
+        negative: satisfactionDiff < 0,
+      },
+    ]
+  }
 
   const getChartData = () => {
+    if (!callHistory) return []
+
     switch (activeTab) {
       case 0:
-        return CHART_DATA
+        return callHistory.averageDurations
       case 1:
-        return RESOLUTION_DATA
+        return callHistory.resolvedPercentages
       case 2:
-        return SATISFACTION_DATA
+        return callHistory.positiveSentimentPercentages
       default:
-        return CHART_DATA
+        return callHistory.averageDurations
     }
   }
 
@@ -84,32 +129,65 @@ export default function Admin() {
     }
   }
 
+  const getChartType = () => {
+    switch (activeTab) {
+      case 0:
+        return 'duration'
+      case 1:
+      case 2:
+        return 'percentage'
+      default:
+        return 'duration'
+    }
+  }
+
   return (
     <div className="pageContainer">
-      <PageTitle
-        title="Admin"
-        icon="activity"
-        subpages={[]}
-      />
+      <div className={styles.headerRow}>
+        <PageTitle
+          title="Admin"
+          icon="activity"
+          subpages={[]}
+        />
+        <div className={styles.intervalSelector}>
+          <Dropdown
+            options={INTERVAL_OPTIONS}
+            value={Object.entries(INTERVAL_MAP).find(([_, value]) => value === selectedInterval)?.[0] || 'Diario'}
+            onChange={(value: string) => setSelectedInterval(INTERVAL_MAP[value as keyof typeof INTERVAL_MAP])}
+          />
+        </div>
+      </div>
 
-      <div className={styles.kpiRow}>
-        {KPI_DATA.map((kpi, idx) => (
-          <div key={idx} className={styles.card}>
-            <div className={styles.cardTitle}>{kpi.title}</div>
-            <div className={styles.cardValue}>{kpi.value}</div>
-            <div className={kpi.negative ? `${styles.cardSub} ${styles.cardNegative}` : styles.cardSub}>{kpi.sub}</div>
-            <p className={styles.cardDescription}>
-              {kpi.subDesc}
-            </p>
+      {loading ? (
+        <div className={styles.loadingMessage}>Cargando datos...</div>
+      ) : error ? (
+        <div className={styles.errorMessage}>{error}</div>
+      ) : (
+        <>
+          <div className={styles.kpiRow}>
+            {getKpiData().map((kpi, idx) => (
+              <div key={idx} className={styles.card}>
+                <div className={styles.cardTitle}>{kpi.title}</div>
+                <div className={styles.cardValue}>{kpi.value}</div>
+                <div className={kpi.negative ? `${styles.cardSub} ${styles.cardNegative}` : styles.cardSub}>{kpi.sub}</div>
+                <p className={styles.cardDescription}>
+                  {kpi.subDesc}
+                </p>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
 
-      <Tabs tabs={TABS} activeTab={activeTab} onTabChange={setActiveTab} />
+          <Tabs tabs={TABS} activeTab={activeTab} onTabChange={setActiveTab} />
 
-      <div className={styles.chartSection}>
-        <LineChartComponent data={getChartData()} labels={CHART_LABELS} />
-      </div>
+          <div className={styles.chartSection}>
+            <LineChartComponent 
+              data={getChartData()} 
+              labels={callHistory?.intervals || []}
+              type={getChartType()}
+            />
+          </div>
+        </>
+      )}
     </div>
   )
 }

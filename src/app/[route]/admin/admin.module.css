@@ -188,3 +188,25 @@
 .actionButtonIcon {
   margin-right: 0.5rem;
 }
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.intervalSelector {
+  width: 200px;
+}
+
+.loadingMessage,
+.errorMessage {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+}
+
+.errorMessage {
+  color: var(--error);
+}
