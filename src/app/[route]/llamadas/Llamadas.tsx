@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import styles from "./llamadas.module.css";
 import { analyzeCall } from '@/services/callsService'; 
+import { fetchCallSentimentAnalysis } from "@/services/callsService";
 
 // COMPONENTS
 import PageTitle from "@/components/pageTitle/PageTitle";
@@ -30,9 +31,23 @@ export default function Llamadas() {
 
   const handleViewDetails = async (id: string) => {
     setLoading(true);
-    //PENDING
-    setLoading(false);
-    setShowDetails(true);
+
+    try {
+      const call = analyzed.find((c) => c.callID === id);
+      if (!call) return;
+
+      setSelectedCall(call);
+
+      const details = await fetchCallSentimentAnalysis(id);
+      setCallDetails(details);
+
+      setShowDetails(true);
+    } catch (error) {
+      console.error("Error al obtener análisis de sentimientos:", error);
+      alert("Error al cargar detalles de la llamada.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDelete = async (id: string) => {
@@ -62,7 +77,7 @@ export default function Llamadas() {
       setFilteredAnalyzed((prev) => [...prev, updatedCall]);
       setNotAnalyzed((prev) => prev.filter((c) => c.callID !== id));
       setFilteredNotAnalyzed((prev) => prev.filter((c) => c.callID !== id));
-      
+
     } catch (error) {
       console.error("Error al analizar llamada:", error);
       alert("Ocurrió un error al analizar la llamada ");

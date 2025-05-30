@@ -36,3 +36,22 @@ export async function analyzeCall(callID: string, text: string) {
   console.log("✅ API Response:", result);
   return result;
 }
+
+export async function fetchCallSentimentAnalysis(callID: string) {
+  const response = await fetch(`https://x5fruv6w29.execute-api.us-east-2.amazonaws.com/analysis?callID=${callID}`);
+  if (!response.ok) {
+    throw new Error(`Error obteniendo el análisis de llamada ${callID}`);
+  }
+
+  const data = await response.json();
+  const result = data.result?.resultado;
+
+  if (!result) {
+    throw new Error("No se encontró análisis en la respuesta.");
+  }
+
+  console.log("📊 Análisis recibido:", result);
+  return result;
+
+}
+
