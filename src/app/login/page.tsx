@@ -48,6 +48,10 @@ export default function LoginPage() {
         .then((data: AuthResponse) => {
           setUserData(data);
 
+          localStorage.setItem("user", JSON.stringify(data.profile));
+
+          console.log("User data:", data);
+
           setTimeout(() => {
             router.push("/inicio");
           }, 2000);

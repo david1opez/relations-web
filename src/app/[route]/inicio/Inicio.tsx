@@ -25,6 +25,8 @@ export default function Inicio() {
         .catch((error) => {
             console.error("Error fetching activity data:", error);
         });
+
+        console.log(localStorage.getItem("user"))
     }, []);
 
     return (
