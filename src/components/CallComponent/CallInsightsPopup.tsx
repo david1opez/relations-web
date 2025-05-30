@@ -210,7 +210,11 @@ export default function CallInsightsPopup({
                                 : "var(--gray)",
                           }}
                         >
-                          {callDetails?.ociAnalysis?.documentSentiment}
+                          {callDetails?.ociAnalysis?.documentSentiment === "Positive" 
+                            ? "Positivo" 
+                            : callDetails?.ociAnalysis?.documentSentiment === "Negative" 
+                            ? "Negativo" 
+                            : "Neutral"}
                         </p>
                       </div>
                       <div
@@ -349,7 +353,11 @@ export default function CallInsightsPopup({
                                 : "var(--gray)",
                           }}
                         >
-                          {aspect.sentiment}
+                          {aspect.sentiment === "Positive" 
+                            ? "Positivo" 
+                            : aspect.sentiment === "Negative" 
+                            ? "Negativo" 
+                            : "Neutral"}
                           <span style={{ marginLeft: "0.3rem" }}>
                             {aspect.confidence
                               ? ` (${Math.round(aspect.confidence * 100)}%)`
