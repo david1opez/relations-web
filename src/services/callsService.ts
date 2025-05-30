@@ -1,4 +1,5 @@
 import { Call } from '@/types/CallItemTypes';
+import { parseVTT } from '@/utils/vttHelpers';
 
 export async function fetchCalls(projectId: number): Promise<Call[]> {
   try {
@@ -16,6 +17,7 @@ export async function fetchCalls(projectId: number): Promise<Call[]> {
 }
 
 export async function analyzeCall(callID: string, text: string) {
+  text = parseVTT(text);
   const response = await fetch('https://x5fruv6w29.execute-api.us-east-2.amazonaws.com/', {
     method: 'POST',
     headers: {
