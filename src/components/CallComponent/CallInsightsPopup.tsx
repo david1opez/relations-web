@@ -2,6 +2,7 @@ import { Call, CallDetails } from "@/types/CallItemTypes";
 import styles from "./CallInsightsPopup.module.css";
 import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator";
 import { parseDate, calcDuration } from "@/utils/dateUtils";
+import { parseVTT } from "@/utils/vttHelpers";
 
 interface CallInsightsPopupProps {
   selectedCall: Call | null;
@@ -16,6 +17,8 @@ export default function CallInsightsPopup({
   loading,
   onClose,
 }: CallInsightsPopupProps) {
+
+  console.log(parseVTT(selectedCall?.summary ?? ""));
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modalContainer} onClick={e => e.stopPropagation()}>
@@ -402,9 +405,9 @@ export default function CallInsightsPopup({
                 Transcripción:
               </h3>
               <div className={styles.callDetailsContentContainer}>
-                <p className={styles.text} style={{ fontWeight: 300 }}>
-                  {selectedCall?.summary}
-                </p>
+                <div className={styles.text} style={{ fontWeight: 300, whiteSpace: 'pre-line' }}>
+                  {parseVTT(selectedCall?.summary ?? "")}
+                </div>
               </div>
             </div>
           </div>
