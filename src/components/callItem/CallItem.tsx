@@ -6,8 +6,9 @@ import Icon from '../icon/Icon';
 
 import { CallItemProps } from '@/types/CallItemTypes';
 import { calcDuration, parseDate } from '@/utils/dateUtils';
+import ActivityIndicator from '../activityIndicator/ActivityIndicator';
 
-export default function CallItem({ call, onClick }: CallItemProps) {
+export default function CallItem({ call, onClick, loading }: CallItemProps) {
     const duration = calcDuration(call.startTime, call.endTime);
 
     return (
@@ -41,9 +42,19 @@ export default function CallItem({ call, onClick }: CallItemProps) {
             </div>
             <button 
                 className={styles.button}
-                onClick={() => onClick(call.callID)}
+                onClick={() => {
+                    if (loading) return;
+
+                    onClick(call.callID)
+                }}
             >
-                Ver detalles
+                {
+                    loading ? (
+                        <ActivityIndicator/>
+                    ) : (
+                        "Ver detalles"
+                    )
+                }
             </button>
         </div>
     );

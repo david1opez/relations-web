@@ -1,6 +1,7 @@
 export type CallItemProps = {
     call : Call;
     onClick: (id: string) => void;
+    loading?: boolean;
 };
 
 export type CallDetails = {
