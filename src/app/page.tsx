@@ -79,7 +79,7 @@ export default function Home() {
       <button
         className={styles.githubButton}
         onClick={() => {
-          window.open('https://github.com/david1opez')
+          window.open('https://github.com/david1opez/relations-web')
         }}
       >
         <Image
