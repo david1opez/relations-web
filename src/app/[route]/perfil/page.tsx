@@ -1,16 +1,75 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import PageTitle from "@/components/pageTitle/PageTitle";
 import styles from "./perfil.module.css";
+import { GetUser } from "@/utils/GetUser";
+import UserType from "@/types/UserTypes";
 
 export default function PerfilPage() {
   const [subpages, setSubpages] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<"Overview"|"Settings"|"Security">("Overview");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [user, setUser] = useState<UserType | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const [fullName, setFullName] = useState("John Smith");
   const [email, setEmail] = useState("john.smith@company.com");
   const [notifications, setNotifications] = useState(true);
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setLoading(true);
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const response = await fetch('https://relations-data-api.vercel.app/upload-profile-picture', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include'
+      });
+
+      if (!response.ok) throw new Error('Error al subir la imagen');
+
+      const data = await response.json();
+      
+      // Actualizar el usuario localmente
+      const updatedUser = await GetUser();
+      setUser(updatedUser);
+      
+      // Actualizar el usuario en localStorage
+      const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+      localStorage.setItem('user', JSON.stringify({
+        ...currentUser,
+        profilePicture: data.profilePicture
+      }));
+
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error al subir la imagen');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  useEffect(() => {
+    const loadUser = async () => {
+      const userData = await GetUser();
+      setUser(userData);
+      if (userData) {
+        setFullName(userData.name);
+        setEmail(userData.email);
+      }
+    };
+    loadUser();
+  }, []);
 
   return (
     <div className="pageContainer">
@@ -24,13 +83,30 @@ export default function PerfilPage() {
       <div className={styles.container}>
         {/* Header de usuario */}
         <div className={styles.userHeader}>
-          <img src="/images/profile.jpg" alt="Avatar" className={styles.avatar}/>
+          <div className={styles.avatarContainer} onClick={handleImageClick}>
+            {user?.profilePicture ? (
+              <img src={user.profilePicture} alt="Avatar" className={styles.avatar}/>
+            ) : (
+              <div className={styles.avatarPlaceholder}>
+                {user?.name?.charAt(0).toUpperCase()}
+              </div>
+            )}
+            <div className={styles.uploadOverlay}>
+              <span>Cambiar foto</span>
+            </div>
+          </div>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleImageUpload}
+            accept="image/*"
+            style={{ display: 'none' }}
+          />
           <div className={styles.userInfo}>
             <h2>{fullName}</h2>
             <p>{email}</p>
             <div className={styles.tags}>
-              <span>Ventas</span>
-              <span>Gerente</span>
+              <span>{user?.role || 'Usuario'}</span>
             </div>
           </div>
         </div>
