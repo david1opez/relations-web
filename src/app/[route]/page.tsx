@@ -34,7 +34,7 @@ export default function RoutePage() {
       </div>
 
       <div className={styles.contentColumn}>
-        {activePage.toLowerCase() === "inicio" && <Inicio />}
+        {/* {activePage.toLowerCase() === "inicio" && <Inicio />} */}
         {activePage.toLowerCase() === "proyectos" && !id && <Proyectos />}
         {activePage.toLowerCase() === "proyectos" && id && <Proyecto id={id} />}
         {activePage.toLowerCase() === "llamadas" && <Llamadas />}

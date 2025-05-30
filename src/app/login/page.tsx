@@ -53,7 +53,7 @@ export default function LoginPage() {
           console.log("User data:", data);
 
           setTimeout(() => {
-            router.push("/inicio");
+            router.push("/proyectos");
           }, 2000);
         })
         .catch(console.error);

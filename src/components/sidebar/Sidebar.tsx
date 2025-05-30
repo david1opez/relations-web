@@ -25,7 +25,7 @@ export default function Sidebar ({ onPageChange }:  SidebarProps) {
 
   const [activePage, setActivePage] = useState<string>(route);
   const [pages, setPages] = useState<SidebarItemType[]>([
-    { icon: "house", name: "Inicio" },
+    // { icon: "house", name: "Inicio" },
     { icon: "rocket", name: "Proyectos" },
     { icon: "phone", name: "Llamadas"},
     { icon: "activity", name: "Admin" },
