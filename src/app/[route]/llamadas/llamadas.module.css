@@ -327,3 +327,29 @@
   right: 1rem;
 }
 
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.analyzeAllButton {
+  background-color: var(--card-background);
+  color: var(--text-primary);
+  border: 1px solid var(--gray);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-family: "LayGrotesk-Medium", sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: 1rem;
+}
+
+.analyzeAllButton:hover {
+  background: var(--blue);
+  color: var(--background);
+  border-color: var(--blue);
+}
+

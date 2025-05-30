@@ -16,12 +16,14 @@ import Searchbar from "@/components/searchbar/Searchbar";
 import { Call, CallDetails } from "@/types/CallItemTypes";
 import { fetchCalls } from '@/services/callsService';
 import CallItem from "@/components/callItem/CallItem";
+import { deleteCall } from "@/utils/CallManagement";
 
 export default function Llamadas() {
   const [loading, setLoading] = useState<boolean>(true);
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const [selectedCall, setSelectedCall] = useState<Call | null>(null);
   const [callDetails, setCallDetails] = useState<CallDetails | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState<string | null>(null); // Track which call is being deleted
 
   const [analyzed, setAnalyzed] = useState<Call[]>([]);
   const [notAnalyzed, setNotAnalyzed] = useState<Call[]>([]);
@@ -51,9 +53,24 @@ export default function Llamadas() {
   };
 
   const handleDelete = async (id: string) => {
-    setLoading(true);
-    //PENDING
-    setLoading(false);
+    try {
+      setDeleteLoading(id);
+      
+      await deleteCall(id);
+      
+      // Update both analyzed and not analyzed states
+      setAnalyzed(prev => prev.filter(call => call.callID !== id));
+      setNotAnalyzed(prev => prev.filter(call => call.callID !== id));
+      setFilteredAnalyzed(prev => prev.filter(call => call.callID !== id));
+      setFilteredNotAnalyzed(prev => prev.filter(call => call.callID !== id));
+      
+      console.log(`Llamada eliminada correctamente`);
+    } catch (error) {
+      console.error("Error al eliminar la llamada:", error);
+      alert("No se pudo eliminar la llamada. Por favor, inténtalo de nuevo.");
+    } finally {
+      setDeleteLoading(null);
+    }
   };
 
   const handleAnalyze = async (id: string) => {
@@ -151,7 +168,16 @@ export default function Llamadas() {
       {!showDetails ? (
         <div className={styles.contentContainer}>
           <div className={styles.sectionContainer}>
-            <h2 className={styles.listTitle}>Por analizar</h2>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.listTitle}>Por analizar</h2>
+              {/* {notAnalyzed.length > 0 && (
+                <button 
+                  className={styles.analyzeAllButton}
+                >
+                  Analizar todas
+                </button>
+              )} */}
+            </div>
             
             <Searchbar onChange={handleSearchNotAnalyzed}/>
             
@@ -162,6 +188,8 @@ export default function Llamadas() {
                   call={call}
                   onClick={(id) => {}}
                   onAnalyze={() => handleAnalyze(call.callID)}
+                  onDelete={handleDelete}
+                  loading={deleteLoading === call.callID}
                 />
               ))}
             </div>

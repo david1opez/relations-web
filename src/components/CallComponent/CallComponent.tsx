@@ -5,6 +5,7 @@ import styles from "./CallComponent.module.css";
 import OptionsMenu from "../optionsMenu/OptionsMenu";
 import AssignProjectPopup from "./AssignProjectPopup";
 import MetadataItem from "../metadataItem/MetadataItem";
+import Dialog from "../dialog/Dialog";
 
 // UTILS
 import { calcDuration, parseDate } from "@/utils/dateUtils";
@@ -15,11 +16,16 @@ interface CallComponentProps {
   onClick: (id: string) => void;
   onDelete?: (id: string) => void;
   onAnalyze?: (id: string) => void;
+  loading?: boolean;
 }
 
-export default function CallComponent({ call, onClick, onDelete, onAnalyze }: CallComponentProps) {
+export default function CallComponent({ call, onClick, onDelete, onAnalyze, loading: externalLoading }: CallComponentProps) {
   const [isAssignProjectOpen, setIsAssignProjectOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [internalLoading, setInternalLoading] = useState(false);
+  
+  // Use either external or internal loading state
+  const loading = externalLoading ?? internalLoading;
 
   const handleMenuItemClick = async (action: string) => {
     switch (action) {
@@ -27,24 +33,35 @@ export default function CallComponent({ call, onClick, onDelete, onAnalyze }: Ca
         onClick(call.callID);
         break;
       case "analyze":
-        setLoading(true);
+        setInternalLoading(true);
         try {
           await onAnalyze?.(call.callID);
         } finally {
-          setLoading(false);
+          setInternalLoading(false);
         }
         break;
-
       case "delete":
-        onDelete?.(call.callID);
+        setIsDeleteDialogOpen(true);
         break;
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      setInternalLoading(true);
+      await onDelete?.(call.callID);
+      setIsDeleteDialogOpen(false);
+    } catch (error) {
+      console.error("Error al eliminar la llamada:", error);
+      alert("Ocurrió un error al eliminar la llamada");
+    } finally {
+      setInternalLoading(false);
     }
   };
 
   return (
     <>
       <div className={styles.callCard}>
-
         {loading && (
           <div className={styles.loadingOverlay}>
             <div className={styles.spinner} />
@@ -95,6 +112,14 @@ export default function CallComponent({ call, onClick, onDelete, onAnalyze }: Ca
         attendees={call.attendees || []}
         date={parseDate(call.startTime)}
         duration={calcDuration(call.startTime, call.endTime)}
+      />
+
+      <Dialog
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onConfirm={handleDelete}
+        title="Confirmar eliminación"
+        message={`¿Estás seguro que quieres eliminar la llamada "${call.title}"?`}
       />
     </>
   );
