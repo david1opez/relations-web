@@ -196,8 +196,15 @@
   margin-bottom: 2rem;
 }
 
-.intervalSelector {
-  width: 200px;
+.filters {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.intervalSelector,
+.userSelector {
+  min-width: 200px;
 }
 
 .loadingMessage,

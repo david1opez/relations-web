@@ -10,10 +10,11 @@ import { LineChartComponent } from "@/components/lineChart/LineChart"
 import Dropdown from "@/components/dropdown/Dropdown"
 
 // UTILS
-import { getCallHistory, CallHistoryResponse } from "@/utils/CallAnalysisAPI"
+import { getCallHistory, CallHistoryResponse, getProjectUsers, ProjectUser } from "@/utils/CallAnalysisAPI"
 
 const TABS = ["Duración promedio", "Resolución de problemas", "Satisfacción"]
 const INTERVAL_OPTIONS = ['Diario', 'Semanal', 'Mensual']
+const ALL_USERS_OPTION = { userID: 0, name: "Todos los usuarios", projectRole: "" }
 
 const INTERVAL_MAP = {
   'Diario': 'daily',
@@ -29,12 +30,26 @@ export default function Admin() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedInterval, setSelectedInterval] = useState<IntervalType>('daily')
+  const [users, setUsers] = useState<ProjectUser[]>([ALL_USERS_OPTION])
+  const [selectedUser, setSelectedUser] = useState<number>(0)
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const projectUsers = await getProjectUsers(3)
+        setUsers([ALL_USERS_OPTION, ...projectUsers])
+      } catch (err) {
+        console.error('Error fetching users:', err)
+      }
+    }
+    fetchUsers()
+  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
       try {
-        const data = await getCallHistory(3, selectedInterval)
+        const data = await getCallHistory(3, selectedInterval, selectedUser || undefined)
         setCallHistory(data)
         setError(null)
       } catch (err) {
@@ -46,7 +61,7 @@ export default function Admin() {
     }
 
     fetchData()
-  }, [selectedInterval])
+  }, [selectedInterval, selectedUser])
 
   const getKpiData = () => {
     if (!callHistory || callHistory.intervals.length === 0) return []
@@ -61,18 +76,18 @@ export default function Admin() {
     const previousDuration = hasPreviousData ? callHistory.averageDurations[previousIndex] : currentDuration
     const durationDiff = hasPreviousData ? currentDuration - previousDuration : 0
 
-    const currentResolution = callHistory.resolvedPercentages[lastIndex]
-    const previousResolution = hasPreviousData ? callHistory.resolvedPercentages[previousIndex] : currentResolution
-    const resolutionDiff = hasPreviousData ? currentResolution - previousResolution : 0
+    const currentResolution = Number(callHistory.resolvedPercentages[lastIndex].toFixed(2))
+    const previousResolution = hasPreviousData ? Number(callHistory.resolvedPercentages[previousIndex].toFixed(2)) : currentResolution
+    const resolutionDiff = hasPreviousData ? Number((currentResolution - previousResolution).toFixed(2)) : 0
 
-    const currentSatisfaction = callHistory.positiveSentimentPercentages[lastIndex]
-    const previousSatisfaction = hasPreviousData ? callHistory.positiveSentimentPercentages[previousIndex] : currentSatisfaction
-    const satisfactionDiff = hasPreviousData ? currentSatisfaction - previousSatisfaction : 0
+    const currentSatisfaction = Number(callHistory.positiveSentimentPercentages[lastIndex].toFixed(2))
+    const previousSatisfaction = hasPreviousData ? Number(callHistory.positiveSentimentPercentages[previousIndex].toFixed(2)) : currentSatisfaction
+    const satisfactionDiff = hasPreviousData ? Number((currentSatisfaction - previousSatisfaction).toFixed(2)) : 0
 
     const formatDuration = (seconds: number) => {
       if (seconds === 0) return '0s'
       const minutes = Math.floor(seconds / 60)
-      const remainingSeconds = seconds % 60
+      const remainingSeconds = Number((seconds % 60).toFixed(2))
       return minutes > 0 ? `${minutes}m ${remainingSeconds}s` : `${remainingSeconds}s`
     }
 
@@ -86,16 +101,16 @@ export default function Admin() {
       },
       {
         title: "Porcentaje de resolución de problemas",
-        value: `${currentResolution}%`,
-        sub: hasPreviousData ? `${resolutionDiff > 0 ? '+' : ''}${resolutionDiff.toFixed(1)}%` : 'Sin datos previos',
+        value: `${currentResolution.toFixed(2)}%`,
+        sub: hasPreviousData ? `${resolutionDiff > 0 ? '+' : ''}${resolutionDiff.toFixed(2)}%` : 'Sin datos previos',
         subDesc: hasPreviousData ? "Comparado con el período anterior" : "No hay datos para comparar",
         negative: resolutionDiff < 0,
       },
       {
         title: "Porcentaje de satisfacción",
-        value: `${currentSatisfaction}%`,
-        sub: hasPreviousData ? `${satisfactionDiff > 0 ? '+' : ''}${satisfactionDiff.toFixed(1)}%` : 'Sin datos previos',
-        subDesc: `Positiva: ${currentSatisfaction}% | Negativa: ${(100 - currentSatisfaction).toFixed(1)}%`,
+        value: `${currentSatisfaction.toFixed(2)}%`,
+        sub: hasPreviousData ? `${satisfactionDiff > 0 ? '+' : ''}${satisfactionDiff.toFixed(2)}%` : 'Sin datos previos',
+        subDesc: `Positiva: ${currentSatisfaction.toFixed(2)}% | Negativa: ${(100 - currentSatisfaction).toFixed(2)}%`,
         negative: satisfactionDiff < 0,
       },
     ]
@@ -149,12 +164,24 @@ export default function Admin() {
           icon="activity"
           subpages={[]}
         />
-        <div className={styles.intervalSelector}>
-          <Dropdown
-            options={INTERVAL_OPTIONS}
-            value={Object.entries(INTERVAL_MAP).find(([_, value]) => value === selectedInterval)?.[0] || 'Diario'}
-            onChange={(value: string) => setSelectedInterval(INTERVAL_MAP[value as keyof typeof INTERVAL_MAP])}
-          />
+        <div className={styles.filters}>
+          <div className={styles.intervalSelector}>
+            <Dropdown
+              options={INTERVAL_OPTIONS}
+              value={Object.entries(INTERVAL_MAP).find(([_, value]) => value === selectedInterval)?.[0] || 'Diario'}
+              onChange={(value: string) => setSelectedInterval(INTERVAL_MAP[value as keyof typeof INTERVAL_MAP])}
+            />
+          </div>
+          <div className={styles.userSelector}>
+            <Dropdown
+              options={users.map(user => user.name)}
+              value={users.find(user => user.userID === selectedUser)?.name || ALL_USERS_OPTION.name}
+              onChange={(value: string) => {
+                const user = users.find(u => u.name === value)
+                setSelectedUser(user?.userID || 0)
+              }}
+            />
+          </div>
         </div>
       </div>
 

@@ -64,8 +64,31 @@ export interface CallHistoryResponse {
   resolvedPercentages: number[];
 }
 
-export async function getCallHistory(projectId: number, interval: 'daily' | 'weekly' | 'monthly'): Promise<CallHistoryResponse> {
-  const response = await fetch(`https://relations-data-api.vercel.app/call/history?projectID=${projectId}&interval=${interval}`);
+export interface ProjectUser {
+  userID: number;
+  name: string;
+  projectRole: string;
+}
+
+export async function getProjectUsers(projectId: number): Promise<ProjectUser[]> {
+  const response = await fetch(`https://relations-data-api.vercel.app/project/projects/${projectId}/users`);
+  
+  if (!response.ok) {
+    throw new Error('Failed to fetch project users');
+  }
+
+  return response.json();
+}
+
+export async function getCallHistory(projectId: number, interval: 'daily' | 'weekly' | 'monthly', userId?: number): Promise<CallHistoryResponse> {
+  const url = new URL('https://relations-data-api.vercel.app/call/history');
+  url.searchParams.append('projectID', projectId.toString());
+  url.searchParams.append('interval', interval);
+  if (userId) {
+    url.searchParams.append('userID', userId.toString());
+  }
+  
+  const response = await fetch(url.toString());
   
   if (!response.ok) {
     throw new Error('Failed to fetch call history data');
