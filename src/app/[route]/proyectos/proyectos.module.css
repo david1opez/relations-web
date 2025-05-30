@@ -1,3 +1,13 @@
+.topBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-right: 1rem;
+}
+
 .projectsContainer {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -97,3 +107,32 @@
   text-align: center;
 }
   
+.filterButtons {
+  display: flex;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.filterButtons button {
+  background-color: var(--dark-gray); /* más contraste con fondo */
+  color: var(--white);
+  border: 1px solid var(--gray);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.filterButtons button:hover {
+  background-color: var(--accent-light);
+  border-color: var(--accent);
+}
+
+.activeFilter {
+  background-color: var(--accent);
+  color: var(--black);
+  border-color: var(--accent);
+}
