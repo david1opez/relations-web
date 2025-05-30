@@ -21,23 +21,20 @@ export default function CallComponent({ call, onClick, onDelete, onAnalyze }: Ca
   const [isAssignProjectOpen, setIsAssignProjectOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleMenuItemClick = (action: string) => {
+  const handleMenuItemClick = async (action: string) => {
     switch (action) {
       case "view":
         onClick(call.callID);
         break;
       case "analyze":
         setLoading(true);
-        setTimeout(() => {
-          //call api to analyze call
+        try {
+          await onAnalyze?.(call.callID);
+        } finally {
           setLoading(false);
-          onAnalyze?.(call.callID);
-
         }
-        , 5000); // Simulate API call delay
-
-        //onAnalyze?.(call.callID);
         break;
+
       case "delete":
         onDelete?.(call.callID);
         break;

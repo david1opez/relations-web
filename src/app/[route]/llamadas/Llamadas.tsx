@@ -2,7 +2,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import styles from "./llamadas.module.css"; 
+import styles from "./llamadas.module.css";
+import { analyzeCall } from '@/services/callsService'; 
+import { fetchCallSentimentAnalysis } from "@/services/callsService";
 
 // COMPONENTS
 import PageTitle from "@/components/pageTitle/PageTitle";
@@ -29,9 +31,23 @@ export default function Llamadas() {
 
   const handleViewDetails = async (id: string) => {
     setLoading(true);
-    //PENDING
-    setLoading(false);
-    setShowDetails(true);
+
+    try {
+      const call = analyzed.find((c) => c.callID === id);
+      if (!call) return;
+
+      setSelectedCall(call);
+
+      const details = await fetchCallSentimentAnalysis(id);
+      setCallDetails(details);
+
+      setShowDetails(true);
+    } catch (error) {
+      console.error("Error al obtener análisis de sentimientos:", error);
+      alert("Error al cargar detalles de la llamada.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDelete = async (id: string) => {
@@ -40,14 +56,34 @@ export default function Llamadas() {
     setLoading(false);
   };
 
-  const handleAnalyze = (id: string) => {
+  const handleAnalyze = async (id: string) => {
     const call = notAnalyzed.find((call) => call.callID === id);
-    if (!call) return;
-    setAnalyzed((prev) => [...prev, call!]);
-    setFilteredAnalyzed((prev) => [...prev, call!]);
-    setNotAnalyzed((prev) => prev.filter((call) => call.callID !== id));
-    setFilteredNotAnalyzed((prev) => prev.filter((call) => call.callID !== id));
-  }
+    if (!call || !call.summary) return;
+
+    try {
+      // 1. Llamar al endpoint de análisis
+      await analyzeCall(call.callID, call.summary);
+
+      // 2. Llamar al endpoint que marca isAnalyzed = true en la BD
+      await fetch("http://localhost:3001/call/markAnalyzed", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ callID: call.callID }),
+      });
+
+      // 3. Actualizar el estado local del frontend
+      const updatedCall = { ...call, isAnalyzed: true };
+      setAnalyzed((prev) => [...prev, updatedCall]);
+      setFilteredAnalyzed((prev) => [...prev, updatedCall]);
+      setNotAnalyzed((prev) => prev.filter((c) => c.callID !== id));
+      setFilteredNotAnalyzed((prev) => prev.filter((c) => c.callID !== id));
+
+    } catch (error) {
+      console.error("Error al analizar llamada:", error);
+      alert("Ocurrió un error al analizar la llamada ");
+    }
+  };
+
 
   // Add search handlers for both sections
   const handleSearchAnalyzed = (value: string) => {
