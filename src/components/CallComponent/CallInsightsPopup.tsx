@@ -324,36 +324,42 @@ export default function CallInsightsPopup({
               </h3>
               <div className={styles.callDetailsContentContainer}>
                 {!loading ? (
-                  callDetails?.ociAnalysis?.relevantAspects.map((aspect, i) => (
-                    <div key={i} className={styles.aspectContainer}>
-                      <p className={styles.aspectText}>{aspect.text}</p>
-                      <p
-                        className={styles.aspectSentiment}
-                        style={{
-                          border: `1px solid ${
-                            aspect.sentiment === "Negative"
-                              ? "var(--red)"
-                              : aspect.sentiment === "Positive"
-                              ? "var(--green)"
-                              : "var(--gray)"
-                          }`,
-                          color:
-                            aspect.sentiment === "Negative"
-                              ? "var(--red)"
-                              : aspect.sentiment === "Positive"
-                              ? "var(--green)"
-                              : "var(--gray)",
-                        }}
-                      >
-                        {aspect.sentiment}
-                        <span style={{ marginLeft: "0.3rem" }}>
-                          {aspect.confidence
-                            ? ` (${Math.round(aspect.confidence * 100)}%)`
-                            : ""}
-                        </span>
-                      </p>
-                    </div>
-                  ))
+                  callDetails?.ociAnalysis?.relevantAspects?.length ? (
+                    callDetails.ociAnalysis.relevantAspects.map((aspect, i) => (
+                      <div key={i} className={styles.aspectContainer}>
+                        <p className={styles.aspectText}>{aspect.text}</p>
+                        <p
+                          className={styles.aspectSentiment}
+                          style={{
+                            border: `1px solid ${
+                              aspect.sentiment === "Negative"
+                                ? "var(--red)"
+                                : aspect.sentiment === "Positive"
+                                ? "var(--green)"
+                                : "var(--gray)"
+                            }`,
+                            color:
+                              aspect.sentiment === "Negative"
+                                ? "var(--red)"
+                                : aspect.sentiment === "Positive"
+                                ? "var(--green)"
+                                : "var(--gray)",
+                          }}
+                        >
+                          {aspect.sentiment}
+                          <span style={{ marginLeft: "0.3rem" }}>
+                            {aspect.confidence
+                              ? ` (${Math.round(aspect.confidence * 100)}%)`
+                              : ""}
+                          </span>
+                        </p>
+                      </div>
+                    ))
+                  ) : (
+                  <p className={styles.text} style={{ fontStyle: "italic", color: "rgba(255, 255, 255, 0.7)" }}>
+                    No se encontraron palabras clave para esta llamada.
+                  </p>
+                  )
                 ) : (
                   <ActivityIndicator color="var(--blue)" />
                 )}
