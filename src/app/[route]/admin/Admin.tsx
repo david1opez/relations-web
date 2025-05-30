@@ -10,10 +10,11 @@ import { LineChartComponent } from "@/components/lineChart/LineChart"
 import Dropdown from "@/components/dropdown/Dropdown"
 
 // UTILS
-import { getCallHistory, CallHistoryResponse } from "@/utils/CallAnalysisAPI"
+import { getCallHistory, CallHistoryResponse, getProjectUsers, ProjectUser } from "@/utils/CallAnalysisAPI"
 
 const TABS = ["Duración promedio", "Resolución de problemas", "Satisfacción"]
 const INTERVAL_OPTIONS = ['Diario', 'Semanal', 'Mensual']
+const ALL_USERS_OPTION = { userID: 0, name: "Todos los usuarios", projectRole: "" }
 
 const INTERVAL_MAP = {
   'Diario': 'daily',
@@ -29,12 +30,26 @@ export default function Admin() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedInterval, setSelectedInterval] = useState<IntervalType>('daily')
+  const [users, setUsers] = useState<ProjectUser[]>([ALL_USERS_OPTION])
+  const [selectedUser, setSelectedUser] = useState<number>(0)
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const projectUsers = await getProjectUsers(3)
+        setUsers([ALL_USERS_OPTION, ...projectUsers])
+      } catch (err) {
+        console.error('Error fetching users:', err)
+      }
+    }
+    fetchUsers()
+  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
       try {
-        const data = await getCallHistory(3, selectedInterval)
+        const data = await getCallHistory(3, selectedInterval, selectedUser || undefined)
         setCallHistory(data)
         setError(null)
       } catch (err) {
@@ -46,7 +61,7 @@ export default function Admin() {
     }
 
     fetchData()
-  }, [selectedInterval])
+  }, [selectedInterval, selectedUser])
 
   const getKpiData = () => {
     if (!callHistory || callHistory.intervals.length === 0) return []
@@ -149,12 +164,24 @@ export default function Admin() {
           icon="activity"
           subpages={[]}
         />
-        <div className={styles.intervalSelector}>
-          <Dropdown
-            options={INTERVAL_OPTIONS}
-            value={Object.entries(INTERVAL_MAP).find(([_, value]) => value === selectedInterval)?.[0] || 'Diario'}
-            onChange={(value: string) => setSelectedInterval(INTERVAL_MAP[value as keyof typeof INTERVAL_MAP])}
-          />
+        <div className={styles.filters}>
+          <div className={styles.intervalSelector}>
+            <Dropdown
+              options={INTERVAL_OPTIONS}
+              value={Object.entries(INTERVAL_MAP).find(([_, value]) => value === selectedInterval)?.[0] || 'Diario'}
+              onChange={(value: string) => setSelectedInterval(INTERVAL_MAP[value as keyof typeof INTERVAL_MAP])}
+            />
+          </div>
+          <div className={styles.userSelector}>
+            <Dropdown
+              options={users.map(user => user.name)}
+              value={users.find(user => user.userID === selectedUser)?.name || ALL_USERS_OPTION.name}
+              onChange={(value: string) => {
+                const user = users.find(u => u.name === value)
+                setSelectedUser(user?.userID || 0)
+              }}
+            />
+          </div>
         </div>
       </div>
 
