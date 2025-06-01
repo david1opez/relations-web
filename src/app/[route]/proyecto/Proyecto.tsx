@@ -12,6 +12,7 @@ import Llamadas from "./llamadas/Llamadas"
 import Recursos from "./recursos/Recursos"
 import Equipos from "./equipos/Equipos"
 import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator"
+import Miembros from "./miembros/Miembros"
 
 // UTILS
 import { parseDate } from "@/utils/dateUtils"
@@ -33,7 +34,8 @@ type Project = {
   clientDescription?: string
 }
 
-const Tabs: ("informacion" | "llamadas" | "recursos" | "equipos")[] = ["informacion", "llamadas", "recursos"]
+const Tabs = ["informacion", "llamadas", "recursos", "equipos", "miembros"] as const
+type TabType = typeof Tabs[number]
 
 export default function Proyecto({ id }: { id: number }) {
   const router = useRouter()
@@ -41,10 +43,10 @@ export default function Proyecto({ id }: { id: number }) {
 
   const [project, setProject] = useState<Project | null>(null)
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<"informacion" | "llamadas" | "recursos" | "equipos">("informacion")
+  const [activeTab, setActiveTab] = useState<TabType>("informacion")
 
   useEffect(() => {
-    const tab = searchParams.get("tab") as "informacion" | "llamadas" | "recursos" | "equipos" | null
+    const tab = searchParams.get("tab") as TabType | null
     if (tab) setActiveTab(tab)
     else setActiveTab("informacion")
   }, [searchParams])
@@ -167,7 +169,9 @@ export default function Proyecto({ id }: { id: number }) {
                   ? "Recursos"
                   : tab === "equipos"
                     ? "Equipos"
-                    : ""}
+                    : tab === "miembros"
+                      ? "Miembros"
+                      : ""}
           </button>
         ))}
       </div>
@@ -180,6 +184,8 @@ export default function Proyecto({ id }: { id: number }) {
         <Recursos id={id} />
       ) : activeTab === "equipos" ? (
         <Equipos id={id} />
+      ) : activeTab === "miembros" ? (
+        <Miembros id={id} />
       ) : null}
     </div>
   )

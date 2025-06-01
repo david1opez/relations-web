@@ -1,0 +1,151 @@
+.container {
+  padding: 24px;
+  background: var(--black);
+  border-radius: 12px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 20px;
+  color: var(--white);
+  font-weight: 500;
+  margin: 0;
+}
+
+.count {
+  font-size: 14px;
+  color: var(--light-gray);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.membersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.memberCard {
+  background: #1A1A1A;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.memberCard:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.memberInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--black);
+}
+
+.details {
+  flex: 1;
+}
+
+.name {
+  font-size: 16px;
+  color: var(--white);
+  margin: 0 0 4px 0;
+  font-weight: 500;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.email {
+  color: var(--accent);
+}
+
+.department {
+  color: var(--light-gray);
+  position: relative;
+  padding-left: 12px;
+}
+
+.department::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #666;
+}
+
+.roles {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.projectRole, .systemRole {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.projectRole {
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.systemRole {
+  color: var(--light-gray);
+  border: 1px solid #444;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--light-gray);
+}
+
+.emptyIcon {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.emptyText {
+  font-size: 14px;
+  margin: 0;
+} 
