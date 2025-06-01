@@ -96,6 +96,11 @@ export default function Proyectos() {
     setFilteredProjects((prev) => prev.filter((project) => project.projectID !== projectId))
   }
 
+  const handleProjectAdded = async () => {
+    await fetchProjects() // Refetch projects after adding a new one
+    setShowAddPopup(false)
+  }
+
   if (loading) {
     return (
       <div className="pageContainer">
@@ -115,7 +120,7 @@ export default function Proyectos() {
           <Searchbar value={searchTerm} onChange={handleSearch} />
         </div>
       </div>
-      <AddProjectPopup isOpen={showAddPopup} onClose={() => setShowAddPopup(false)} onProjectAdded={() => setShowAddPopup(false)} />
+      <AddProjectPopup isOpen={showAddPopup} onClose={() => setShowAddPopup(false)} onProjectAdded={handleProjectAdded} />
 
       {loading ? (
         <div className={styles.loadingContainer}>
@@ -135,6 +140,7 @@ export default function Proyectos() {
                 key={project.projectID}
                 project={project}
                 onClick={() => handleProjectClick(project.projectID)}
+                onDelete={handleDeleteProject}
               />
             ))
           ) : (
