@@ -126,7 +126,6 @@ export default function Llamadas() {
       const searchTerm = value.toLowerCase();
       const filtered = notAnalyzed.filter((call) =>
         (call.title.toLowerCase() || '').includes(searchTerm) ||
-        (call.summary?.toLowerCase() || '').includes(searchTerm) ||
         call.attendees?.some(attendee => 
           (attendee?.toLowerCase() || '').includes(searchTerm)
         )

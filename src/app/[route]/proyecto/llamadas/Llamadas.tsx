@@ -63,10 +63,19 @@ export default function Llamadas({ id }: { id: number }) {
   }, [id]);
 
   const handleSearch = (value: string) => {
-    const filtered = calls.filter(call =>
-      call.title.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredCalls(filtered);
+
+    if (value.trim() === "") {
+      setFilteredCalls(calls);
+    } else {
+      const searchTerm = value.toLowerCase();
+      const filtered = calls.filter((call) =>
+        (call.title.toLowerCase() || '').includes(searchTerm) ||
+        call.attendees?.some(attendee => 
+          (attendee?.toLowerCase() || '').includes(searchTerm)
+        )
+      );
+      setFilteredCalls(filtered);
+    }
   };
 
   return (
