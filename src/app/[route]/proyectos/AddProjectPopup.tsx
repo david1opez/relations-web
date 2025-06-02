@@ -8,6 +8,23 @@ interface AddProjectPopupProps {
   isOpen: boolean;
   onClose: () => void;
   onProjectAdded: () => void;
+  projectToEdit?: {
+    projectID: number;
+    name: string;
+    description: string | null;
+    problemDescription: string | null;
+    reqFuncionales: string | null;
+    reqNoFuncionales: string | null;
+    startDate: string | null;
+    endDate: string | null;
+    client?: {
+      email: string;
+      name: string;
+      organization?: string;
+      description?: string;
+    };
+    users?: Array<{ userID: number; projectRole: "admin" | "colaborator" }>;
+  };
 }
 
 interface Client {
@@ -19,10 +36,10 @@ interface Client {
 
 interface SelectedUser {
   userID: number;
-  projectRole: "admin" | "colaborator";
+  projectRole: "developer" | "manager" | "admin" | "colaborator";
 }
 
-export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: AddProjectPopupProps) {
+export default function AddProjectPopup({ isOpen, onClose, onProjectAdded, projectToEdit }: AddProjectPopupProps) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [clientEmail, setClientEmail] = useState("");
@@ -65,6 +82,55 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [])
+
+  useEffect(() => {
+    if (projectToEdit && isOpen) {
+      // Reset form
+      setName(projectToEdit.name);
+      setDescription(projectToEdit.description || "");
+      setProblemDescription(projectToEdit.problemDescription || "");
+      setReqFuncionales(projectToEdit.reqFuncionales || "");
+      setReqNoFuncionales(projectToEdit.reqNoFuncionales || "");
+      setStartDate(projectToEdit.startDate ? new Date(projectToEdit.startDate).toISOString().split('T')[0] : "");
+      setEndDate(projectToEdit.endDate ? new Date(projectToEdit.endDate).toISOString().split('T')[0] : "");
+      
+      if (projectToEdit.client) {
+        setSelectedClient(projectToEdit.client);
+        setClientEmail(projectToEdit.client.email);
+      }
+
+      // Fetch current project users
+      const fetchProjectUsers = async () => {
+        try {
+          const response = await fetch(`https://relations-data-api.vercel.app/project/projects/${projectToEdit.projectID}/users`);
+          if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+          }
+          const users = await response.json();
+          setSelectedUsers(users.map((user: any) => ({
+            userID: user.userID,
+            projectRole: user.projectRole
+          })));
+        } catch (error) {
+          console.error("Error fetching project users:", error);
+        }
+      };
+
+      fetchProjectUsers();
+    } else {
+      // Reset form when not editing
+      setName("");
+      setDescription("");
+      setProblemDescription("");
+      setReqFuncionales("");
+      setReqNoFuncionales("");
+      setStartDate("");
+      setEndDate("");
+      setSelectedClient(null);
+      setClientEmail("");
+      setSelectedUsers([]);
+    }
+  }, [projectToEdit, isOpen]);
 
   const fetchClients = async () => {
     try {
@@ -114,13 +180,13 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
 
   const handleUserSelection = (userId: number, checked: boolean) => {
     if (checked) {
-      setSelectedUsers(prev => [...prev, { userID: userId, projectRole: "colaborator" }]);
+      setSelectedUsers(prev => [...prev, { userID: userId, projectRole: "developer" }]);
     } else {
       setSelectedUsers(prev => prev.filter(user => user.userID !== userId));
     }
   };
 
-  const handleUserRoleChange = (userId: number, role: "admin" | "colaborator") => {
+  const handleUserRoleChange = (userId: number, role: "developer" | "manager" | "admin" | "colaborator") => {
     setSelectedUsers(prev => 
       prev.map(user => 
         user.userID === userId ? { ...user, projectRole: role } : user
@@ -158,8 +224,12 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
     }
 
     try {
-      const response = await fetch("https://relations-data-api.vercel.app/project/projects", {
-        method: "POST",
+      const url = projectToEdit 
+        ? `https://relations-data-api.vercel.app/project/projects/${projectToEdit.projectID}`
+        : "https://relations-data-api.vercel.app/project/projects";
+
+      const response = await fetch(url, {
+        method: projectToEdit ? "PATCH" : "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -173,7 +243,7 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
       onProjectAdded()
       onClose()
     } catch (error) {
-      console.error("Error adding project:", error)
+      console.error(projectToEdit ? "Error updating project:" : "Error adding project:", error)
     } finally {
       setLoading(false)
     }
@@ -213,7 +283,7 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
             </svg>
           </div>
           <div className={styles.headerContent}>
-            <h2 className={styles.title}>Agregar Proyecto</h2>
+            <h2 className={styles.title}>{projectToEdit ? "Editar Proyecto" : "Agregar Proyecto"}</h2>
           </div>
         </div>
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -424,10 +494,12 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
                         </div>
                         {isSelected && (
                           <select
-                            value={selectedUsers.find(su => su.userID === user.userID)?.projectRole || "colaborator"}
-                            onChange={(e) => handleUserRoleChange(user.userID, e.target.value as "admin" | "colaborator")}
+                            value={selectedUsers.find(su => su.userID === user.userID)?.projectRole || "developer"}
+                            onChange={(e) => handleUserRoleChange(user.userID, e.target.value as "developer" | "manager" | "admin" | "colaborator")}
                             className={styles.userRoleSelect}
                           >
+                            <option value="manager">Manager</option>
+                            <option value="developer">Developer</option>
                             <option value="admin">Admin</option>
                             <option value="colaborator">Colaborador</option>
                           </select>
@@ -447,7 +519,7 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
                 <span>Guardando...</span>
               </>
             ) : (
-              "Agregar Proyecto"
+              projectToEdit ? "Guardar Cambios" : "Agregar Proyecto"
             )}
           </button>
         </form>
