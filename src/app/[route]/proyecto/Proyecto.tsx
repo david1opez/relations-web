@@ -10,7 +10,6 @@ import MetadataItem from "@/components/metadataItem/MetadataItem"
 import Informacion from "./informacion/Informacion"
 import Llamadas from "./llamadas/Llamadas"
 import Recursos from "./recursos/Recursos"
-import Equipos from "./equipos/Equipos"
 import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator"
 import Miembros from "./miembros/Miembros"
 import AddProjectPopup from "../proyectos/AddProjectPopup"
@@ -35,7 +34,7 @@ type Project = {
   clientDescription?: string
 }
 
-const Tabs = ["informacion", "llamadas", "recursos", "equipos", "miembros"] as const
+const Tabs = ["informacion", "llamadas", "recursos", "miembros"] as const
 type TabType = typeof Tabs[number]
 
 export default function Proyecto({ id }: { id: number }) {
@@ -179,8 +178,6 @@ export default function Proyecto({ id }: { id: number }) {
                 ? "Llamadas"
                 : tab === "recursos"
                   ? "Recursos"
-                  : tab === "equipos"
-                    ? "Equipos"
                     : tab === "miembros"
                       ? "Miembros"
                       : ""}
@@ -194,8 +191,6 @@ export default function Proyecto({ id }: { id: number }) {
         <Llamadas id={id} />
       ) : activeTab === "recursos" ? (
         <Recursos id={id} />
-      ) : activeTab === "equipos" ? (
-        <Equipos id={id} />
       ) : activeTab === "miembros" ? (
         <Miembros id={id} />
       ) : null}
