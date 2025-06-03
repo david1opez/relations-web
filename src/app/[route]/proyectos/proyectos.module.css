@@ -114,8 +114,8 @@
 }
 
 .filterButtons button {
-  background-color: var(--dark-gray); /* más contraste con fondo */
-  color: var(--white);
+  background-color: transparent;
+  color: var(--light-gray);
   border: 1px solid var(--gray);
   padding: 0.5rem 1rem;
   border-radius: 999px;
@@ -123,15 +123,26 @@
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  transition: all 0.2s ease;
 }
 
 .filterButtons button:hover {
-  background-color: var(--accent-light);
+  background-color: var(--dark-gray);
   border-color: var(--accent);
+  color: var(--white);
 }
 
 .activeFilter {
+  background-color: var(--accent);
+  color: var(--black);
+  border-color: var(--accent);
+  position: relative;
+  padding-right: 2rem;
+  font-weight: 500;
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.activeFilter:hover {
   background-color: var(--accent);
   color: var(--black);
   border-color: var(--accent);
