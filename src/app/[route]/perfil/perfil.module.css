@@ -235,42 +235,31 @@
 }
 
 .settings {
-  background: var(--black);
-  padding: 2rem;
-  border-radius: 12px;
-  border: 1px solid var(--gray);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.settings h4 {
-  color: var(--white);
-  margin: 0;
-  font-size: 1.1rem;
-  font-family: 'LayGrotesk-Medium', sans-serif;
-  font-weight: 500;
+  background-color: var(--black);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1rem;
 }
 
 .inputGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .inputGroup label {
+  display: block;
   color: var(--light-gray);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
 }
 
 .inputGroup input {
-  padding: 0.8rem;
+  width: 100%;
+  padding: 0.7rem;
+  background-color: var(--dark-gray);
   border: 1px solid var(--gray);
-  border-radius: 8px;
-  background: var(--dark-gray);
+  border-radius: 4px;
   color: var(--white);
   font-size: 0.9rem;
-  transition: border-color 0.2s;
 }
 
 .inputGroup input:focus {
@@ -278,55 +267,98 @@
   border-color: var(--accent);
 }
 
-.toggleGroup {
+.inputGroup input:disabled {
+  background-color: var(--gray);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.nameInputContainer {
   display: flex;
-  justify-content: space-between;
+  gap: 1rem;
   align-items: center;
-  padding: 0.8rem 0;
 }
 
-.toggleGroup div {
+.nameInputContainer input {
+  flex: 1;
+}
+
+.editButtons {
   display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
-.toggleGroup div strong {
-  color: var(--white);
-  font-size: 0.9rem;
+.editButton {
+  background: none;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
 }
 
-.toggleGroup div span {
+.editButton:hover {
+  background-color: var(--accent);
+  color: var(--black);
+}
+
+.saveButton {
+  background-color: var(--accent);
+  color: var(--black);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.saveButton:hover {
+  opacity: 0.9;
+}
+
+.saveButton:disabled {
+  background-color: var(--gray);
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  background: none;
+  border: 1px solid var(--light-gray);
   color: var(--light-gray);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.cancelButton:hover {
+  border-color: var(--white);
+  color: var(--white);
+}
+
+.errorMessage {
+  background-color: rgba(171, 51, 51, 0.1);
+  border: 1px solid var(--red);
+  color: var(--red);
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
   font-size: 0.8rem;
 }
 
-.toggle {
-  width: 40px;
-  height: 20px;
-  background: var(--gray);
-  border-radius: 10px;
-  position: relative;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.toggle.active {
-  background: var(--accent);
-}
-
-.toggle::after {
-  content: '';
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  background: var(--white);
-  border-radius: 50%;
-  top: 2px;
-  left: 2px;
-  transition: transform 0.2s;
-}
-
-.toggle.active::after {
-  transform: translateX(20px);
+.successMessage {
+  background-color: rgba(87, 198, 90, 0.1);
+  border: 1px solid var(--green);
+  color: var(--green);
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
 }
