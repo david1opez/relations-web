@@ -21,7 +21,7 @@
   color: var(--white);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   overflow-y: auto;
-  height: 400px;
+  max-height: 90vh;
 }
 
 .closeButton {
@@ -425,4 +425,220 @@
 
 .modalContainer::-webkit-scrollbar-thumb:hover {
   background-color: #777;
+}
+
+.userList {
+  max-height: 200px;
+  overflow-y: auto;
+  background: #222222;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.userList::-webkit-scrollbar {
+  width: 8px;
+}
+
+.userList::-webkit-scrollbar-track {
+  background: #2a2a2a;
+  border-radius: 4px;
+}
+
+.userList::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+.userItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  border-radius: 4px;
+  background: #2a2a2a;
+  margin-bottom: 4px;
+  border: 1px solid #333;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.userName {
+  color: #cccccc;
+  font-size: 14px;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
+.roleSelect {
+  background: #333;
+  border: 1px solid #444;
+  color: #cccccc;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.roleSelect:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  color: var(--light-gray);
+}
+
+/* Estilos para la sección de usuarios */
+.userDropdownContainer {
+  position: relative;
+  z-index: 10;
+}
+
+.userDropdown {
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.userDropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.userDropdown::-webkit-scrollbar-track {
+  background: #222;
+  border-radius: 8px;
+}
+
+.userDropdown::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 8px;
+}
+
+.userDropdown::-webkit-scrollbar-thumb:hover {
+  background-color: #666;
+}
+
+.userDropdownItem {
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #3a3a3a;
+  transition: background-color 0.15s ease;
+}
+
+.userDropdownItem:last-child {
+  border-bottom: none;
+}
+
+.userDropdownItem:hover {
+  background-color: #333;
+}
+
+.userDropdownInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.userCheckbox {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
+.userDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.userName {
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--white);
+}
+
+.userMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: #999;
+}
+
+.userEmail {
+  color: var(--accent);
+}
+
+.userDepartment, .userRole {
+  position: relative;
+  padding-left: 12px;
+}
+
+.userDepartment::before, .userRole::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #666;
+}
+
+.userRoleSelect {
+  background: #333;
+  border: 1px solid #444;
+  color: var(--white);
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  min-width: 120px;
+  transition: all 0.2s ease;
+}
+
+.userRoleSelect:hover {
+  border-color: #555;
+  background-color: #3a3a3a;
+}
+
+.userRoleSelect:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(180, 225, 248, 0.2);
+}
+
+/* Mantener los estilos existentes del loading spinner */
+.dropdownLoading {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #999;
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
 }

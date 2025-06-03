@@ -10,8 +10,9 @@ import MetadataItem from "@/components/metadataItem/MetadataItem"
 import Informacion from "./informacion/Informacion"
 import Llamadas from "./llamadas/Llamadas"
 import Recursos from "./recursos/Recursos"
-import Equipos from "./equipos/Equipos"
 import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator"
+import Miembros from "./miembros/Miembros"
+import AddProjectPopup from "../proyectos/AddProjectPopup"
 
 // UTILS
 import { parseDate } from "@/utils/dateUtils"
@@ -33,7 +34,8 @@ type Project = {
   clientDescription?: string
 }
 
-const Tabs: ("informacion" | "llamadas" | "recursos" | "equipos")[] = ["informacion", "llamadas", "recursos"]
+const Tabs = ["informacion", "llamadas", "recursos", "miembros"] as const
+type TabType = typeof Tabs[number]
 
 export default function Proyecto({ id }: { id: number }) {
   const router = useRouter()
@@ -41,10 +43,11 @@ export default function Proyecto({ id }: { id: number }) {
 
   const [project, setProject] = useState<Project | null>(null)
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<"informacion" | "llamadas" | "recursos" | "equipos">("informacion")
+  const [activeTab, setActiveTab] = useState<TabType>("informacion")
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
-    const tab = searchParams.get("tab") as "informacion" | "llamadas" | "recursos" | "equipos" | null
+    const tab = searchParams.get("tab") as TabType | null
     if (tab) setActiveTab(tab)
     else setActiveTab("informacion")
   }, [searchParams])
@@ -132,8 +135,18 @@ export default function Proyecto({ id }: { id: number }) {
         onPageChange={() => router.push("/proyectos")}
       />
 
-      <p className={styles.label}>Nombre del proyecto:</p>
-      <h1 className={styles.projectTitle}>{project.name}</h1>
+      <div className={styles.headerContainer}>
+        <div>
+          <p className={styles.label}>Nombre del proyecto:</p>
+          <h1 className={styles.projectTitle}>{project.name}</h1>
+        </div>
+        <button 
+          className={styles.editButton}
+          onClick={() => setIsEditModalOpen(true)}
+        >
+          Editar Proyecto
+        </button>
+      </div>
 
       <div className={styles.metadataContainer}>
         <MetadataItem icon="user" title="Cliente" value={project.client || "None"} color="var(--accent)" />
@@ -165,9 +178,9 @@ export default function Proyecto({ id }: { id: number }) {
                 ? "Llamadas"
                 : tab === "recursos"
                   ? "Recursos"
-                  : tab === "equipos"
-                    ? "Equipos"
-                    : ""}
+                    : tab === "miembros"
+                      ? "Miembros"
+                      : ""}
           </button>
         ))}
       </div>
@@ -178,9 +191,68 @@ export default function Proyecto({ id }: { id: number }) {
         <Llamadas id={id} />
       ) : activeTab === "recursos" ? (
         <Recursos id={id} />
-      ) : activeTab === "equipos" ? (
-        <Equipos id={id} />
+      ) : activeTab === "miembros" ? (
+        <Miembros id={id} />
       ) : null}
+
+      {isEditModalOpen && (
+        <AddProjectPopup
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          onProjectAdded={() => {
+            setIsEditModalOpen(false);
+            // Refetch project data
+            const fetchProject = async () => {
+              setLoading(true);
+              try {
+                const [projectResponse, membersCountResponse] = await Promise.all([
+                  fetch(`https://relations-data-api.vercel.app/project/projects/${id}`),
+                  fetch(`https://relations-data-api.vercel.app/project/projects/${id}/members-count`)
+                ]);
+
+                if (!projectResponse.ok) {
+                  throw new Error(`Error fetching project: ${projectResponse.status}`);
+                }
+
+                const projectData = await projectResponse.json();
+                const membersCount = await membersCountResponse.json();
+
+                setProject({
+                  ...projectData,
+                  startDate: projectData.startDate ? new Date(projectData.startDate).getTime() : null,
+                  endDate: projectData.endDate ? new Date(projectData.endDate).getTime() : null,
+                  client: projectData.client?.organization || "sin cliente asignado",
+                  clientEmail: projectData.clientEmail || "sin cliente asignado",
+                  clientDescription: projectData.client?.description || "sin cliente asignado",
+                  status: "active",
+                  members: membersCount.count || 0,
+                });
+              } catch (error) {
+                console.error(`Error fetching project ${id}:`, error);
+              } finally {
+                setLoading(false);
+              }
+            };
+            fetchProject();
+          }}
+          projectToEdit={{
+            projectID: project.projectID,
+            name: project.name,
+            description: project.description,
+            problemDescription: project.problemDescription,
+            reqFuncionales: project.reqFuncionales,
+            reqNoFuncionales: project.reqNoFuncionales,
+            startDate: project.startDate ? new Date(project.startDate).toISOString() : null,
+            endDate: project.endDate ? new Date(project.endDate).toISOString() : null,
+            client: {
+              email: project.clientEmail || "",
+              name: project.client || "",
+              organization: project.client || "",
+              description: project.clientDescription || ""
+            }
+          }}
+        />
+      )}
     </div>
   )
 }

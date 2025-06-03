@@ -5,6 +5,16 @@ import PageTitle from "@/components/pageTitle/PageTitle";
 import styles from "./perfil.module.css";
 import { GetUser } from "@/utils/GetUser";
 import UserType from "@/types/UserTypes";
+import { updateUser } from "@/utils/UserManagement";
+
+
+const testUser: UserType = {
+  id: "20",
+  name: "John Smith",
+  email: "john.smith@company.com",
+  role: "admin",
+}
+
 
 export default function PerfilPage() {
   const [subpages, setSubpages] = useState<string[]>([]);
@@ -13,9 +23,6 @@ export default function PerfilPage() {
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const [fullName, setFullName] = useState("John Smith");
-  const [email, setEmail] = useState("john.smith@company.com");
-  const [notifications, setNotifications] = useState(true);
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -36,40 +43,61 @@ export default function PerfilPage() {
     }
 
     setLoading(true);
-    const formData = new FormData();
-    formData.append('image', file);
-
     try {
-      const response = await fetch('https://relations-data-api.vercel.app/users/upload-profile-picture', {
-        method: 'PATCH',
-        body: formData,
-        credentials: 'include'
+      // Convertir imagen a base64
+      const base64Image = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64 = reader.result as string;
+          // Asegurarse de que el base64 incluya el prefijo de tipo de imagen
+          const base64WithPrefix = `data:${file.type};base64,${base64.split(',')[1]}`;
+          resolve(base64WithPrefix);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Error al subir la imagen');
+      if (!user?.id) {
+        throw new Error('No se pudo obtener el ID del usuario');
       }
 
-      const data = await response.json();
-      
+      // Convertir el ID de string a número para la API
+      const userId = parseInt(user.id, 10);
+      if (isNaN(userId)) {
+        throw new Error('ID de usuario inválido');
+      }
+
+      // Actualizar el usuario con la nueva imagen
+      const updatedUserData = await updateUser(userId, {
+        profilePicture: base64Image
+      });
+
+      if (!updatedUserData) {
+        throw new Error('Error al actualizar la imagen de perfil');
+      }
+
+      const updatedUserType: UserType = {
+        id: user.id, 
+        name: updatedUserData.name,
+        email: updatedUserData.email,
+        role: updatedUserData.role,
+        profilePicture: base64Image
+      };
+
       // Actualizar el usuario localmente
-      const updatedUser = await GetUser();
-      setUser(updatedUser);
+      setUser(updatedUserType);
       
-      // Actualizar el usuario en localStorage de manera más segura
+      // Actualizar el usuario en localStorage
       try {
         const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
         const updatedUserData = {
           ...currentUser,
-          profilePicture: data.user.profilePicture // Cambio aquí para usar data.user
+          profilePicture: base64Image
         };
         localStorage.setItem('user', JSON.stringify(updatedUserData));
       } catch (storageError) {
         console.error('Error updating localStorage:', storageError);
-        // No interrumpimos la experiencia del usuario si falla localStorage
       }
-
     } catch (error) {
       console.error('Error:', error);
       alert(error instanceof Error ? error.message : 'Error al subir la imagen');
@@ -80,7 +108,7 @@ export default function PerfilPage() {
         fileInputRef.current.value = '';
       }
     }
-};
+  };
 
   const handleImageClick = () => {
     fileInputRef.current?.click();
@@ -89,11 +117,13 @@ export default function PerfilPage() {
   useEffect(() => {
     const loadUser = async () => {
       const userData = await GetUser();
-      setUser(userData);
-      if (userData) {
-        setFullName(userData.name);
-        setEmail(userData.email);
+      if (!userData) {
+        console.log("userData is null");
+        return;
       }
+      userData.id = "20"; //REMOVE WHEN LOGIN WORKS 
+      console.log("userData", userData);
+      setUser(userData);
     };
     loadUser();
   }, []);
@@ -130,8 +160,8 @@ export default function PerfilPage() {
             style={{ display: 'none' }}
           />
           <div className={styles.userInfo}>
-            <h2>{fullName}</h2>
-            <p>{email}</p>
+            <h2>{user?.name}</h2>
+            <p>{user?.email}</p>
             <div className={styles.tags}>
               <span>{user?.role || 'Usuario'}</span>
             </div>
@@ -207,8 +237,8 @@ export default function PerfilPage() {
               <input
                 type="text"
                 placeholder="Tu nombre completo"
-                value={fullName}
-                onChange={e => setFullName(e.target.value)}
+                value={user?.name}
+                onChange={e => user && setUser({...user, name: e.target.value})}
               />
             </div>
             <div className={styles.inputGroup}>
@@ -216,8 +246,8 @@ export default function PerfilPage() {
               <input
                 type="email"
                 placeholder="Tu correo electrónico"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
+                value={user?.email}
+                onChange={e => user && setUser({...user, email: e.target.value})}
               />
             </div>
             {/*

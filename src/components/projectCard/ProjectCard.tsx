@@ -136,17 +136,18 @@ export default function ProjectCard({ project, onClick, onDelete }: ProjectCardP
         />
       </div>
 
-      <button className={styles.detailsButton} onClick={onClick}>
-        Ver detalles
-      </button>
-
-      <OptionsMenu
-        onSelect={handleOptionSelect}
-        options={[
-          { icon: "pencil", name: "Editar proyecto" },
-          { icon: "close", name: "Eliminar proyecto" },
-        ]}
-      />
+      <div className={styles.buttonContainer}>
+        <button className={styles.detailsButton} onClick={onClick}>
+          Ver detalles
+        </button>
+        
+        <button 
+          className={styles.deleteButton} 
+          onClick={() => setIsDeleteDialogOpen(true)}
+        >
+          Eliminar proyecto
+        </button>
+      </div>
 
       <Dialog
         isOpen={isDeleteDialogOpen}

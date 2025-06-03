@@ -1,11 +1,30 @@
 import type React from "react";
 import styles from "./AddProjectPopup.module.css";
 import { useState, useEffect, useRef } from "react";
+import { getUsers } from "@/utils/UserManagement";
+import type { User } from "@/types/UserManagementTypes";
 
 interface AddProjectPopupProps {
   isOpen: boolean;
   onClose: () => void;
   onProjectAdded: () => void;
+  projectToEdit?: {
+    projectID: number;
+    name: string;
+    description: string | null;
+    problemDescription: string | null;
+    reqFuncionales: string | null;
+    reqNoFuncionales: string | null;
+    startDate: string | null;
+    endDate: string | null;
+    client?: {
+      email: string;
+      name: string;
+      organization?: string;
+      description?: string;
+    };
+    users?: Array<{ userID: number; projectRole: "admin" | "colaborator" }>;
+  };
 }
 
 interface Client {
@@ -15,7 +34,12 @@ interface Client {
   description?: string;
 }
 
-export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: AddProjectPopupProps) {
+interface SelectedUser {
+  userID: number;
+  projectRole: "developer" | "manager" | "admin" | "colaborator";
+}
+
+export default function AddProjectPopup({ isOpen, onClose, onProjectAdded, projectToEdit }: AddProjectPopupProps) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [clientEmail, setClientEmail] = useState("");
@@ -34,10 +58,15 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
   const [clientSearchTerm, setClientSearchTerm] = useState("")
   const dropdownRef = useRef<HTMLDivElement>(null)
 
+  // Nuevos estados para el manejo de usuarios
+  const [users, setUsers] = useState<User[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<SelectedUser[]>([]);
+  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
       fetchClients()
+      fetchUsers()
     }
   }, [isOpen])
 
@@ -53,6 +82,55 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [])
+
+  useEffect(() => {
+    if (projectToEdit && isOpen) {
+      // Reset form
+      setName(projectToEdit.name);
+      setDescription(projectToEdit.description || "");
+      setProblemDescription(projectToEdit.problemDescription || "");
+      setReqFuncionales(projectToEdit.reqFuncionales || "");
+      setReqNoFuncionales(projectToEdit.reqNoFuncionales || "");
+      setStartDate(projectToEdit.startDate ? new Date(projectToEdit.startDate).toISOString().split('T')[0] : "");
+      setEndDate(projectToEdit.endDate ? new Date(projectToEdit.endDate).toISOString().split('T')[0] : "");
+      
+      if (projectToEdit.client) {
+        setSelectedClient(projectToEdit.client);
+        setClientEmail(projectToEdit.client.email);
+      }
+
+      // Fetch current project users
+      const fetchProjectUsers = async () => {
+        try {
+          const response = await fetch(`https://relations-data-api.vercel.app/project/projects/${projectToEdit.projectID}/users`);
+          if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+          }
+          const users = await response.json();
+          setSelectedUsers(users.map((user: any) => ({
+            userID: user.userID,
+            projectRole: user.projectRole
+          })));
+        } catch (error) {
+          console.error("Error fetching project users:", error);
+        }
+      };
+
+      fetchProjectUsers();
+    } else {
+      // Reset form when not editing
+      setName("");
+      setDescription("");
+      setProblemDescription("");
+      setReqFuncionales("");
+      setReqNoFuncionales("");
+      setStartDate("");
+      setEndDate("");
+      setSelectedClient(null);
+      setClientEmail("");
+      setSelectedUsers([]);
+    }
+  }, [projectToEdit, isOpen]);
 
   const fetchClients = async () => {
     try {
@@ -71,17 +149,18 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
       setIsLoadingClients(false)
     }
   }
- /*
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    
-    setTimeout(() => {
-      setLoading(false);
-      onProjectAdded();
-    }, 1000);
+
+  const fetchUsers = async () => {
+    try {
+      setIsLoadingUsers(true);
+      const fetchedUsers = await getUsers();
+      setUsers(fetchedUsers);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    } finally {
+      setIsLoadingUsers(false);
+    }
   };
-*/
 
   // Filtrar clientes basado en el término de búsqueda
   const filteredClients = clients.filter(
@@ -99,19 +178,34 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
     setClientSearchTerm("")
   }
 
+  const handleUserSelection = (userId: number, checked: boolean) => {
+    if (checked) {
+      setSelectedUsers(prev => [...prev, { userID: userId, projectRole: "developer" }]);
+    } else {
+      setSelectedUsers(prev => prev.filter(user => user.userID !== userId));
+    }
+  };
+
+  const handleUserRoleChange = (userId: number, role: "developer" | "manager" | "admin" | "colaborator") => {
+    setSelectedUsers(prev => 
+      prev.map(user => 
+        user.userID === userId ? { ...user, projectRole: role } : user
+      )
+    );
+  };
+
   if (!isOpen) return null
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
 
-    // DEPURACIÓN: Mostrar el cliente seleccionado y los datos a enviar
-    console.log("selectedClient:", selectedClient);
     if (!selectedClient) {
       alert("Debes seleccionar un cliente del listado.");
       setLoading(false);
       return;
     }
+
     const projectData = {
       name,
       description,
@@ -126,14 +220,16 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
       reqNoFuncionales,
       startDate: startDate ? new Date(startDate).toISOString() : null,
       endDate: endDate ? new Date(endDate).toISOString() : null,
-      users: [],
+      users: selectedUsers,
     }
-    console.log("projectData:", projectData);
 
     try {
-      // Enviar los datos a la API
-      const response = await fetch("https://relations-data-api.vercel.app/project/projects", {
-        method: "POST",
+      const url = projectToEdit 
+        ? `https://relations-data-api.vercel.app/project/projects/${projectToEdit.projectID}`
+        : "https://relations-data-api.vercel.app/project/projects";
+
+      const response = await fetch(url, {
+        method: projectToEdit ? "PATCH" : "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -144,11 +240,10 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
         throw new Error(`Error: ${response.status}`)
       }
 
-      // Proyecto añadido con éxito
       onProjectAdded()
       onClose()
     } catch (error) {
-      console.error("Error adding project:", error)
+      console.error(projectToEdit ? "Error updating project:" : "Error adding project:", error)
     } finally {
       setLoading(false)
     }
@@ -188,7 +283,7 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
             </svg>
           </div>
           <div className={styles.headerContent}>
-            <h2 className={styles.title}>Agregar Proyecto</h2>
+            <h2 className={styles.title}>{projectToEdit ? "Editar Proyecto" : "Agregar Proyecto"}</h2>
           </div>
         </div>
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -359,6 +454,64 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
               />
             </div>
           </div>
+
+          {/* Sección de selección de usuarios */}
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Agregar personas</label>
+            <div className={styles.userDropdownContainer}>
+              {isLoadingUsers ? (
+                <div className={styles.dropdownLoading}>
+                  <div className={styles.spinner}></div>
+                  <span>Cargando usuarios...</span>
+                </div>
+              ) : (
+                <div className={styles.userDropdown}>
+                  {users.map((user) => {
+                    const isSelected = selectedUsers.some(su => su.userID === user.userID);
+                    return (
+                      <div key={user.userID} className={styles.userDropdownItem}>
+                        <div className={styles.userDropdownInfo}>
+                          <div className={styles.userCheckbox}>
+                            <input
+                              type="checkbox"
+                              checked={isSelected}
+                              onChange={(e) => handleUserSelection(user.userID, e.target.checked)}
+                              className={styles.checkbox}
+                            />
+                          </div>
+                          <div className={styles.userDetails}>
+                            <div className={styles.userName}>{user.name}</div>
+                            <div className={styles.userMeta}>
+                              <span className={styles.userEmail}>{user.email}</span>
+                              {user.department && (
+                                <span className={styles.userDepartment}>
+                                  {user.department.name}
+                                </span>
+                              )}
+                              <span className={styles.userRole}>{user.role}</span>
+                            </div>
+                          </div>
+                        </div>
+                        {isSelected && (
+                          <select
+                            value={selectedUsers.find(su => su.userID === user.userID)?.projectRole || "developer"}
+                            onChange={(e) => handleUserRoleChange(user.userID, e.target.value as "developer" | "manager" | "admin" | "colaborator")}
+                            className={styles.userRoleSelect}
+                          >
+                            <option value="manager">Manager</option>
+                            <option value="developer">Developer</option>
+                            <option value="admin">Admin</option>
+                            <option value="colaborator">Colaborador</option>
+                          </select>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+
           <button className={styles.addButton} type="submit" disabled={loading}>
             {loading ? (
               <>
@@ -366,7 +519,7 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
                 <span>Guardando...</span>
               </>
             ) : (
-              "Agregar Proyecto"
+              projectToEdit ? "Guardar Cambios" : "Agregar Proyecto"
             )}
           </button>
         </form>
@@ -374,68 +527,3 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded }: Add
     </div>
   )
 }
-
-
-  /*
-  return (
-    <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modalContainer} onClick={e => e.stopPropagation()}>
-        <button className={styles.closeButton} onClick={onClose}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-        <div className={styles.header}>
-          <div className={styles.iconContainer}>
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <path d="M26.667 10.667H5.333c-.736 0-1.333.597-1.333 1.333v13.333c0 .737.597 1.334 1.333 1.334h21.334c.736 0 1.333-.597 1.333-1.334V12c0-.736-.597-1.333-1.333-1.333z" stroke="#B4E1F8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M21.333 10.667V8c0-.736-.597-1.333-1.333-1.333h-8c-.736 0-1.333.597-1.333 1.333v2.667" stroke="#B4E1F8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <div className={styles.headerContent}>
-            <h2 className={styles.title}>Agregar Proyecto</h2>
-          </div>
-        </div>
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Nombre del proyecto</label>
-            <input className={styles.input} value={name} onChange={e => setName(e.target.value)} required />
-          </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Descripción del proyecto</label>
-            <textarea className={styles.textarea} value={description} onChange={e => setDescription(e.target.value)} rows={3} />
-          </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Cliente</label>
-            <input className={styles.input} value={client} onChange={e => setClient(e.target.value)} />
-          </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Descripción de la Problematica</label>
-            <textarea className={styles.input} value={problemDescription} onChange={e => setProblemDescription(e.target.value)} />
-          </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Requerimientos Funcionales</label>
-            <textarea className={styles.input} value={reqFuncionales} onChange={e => setReqFuncionales(e.target.value)} />
-          </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Requerimientos no Funcionales</label>
-            <textarea className={styles.input} value={reqNoFuncionales} onChange={e => setReqNoFuncionales(e.target.value)} />
-          </div>
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Fecha de inicio</label>
-              <input className={styles.input} type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
-            </div>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Fecha de entrega</label>
-              <input className={styles.input} type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
-            </div>
-          </div>
-          <button className={styles.addButton} type="submit" disabled={loading}>
-            {loading ? "Guardando..." : "Agregar Proyecto"}
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-} */

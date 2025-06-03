@@ -3,7 +3,7 @@ import UserType from "@/types/UserTypes";
 
 export async function Login() {
   localStorage.setItem("user", JSON.stringify({
-    id: 'afsfasf',
+    id: '20',
     name: "John Doe",
     email: "johndoe@example.com",
     role: "admin",

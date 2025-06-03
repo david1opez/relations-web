@@ -21,7 +21,7 @@ type Project = {
   reqNoFuncionales: string | null
   startDate: number | null
   endDate: number | null
-  status?: "active" | "completed" | "unknown"
+  status?: "active" | "completed" | "pending" | "unknown"
   members?: number
   clientEmail?: string
   client?: string | { name?: string }
@@ -46,35 +46,10 @@ export default function Proyectos() {
 
   const getStatusFromEndDate = (endDate: number | null): "active" | "completed" | "unknown" => {
     if (!endDate) return "active"
-
-    try {
-      const endDateTime = new Date(endDate).getTime()
-      const currentDate = new Date().getTime()
-
-      if (isNaN(endDateTime)) {
-        console.warn("Invalid end date format:", endDate)
-        return "unknown"
-      }
-
-      return endDateTime > currentDate ? "active" : "completed"
-    } catch (error) {
-      console.error("Error processing end date:", error)
-      return "unknown"
-    }
-  }
-
-  const getStatusLabel = (endDate: number | null): string => {
-    if (!endDate) return "Activo"
-
-    try {
-      const endDateTime = new Date(endDate).getTime()
-      const currentDate = new Date().getTime()
-
-      if (isNaN(endDateTime)) return "Estado desconocido"
-      return endDateTime > currentDate ? "Activo" : "Completado"
-    } catch {
-      return "Estado desconocido"
-    }
+    const endDateTime = new Date(endDate).getTime()
+    const currentDate = new Date().getTime()
+    if (isNaN(endDateTime)) return "unknown"
+    return endDateTime > currentDate ? "active" : "completed"
   }
 
   const fetchProjects = async () => {
@@ -85,9 +60,7 @@ export default function Proyectos() {
         fetch("https://relations-data-api.vercel.app/project/projects/members-count")
       ])
 
-      if (!projectsResponse.ok) {
-        throw new Error(`Error fetching projects: ${projectsResponse.status}`)
-      }
+      if (!projectsResponse.ok) throw new Error(`Error fetching projects: ${projectsResponse.status}`)
 
       const projects = await projectsResponse.json()
       const membersCounts = await membersCountResponse.json()
@@ -134,7 +107,13 @@ export default function Proyectos() {
   }
 
   const handleDeleteProject = (projectId: number) => {
-    setProjects(prev => prev.filter(project => project.projectID !== projectId))
+    setProjects(prev => prev.filter(p => p.projectID !== projectId))
+    setFilteredProjects(prev => prev.filter(p => p.projectID !== projectId))
+  }
+
+  const handleProjectAdded = async () => {
+    await fetchProjects()
+    setShowAddPopup(false)
   }
 
   if (loading) {
@@ -181,7 +160,7 @@ export default function Proyectos() {
       <AddProjectPopup
         isOpen={showAddPopup}
         onClose={() => setShowAddPopup(false)}
-        onProjectAdded={() => setShowAddPopup(false)}
+        onProjectAdded={handleProjectAdded}
       />
 
       <div className={styles.projectsContainer}>
@@ -196,6 +175,7 @@ export default function Proyectos() {
               key={project.projectID}
               project={project}
               onClick={() => handleProjectClick(project.projectID)}
+              onDelete={handleDeleteProject}
             />
           ))
         ) : (

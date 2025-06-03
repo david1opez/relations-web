@@ -3,7 +3,7 @@ type UserType = {
     name: string;
     email: string;
     role: 'admin' | 'colaborator' | 'support' | 'teamLead' | 'projectLead';
-    profilePicture: string;
+    profilePicture?: string;
 }
 
 export default UserType;

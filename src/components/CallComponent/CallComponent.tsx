@@ -25,7 +25,7 @@ export default function CallComponent({ call, onClick, onDelete, onAnalyze, load
   const [internalLoading, setInternalLoading] = useState(false);
   
   // Use either external or internal loading state
-  const loading = externalLoading ?? internalLoading;
+  const loading = externalLoading || internalLoading;
 
   const handleMenuItemClick = async (action: string) => {
     switch (action) {
