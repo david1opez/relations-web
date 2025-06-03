@@ -34,5 +34,6 @@ export type User = {
     password: string
     role: "admin" | "colaborator" | "support" | "teamLead" | "projectLead"
     departmentID?: number
+    profilePicture?: string
   }
   
