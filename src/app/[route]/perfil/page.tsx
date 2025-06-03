@@ -18,10 +18,14 @@ const testUser: UserType = {
 
 export default function PerfilPage() {
   const [subpages, setSubpages] = useState<string[]>([]);
-  const [activeTab, setActiveTab] = useState<"Overview"|"Settings"|"Security">("Overview");
+  const [activeTab, setActiveTab] = useState<"Overview"|"Settings"|"Security">("Settings");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [tempName, setTempName] = useState<string>("");
 
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,6 +118,66 @@ export default function PerfilPage() {
     fileInputRef.current?.click();
   };
 
+  const handleSaveName = async () => {
+    if (!user?.id) {
+      setError('No se pudo obtener el ID del usuario');
+      return;
+    }
+
+    if (!tempName.trim()) {
+      setError('El nombre no puede estar vacío');
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      // Convertir el ID de string a número para la API
+      const userId = parseInt(user.id, 10);
+      if (isNaN(userId)) {
+        throw new Error('ID de usuario inválido');
+      }
+
+      // Actualizar el usuario con el nuevo nombre
+      const updatedUserData = await updateUser(userId, {
+        name: tempName
+      });
+
+      if (!updatedUserData) {
+        throw new Error('Error al actualizar el nombre');
+      }
+
+      const updatedUserType: UserType = {
+        ...user,
+        name: updatedUserData.name
+      };
+
+      // Actualizar el usuario localmente
+      setUser(updatedUserType);
+      setIsEditing(false);
+      setSuccess('Nombre actualizado correctamente');
+      
+      // Actualizar el usuario en localStorage
+      try {
+        const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+        const updatedUserData = {
+          ...currentUser,
+          name: tempName
+        };
+        localStorage.setItem('user', JSON.stringify(updatedUserData));
+      } catch (storageError) {
+        console.error('Error updating localStorage:', storageError);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setError(error instanceof Error ? error.message : 'Error al actualizar el nombre');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const loadUser = async () => {
       const userData = await GetUser();
@@ -124,6 +188,7 @@ export default function PerfilPage() {
       userData.id = "20"; //REMOVE WHEN LOGIN WORKS 
       console.log("userData", userData);
       setUser(userData);
+      setTempName(userData.name || "");
     };
     loadUser();
   }, []);
@@ -171,7 +236,6 @@ export default function PerfilPage() {
         {/* Pestañas */}
         <div className={styles.tabs}>
           {[
-            { label: "Resumen", key: "Overview" },
             { label: "Configuración", key: "Settings" },
           ].map(t => (
             <span
@@ -232,22 +296,56 @@ export default function PerfilPage() {
         {activeTab === "Settings" && (
           <div className={styles.settings}>
             <h4>Configuración de perfil</h4>
+            {error && <div className={styles.errorMessage}>{error}</div>}
+            {success && <div className={styles.successMessage}>{success}</div>}
             <div className={styles.inputGroup}>
               <label>Nombre completo</label>
-              <input
-                type="text"
-                placeholder="Tu nombre completo"
-                value={user?.name}
-                onChange={e => user && setUser({...user, name: e.target.value})}
-              />
+              <div className={styles.nameInputContainer}>
+                <input
+                  type="text"
+                  placeholder="Tu nombre completo"
+                  value={isEditing ? tempName : (user?.name || '')}
+                  onChange={e => setTempName(e.target.value)}
+                  disabled={!isEditing}
+                />
+                {!isEditing ? (
+                  <button 
+                    className={styles.editButton}
+                    onClick={() => setIsEditing(true)}
+                  >
+                    Editar
+                  </button>
+                ) : (
+                  <div className={styles.editButtons}>
+                    <button 
+                      className={styles.cancelButton}
+                      onClick={() => {
+                        setIsEditing(false);
+                        setTempName(user?.name || "");
+                        setError(null);
+                      }}
+                    >
+                      Cancelar
+                    </button>
+                    <button 
+                      className={styles.saveButton}
+                      onClick={handleSaveName}
+                      disabled={loading}
+                    >
+                      {loading ? 'Guardando...' : 'Guardar'}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
             <div className={styles.inputGroup}>
               <label>Correo electrónico</label>
               <input
                 type="email"
                 placeholder="Tu correo electrónico"
-                value={user?.email}
-                onChange={e => user && setUser({...user, email: e.target.value})}
+                value={user?.email || ''}
+                disabled
+                className={styles.disabledInput}
               />
             </div>
             {/*
