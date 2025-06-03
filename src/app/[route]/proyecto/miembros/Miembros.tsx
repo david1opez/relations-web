@@ -87,7 +87,6 @@ export default function Miembros({ id }: MiembrosProps) {
 
       {users.length === 0 && (
         <div className={styles.emptyState}>
-          <div className={styles.emptyIcon}>👥</div>
           <p className={styles.emptyText}>No hay miembros asignados a este proyecto</p>
         </div>
       )}
