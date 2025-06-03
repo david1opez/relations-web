@@ -21,7 +21,7 @@ type Project = {
   reqNoFuncionales: string | null
   startDate: number | null
   endDate: number | null
-  status?: "active" | "completed" | "pending"
+  status?: "active" | "completed" | "pending" | "unknown"
   members?: number
   clientEmail?: string
   client?: string | { name?: string }
@@ -34,10 +34,23 @@ export default function Proyectos() {
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [showAddPopup, setShowAddPopup] = useState(false)
+  const [statusFilter, setStatusFilter] = useState<"all" | "active" | "completed">("active")
 
   useEffect(() => {
     fetchProjects()
   }, [])
+
+  useEffect(() => {
+    applyFilters()
+  }, [projects, searchTerm, statusFilter])
+
+  const getStatusFromEndDate = (endDate: number | null): "active" | "completed" | "unknown" => {
+    if (!endDate) return "active"
+    const endDateTime = new Date(endDate).getTime()
+    const currentDate = new Date().getTime()
+    if (isNaN(endDateTime)) return "unknown"
+    return endDateTime > currentDate ? "active" : "completed"
+  }
 
   const fetchProjects = async () => {
     try {
@@ -47,24 +60,18 @@ export default function Proyectos() {
         fetch("https://relations-data-api.vercel.app/project/projects/members-count")
       ])
 
-      if (!projectsResponse.ok) {
-        throw new Error(`Error fetching projects: ${projectsResponse.status}`)
-      }
+      if (!projectsResponse.ok) throw new Error(`Error fetching projects: ${projectsResponse.status}`)
 
       const projects = await projectsResponse.json()
       const membersCounts = await membersCountResponse.json()
 
-      console.log("Proyectos recibidos del backend:", projects)
-      
-      // Map projects with their member counts
       const projectsWithMembers = projects.map((project: any) => ({
         ...project,
         members: membersCounts[project.projectID] || 0,
-        status: "active" // Default status
+        status: getStatusFromEndDate(project.endDate)
       }))
 
       setProjects(projectsWithMembers)
-      setFilteredProjects(projectsWithMembers)
     } catch (error) {
       console.error("Error fetching projects:", error)
     } finally {
@@ -72,19 +79,27 @@ export default function Proyectos() {
     }
   }
 
+  const applyFilters = () => {
+    let filtered = [...projects]
+
+    if (statusFilter !== "all") {
+      filtered = filtered.filter(project => project.status === statusFilter)
+    }
+
+    if (searchTerm.trim() !== "") {
+      const lowerTerm = searchTerm.toLowerCase()
+      filtered = filtered.filter(project =>
+        project.name.toLowerCase().includes(lowerTerm) ||
+        project.description?.toLowerCase().includes(lowerTerm) ||
+        (typeof project.client === "object" && project.client?.name?.toLowerCase().includes(lowerTerm))
+      )
+    }
+
+    setFilteredProjects(filtered)
+  }
+
   const handleSearch = (value: string) => {
     setSearchTerm(value)
-    if (value.trim() === "") {
-      setFilteredProjects(projects)
-    } else {
-      const filtered = projects.filter(
-        (project) =>
-          project.name.toLowerCase().includes(value.toLowerCase()) ||
-          project.description?.toLowerCase().includes(value.toLowerCase()) ||
-          (typeof project.client === 'object' && project.client?.name?.toLowerCase().includes(value.toLowerCase()))
-      )
-      setFilteredProjects(filtered)
-    }
   }
 
   const handleProjectClick = (projectId: number) => {
@@ -92,12 +107,12 @@ export default function Proyectos() {
   }
 
   const handleDeleteProject = (projectId: number) => {
-    setProjects((prev) => prev.filter((project) => project.projectID !== projectId))
-    setFilteredProjects((prev) => prev.filter((project) => project.projectID !== projectId))
+    setProjects(prev => prev.filter(p => p.projectID !== projectId))
+    setFilteredProjects(prev => prev.filter(p => p.projectID !== projectId))
   }
 
   const handleProjectAdded = async () => {
-    await fetchProjects() // Refetch projects after adding a new one
+    await fetchProjects()
     setShowAddPopup(false)
   }
 
@@ -115,43 +130,62 @@ export default function Proyectos() {
   return (
     <div className="pageContainer">
       <PageTitle title="Proyectos" icon="rocket" subpages={[]} />
+
       <div className={styles.topBar}>
         <div className={styles.searchContainer}>
           <Searchbar value={searchTerm} onChange={handleSearch} />
         </div>
+        <div className={styles.filterButtons}>
+          <button
+            className={statusFilter === "active" ? styles.activeFilter : ""}
+            onClick={() => setStatusFilter("active")}
+          >
+            Activos
+          </button>
+          <button
+            className={statusFilter === "completed" ? styles.activeFilter : ""}
+            onClick={() => setStatusFilter("completed")}
+          >
+            Completados
+          </button>
+          <button
+            className={statusFilter === "all" ? styles.activeFilter : ""}
+            onClick={() => setStatusFilter("all")}
+          >
+            Todos
+          </button>
+        </div>
       </div>
-      <AddProjectPopup isOpen={showAddPopup} onClose={() => setShowAddPopup(false)} onProjectAdded={handleProjectAdded} />
 
-      {loading ? (
-        <div className={styles.loadingContainer}>
-          <ActivityIndicator size={40} color="var(--accent)" />
+      <AddProjectPopup
+        isOpen={showAddPopup}
+        onClose={() => setShowAddPopup(false)}
+        onProjectAdded={handleProjectAdded}
+      />
+
+      <div className={styles.projectsContainer}>
+        <div className={styles.addProjectCard} onClick={() => setShowAddPopup(true)}>
+          <div className={styles.addIcon}>+</div>
+          <div className={styles.addText}>Crear proyecto</div>
         </div>
-      ) : (
-        <div className={styles.projectsContainer}>
-          {/* Add Project Card */}
-          <div className={styles.addProjectCard} onClick={() => setShowAddPopup(true)}>
-            <div className={styles.addIcon}>+</div>
-            <div className={styles.addText}>Crear proyecto</div>
+
+        {filteredProjects.length > 0 ? (
+          filteredProjects.map(project => (
+            <ProjectCard
+              key={project.projectID}
+              project={project}
+              onClick={() => handleProjectClick(project.projectID)}
+              onDelete={handleDeleteProject}
+            />
+          ))
+        ) : (
+          <div className={styles.noProjects}>
+            {searchTerm
+              ? "No se encontraron proyectos que coincidan con la búsqueda."
+              : "No hay proyectos disponibles."}
           </div>
-          {/* Project Cards */}
-          {filteredProjects.length > 0 ? (
-            filteredProjects.map((project) => (
-              <ProjectCard
-                key={project.projectID}
-                project={project}
-                onClick={() => handleProjectClick(project.projectID)}
-                onDelete={handleDeleteProject}
-              />
-            ))
-          ) : (
-            <div className={styles.noProjects}>
-              {searchTerm
-                ? "No se encontraron proyectos que coincidan con la búsqueda."
-                : "No hay proyectos disponibles."}
-            </div>
-          )}
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }
