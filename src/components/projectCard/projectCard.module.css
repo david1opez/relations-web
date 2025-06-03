@@ -55,7 +55,14 @@
     margin-bottom: 1.5rem;
 }
 
-.detailsButton {
+.buttonContainer {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.detailsButton,
+.deleteButton {
     border: none;
     background-color: var(--gray);
     border-radius: 4px;
@@ -64,4 +71,11 @@
     font-size: 0.65rem;
     font-family: 'LayGrotesk-Semibold', sans-serif;
     cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.detailsButton:hover,
+.deleteButton:hover {
+  background-color: var(--light-gray);
+  color: var(--black);
 }
