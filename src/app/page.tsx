@@ -1,9 +1,11 @@
 "use client";
+import { useEffect } from "react";
 import styles from "./page.module.css";
 import Image from "next/image";
 
 // COMPONENTS
 import Navbar from "@/components/navbar/Navbar";
+import { removeUserFromLocalStorage } from "@/utils/users";
 
 export default function Home() {
   return (

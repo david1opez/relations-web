@@ -1,0 +1,27 @@
+.activityCard {
+    display: flex;
+    align-items: center;
+    background-color: var(--black);
+    padding: 1rem 1rem;
+    border-radius: 7px;
+    gap: 1.5rem;
+    width: 240px;
+}
+
+.activityCardIcon {
+    width: auto;
+    height: 6vh;
+}
+
+.activityCardTitle {
+    font-family: 'LayGrotesk-Semibold', sans-serif;
+    font-size: 0.8rem;
+    cursor: default;
+    margin-bottom: 0.4rem;
+}
+
+.activityCardNumber {
+    font-family: 'LayGrotesk-Medium', sans-serif;
+    font-size: 1.5rem;
+    cursor: default;
+}

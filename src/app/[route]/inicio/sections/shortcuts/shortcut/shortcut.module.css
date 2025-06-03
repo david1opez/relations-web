@@ -1,0 +1,37 @@
+.container {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    background-color: var(--black);
+    gap: 1rem;
+    padding: 1.3rem;
+    border-radius: 6px;
+    cursor: pointer;
+    overflow: visible;
+}
+
+.title {
+    font-family: 'LayGrotesk-SemiBold', sans-serif;
+    font-size: 0.85rem;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+}
+
+.redirect {
+    font-weight: 300;
+    font-size: 0.72rem;
+    line-height: 1;
+    color: var(--light-gray);
+}
+
+.inputsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-left: 0.5rem;
+}
+
+.label {
+    font-size: 0.7rem;
+    color: var(--light-gray);
+}

@@ -1,9 +1,8 @@
-type UserType = {
-    id: string;
+export type UserProfile = {
+    userID: number;
+    uid: string;
     name: string;
     email: string;
-    role: 'admin' | 'colaborator' | 'support' | 'teamLead' | 'projectLead';
+    role?: string;
     profilePicture?: string;
-}
-
-export default UserType;
+};

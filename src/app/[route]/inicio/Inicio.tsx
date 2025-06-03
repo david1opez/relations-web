@@ -1,69 +1,84 @@
+"use client";
 import { useEffect, useState } from 'react';
 import styles from './inicio.module.css';
 
 // COMPONENTS
-import PageTitle from "@/components/pageTitle/PageTitle";
-import NotificationsDropdown from "@/components/notificationsDropdown/NotificationsDropdown";
-import ActivityCard from '@/components/activityCard/ActivityCard';
-import RecentActivitySection from '@/components/recentActivitySection/RecentActivitySection';
-import ShortcutsSection from '@/components/shortcutsSection/ShortcutsSection';
+import PageTitle from '@/components/pageTitle/PageTitle';
+import StatsCard from '@/components/statsCard/StatsCard';
+
+// SECTIONS
+import RecentActivity from './sections/recentActivity/RecentActivity';
+// import Shortcuts from './sections/shortcuts/Shortcuts';
 
 // UTILS
-import GetActivity from '@/utils/GetActivity';
+import { getUserStats } from '@/utils/activity';
 
 // TYPES
-import { Activity } from '@/types/ActivityCardTypes';
+import { RegularStats, SupportStats } from '@/types/components/statsCardTypes';
 
-export default function Inicio() {    
-    const [activity, setActivity] = useState<Activity>();
+export default function Inicio() {
+    const [stats, setStats] = useState<RegularStats | SupportStats | null>(null);
 
     useEffect(() => {
-        GetActivity()
-        .then((data) => {
-            setActivity(data);
-        })
-        .catch((error) => {
-            console.error("Error fetching activity data:", error);
-        });
-
-        console.log(localStorage.getItem("user"))
+        getUserStats().then(setStats);
     }, []);
 
     return (
         <div className="pageContainer">
-            <PageTitle
-                title="Inicio"
-                icon="house"
-                subpages={[]}
-            />
-
-            <NotificationsDropdown />
+            <PageTitle title='Inicio' icon='house'/>
 
             <h2 className={styles.headerTitle}>Bienvenido, {"Random"}</h2>
             <p className={styles.headerDescription}>Aquí tienes un resumen de tu actividad reciente</p>
 
-            <div className={styles.activityCardsContainer}>
-                <ActivityCard
-                    icon='images/house.svg'
-                    title='Proyectos activos'
-                    number={activity?.activeProjects}
-                />
-                <ActivityCard
-                    icon='images/phone.svg'
-                    title='Llamadas analizadas'
-                    number={activity?.analyzedCalls}
-                />
-                <ActivityCard
-                    icon='images/group.svg'
-                    title='Equipos'
-                    number={activity?.teams}
-                />
-            </div>
+            {
+                stats && 'activeProjects' in stats ? (
+                    <div className={styles.statsCardsContainer}>
+                        <StatsCard
+                            icon='images/blue-house.svg'
+                            title='Proyectos activos'
+                            number={stats.activeProjects}
+                        />
+                        <StatsCard
+                            icon='images/blue-phone.svg'
+                            title='Llamadas analizadas'
+                            number={stats.analyzedCalls}
+                        />
+                        <StatsCard
+                            icon='images/blue-group.svg'
+                            title='Proyectos totales'
+                            number={stats.totalProjects}
+                        />
+                    </div>
+                ) : (
+                    <div className={styles.statsCardsContainer}>
+                        <StatsCard
+                            icon='images/blue-group.svg'
+                            title='Llamadas de soporte totales'
+                            number={stats?.totalSupportCalls}
+                        />
+                        <StatsCard
+                            icon='images/blue-phone.svg'
+                            title='Llamadas de soporte analizadas'
+                            number={stats?.analyzedSupportCalls}
+                        />
+                        <StatsCard
+                            icon='images/blue-group.svg'
+                            title='Porcentaje de resolución'
+                            number={stats?.solvedPercentage}
+                        />
+                        <StatsCard
+                            icon='images/blue-group.svg'
+                            title='Porcentaje de sentimiento positivo'
+                            number={stats?.positiveSentimentPercentage}
+                        />
+                    </div>
+                )
+            }
 
             <div className={styles.contentContainer}>
-                <RecentActivitySection/>
-                <ShortcutsSection/>
+                <RecentActivity/>
+                {/* <Shortcuts/> */}
             </div>
         </div>
     )
-};
+}

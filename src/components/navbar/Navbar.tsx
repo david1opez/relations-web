@@ -1,20 +1,33 @@
+import { useState } from 'react';
 import styles from './navbar.module.css';
 import { useRouter } from 'next/navigation'
 import Image from 'next/image';
 
 // COMPONENTS
-import Link from '../link/Link';
+import ActivityIndicator from '../activityIndicator/ActivityIndicator';
 
-const CLIENT_ID = 'df25bb12-928b-4419-9a5a-2665b0f16497';
-const REDIRECT_URL = 'https://relations-web.vercel.app/login';
-const TENANT = "common";
-const SCOPE = "openid profile User.Read";
+// UTILS
+import { checkUserLoggedIn } from '@/utils/auth';
 
 export default function Navbar() {
     const router = useRouter();
+
+    const [loading, setLoading] = useState(false);
     
     const handleLogin = () => {
-        router.push(`https://login.microsoftonline.com/${TENANT}/oauth2/v2.0/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URL}&response_mode=query&scope=${SCOPE}`);
+        setLoading(true);
+
+        checkUserLoggedIn()
+        .then((result) => {
+            if (typeof result === 'string') {
+                router.push(result);
+            } else {
+                router.push(`/inicio`);
+            }
+        })
+        .finally(() => {
+            setLoading(false);
+        });
     }
 
     return (
@@ -27,21 +40,17 @@ export default function Navbar() {
                 height={100}
             />
 
-            <Link href="/">
-                <p className={styles.link}></p>
-            </Link>
-            <Link href="/">
-                <p className={styles.link}></p>
-            </Link>
-            <Link href="/">
-                <p className={styles.link}></p>
-            </Link>
-
             <button
                 className={styles.loginButton}
-                onClick={() => handleLogin()}
+                onClick={() => !loading && handleLogin()}
             >
-                Empezar a analizar
+                {
+                    loading ? (
+                        <ActivityIndicator color='var(--black)'/>
+                    ) : (
+                        "Empezar a analizar"
+                    )
+                }
             </button>
         </div>
     );

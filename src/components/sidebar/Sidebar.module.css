@@ -23,12 +23,12 @@
     border-bottom: 1px solid var(--gray);
     display: flex;
     align-items: center;
-    padding: 2vh 1.5rem;
-    margin-bottom: 2.5rem;
     cursor: pointer;
     gap: 1rem;
     border-radius: 0px;
     transition: background-color 0.2s;
+    padding: 2vh 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .userContainer:hover {
@@ -36,7 +36,17 @@
 }
 
 .userContainer.active {
+    background-color: var(--dark-gray);
+    color: var(--light-gray);
+}
+
+.userContainer.active:hover {
     background-color: var(--gray);
+}
+
+.userContainer.active .profilePictureContainer {
+    background-color: var(--dark-gray);
+    color: var(--accent);
 }
 
 .profilePictureContainer {
@@ -48,17 +58,29 @@
     border-radius: 50%;
     overflow: hidden;
     background-color: var(--accent);
-    color: var(--black);
+}
+
+.profileLetter {
     font-family: 'LayGrotesk-Semibold';
     font-size: 1rem;
-    line-height: 1rem;
+    line-height: 1;
+    color: var(--black);
+    margin-top: 0.1rem;
+
+}
+
+.profilePicture {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .userName {
     font-family: 'LayGrotesk-Semibold';
     font-size: 0.95rem;
     line-height: 1;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
 }
 
 .userRole {

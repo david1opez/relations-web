@@ -4,7 +4,7 @@ import styles from './sidebarPage.module.css';
 import Icon from '@/components/icon/Icon';
 
 // TYPES
-import { SidebarItemProps } from '@/types/SidebarTypes';
+import { SidebarItemProps } from '@/types/components/sidebarTypes';
 
 export default function SidebarPage ({icon, pageName, active, onClick}: SidebarItemProps) {
   return (

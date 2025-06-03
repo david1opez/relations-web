@@ -1,12 +1,12 @@
-import styles from "./pageTitle.module.css";
+import styles from "./pageHeader.module.css";
 
 // COMPONENTS
 import Icon from "@/components/icon/Icon";
 
 // TYPES
-import { PageTitleProps } from "@/types/PageTitleTypes";
+import { PageHeaderProps } from "@/types/components/pageHeaderTypes";
 
-export default function PageIndicator({ icon, title, subpages, onPageChange, onBack }: PageTitleProps) {
+export default function PageHeader({ icon, title, subpages=[], onPageChange, onBack }: PageHeaderProps) {
     const clickablePage = (index: number) => {
         return subpages.length > 1 && index < subpages.length - 1;
     };
@@ -21,7 +21,7 @@ export default function PageIndicator({ icon, title, subpages, onPageChange, onB
     };
 
     return (
-        <div className={styles.pageIndicatorContainer}>
+        <div className={styles.pageHeaderContainer}>
             <Icon
                 name={icon}
                 size={30}
@@ -30,8 +30,8 @@ export default function PageIndicator({ icon, title, subpages, onPageChange, onB
 
             <h1
                 className={[
-                    styles.pageIndicatorTitle,
-                    subpages.length > 0 ? styles.clickablePageIndicatorTitle : ""
+                    styles.pageHeaderTitle,
+                    subpages.length > 0 ? styles.clickablePageHeaderTitle : ""
                 ].join(" ")}
                 onClick={() => onBack ? onBack() : changePage(-1)}
             >
@@ -45,7 +45,7 @@ export default function PageIndicator({ icon, title, subpages, onPageChange, onB
                         <h2
                             className={[
                                 styles.subpageTitle,
-                                clickablePage(index) && styles.clickablePageIndicatorTitle
+                                clickablePage(index) && styles.clickablePageHeaderTitle
                             ].join(" ")}
                             onClick={() => changePage(index)}
                         >
