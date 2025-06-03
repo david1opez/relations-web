@@ -40,7 +40,7 @@ export default function PerfilPage() {
     formData.append('image', file);
 
     try {
-      const response = await fetch('https://relations-data-api.vercel.app/users/upload-profile-picture', {
+      const response = await fetch(`https://relations-data-api.vercel.app/users/${user?.userID}/upload-profile-picture`, {
         method: 'PATCH',
         body: formData,
         credentials: 'include'
