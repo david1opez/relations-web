@@ -21,7 +21,7 @@ export function removeUserFromLocalStorage(): void {
 
 // API UTILS
 export async function getUser(email: string): Promise<UserProfile | null> {
-    const response = await fetch(`https://relations-api.vercel.app/users?email=${email}`, {
+    const response = await fetch(`https://relations-api.vercel.app/user/v2/users?email=${email}`, {
         method: "GET",
     });
 
@@ -64,7 +64,7 @@ export async function createEmptyUser(userData: Omit<UserProfile, "userID" | "ui
 export async function updateEmptyUser(userData: MicrosoftProfile): Promise<UserProfile | null> {
     console.log("Updating empty user with data:", userData);
     
-    const response = await fetch(`https://relations-api.vercel.app/users/assignUID`, {
+    const response = await fetch(`https://relations-api.vercel.app/user/v2/users/assignUID`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
