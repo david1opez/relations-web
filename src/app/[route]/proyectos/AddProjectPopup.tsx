@@ -3,6 +3,7 @@ import styles from "./AddProjectPopup.module.css";
 import { useState, useEffect, useRef } from "react";
 import { getUsers } from "@/utils/UserManagement";
 import type { User } from "@/types/UserManagementTypes";
+import Searchbar from "@/components/searchbar/Searchbar";
 
 interface AddProjectPopupProps {
   isOpen: boolean;
@@ -62,6 +63,8 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded, proje
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<SelectedUser[]>([]);
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);
+  const [userSearchTerm, setUserSearchTerm] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
 
   useEffect(() => {
     if (isOpen) {
@@ -131,6 +134,28 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded, proje
       setSelectedUsers([]);
     }
   }, [projectToEdit, isOpen]);
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchClients()
+      fetchUsers()
+    }
+  }, [isOpen])
+
+  useEffect(() => {
+    // Filter users based on search term
+    if (userSearchTerm.trim() === "") {
+      setFilteredUsers(users);
+    } else {
+      const filtered = users.filter(
+        (user) =>
+          user.name.toLowerCase().includes(userSearchTerm.toLowerCase()) ||
+          user.email.toLowerCase().includes(userSearchTerm.toLowerCase()) ||
+          (user.department && user.department.name.toLowerCase().includes(userSearchTerm.toLowerCase()))
+      );
+      setFilteredUsers(filtered);
+    }
+  }, [userSearchTerm, users]);
 
   const fetchClients = async () => {
     try {
@@ -458,6 +483,13 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded, proje
           {/* Sección de selección de usuarios */}
           <div className={styles.formGroup}>
             <label className={styles.label}>Agregar personas</label>
+            <div className={styles.userSearchContainer}>
+              <Searchbar 
+                value={userSearchTerm} 
+                onChange={setUserSearchTerm}
+                placeholder="Buscar usuarios..."
+              />
+            </div>
             <div className={styles.userDropdownContainer}>
               {isLoadingUsers ? (
                 <div className={styles.dropdownLoading}>
@@ -466,7 +498,7 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded, proje
                 </div>
               ) : (
                 <div className={styles.userDropdown}>
-                  {users.map((user) => {
+                  {filteredUsers.map((user) => {
                     const isSelected = selectedUsers.some(su => su.userID === user.userID);
                     return (
                       <div key={user.userID} className={styles.userDropdownItem}>
