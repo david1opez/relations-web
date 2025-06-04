@@ -80,7 +80,7 @@ export default function Page() {
                 />
             </div>
 
-            <div className={styles.contentSection}>
+            <div className={styles.contentColumn}>
                 {activePage.toLowerCase() === "inicio" && <Inicio/>}
                 {activePage.toLowerCase() === "proyectos" && !id && <Proyectos />}
                 {activePage.toLowerCase() === "proyectos" && id && <Proyecto id={id} />}
