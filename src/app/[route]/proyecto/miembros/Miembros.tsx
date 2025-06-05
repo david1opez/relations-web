@@ -13,9 +13,6 @@ interface ProjectUser {
   email: string
   projectRole: string
   role: string
-  department?: {
-    name: string
-  }
 }
 
 interface MiembrosProps {
@@ -74,9 +71,6 @@ export default function Miembros({ id }: MiembrosProps) {
                 <h3 className={styles.name}>{user.name}</h3>
                 <div className={styles.meta}>
                   <span className={styles.email}>{user.email}</span>
-                  {user.department && (
-                    <span className={styles.department}>{user.department.name}</span>
-                  )}
                 </div>
               </div>
             </div>

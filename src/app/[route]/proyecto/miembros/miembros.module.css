@@ -90,19 +90,6 @@
   color: var(--accent);
 }
 
-.department {
-  color: var(--light-gray);
-  position: relative;
-  padding-left: 12px;
-}
-
-.department::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: #666;
-}
-
 .roles {
   display: flex;
   align-items: center;

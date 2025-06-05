@@ -595,12 +595,12 @@
   color: var(--accent);
 }
 
-.userDepartment, .userRole {
+.userRole {
   position: relative;
   padding-left: 12px;
 }
 
-.userDepartment::before, .userRole::before {
+.userRole::before {
   content: "•";
   position: absolute;
   left: 0;

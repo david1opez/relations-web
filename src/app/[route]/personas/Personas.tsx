@@ -10,12 +10,10 @@ import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator"
 
 // Types
 import type { User } from "@/types/UserManagementTypes"
-import type { Department } from "@/utils/DepartmentManagement"
 
 // Utils
 import { getUsers } from "@/utils/UserManagement"
 import { GetUser } from "@/utils/GetUser"
-import { getDepartments } from "@/utils/DepartmentManagement"
 
 export default function Personas() {
   const [users, setUsers] = useState<User[]>([])
@@ -24,7 +22,6 @@ export default function Personas() {
   const [isLoading, setIsLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(false)
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
-  const [departments, setDepartments] = useState<Department[]>([])
 
   useEffect(() => {
     const checkUserAndLoadData = async () => {
@@ -35,7 +32,7 @@ export default function Personas() {
 
         if (currentUser?.role === "admin") {
           setIsAdmin(true)
-          await Promise.all([loadUsers(), loadDepartments()])
+          await Promise.all([loadUsers()])
         } else {
           console.log("User is not admin:", currentUser?.role)
         }
@@ -48,15 +45,6 @@ export default function Personas() {
 
     checkUserAndLoadData()
   }, [])
-
-  const loadDepartments = async () => {
-    try {
-      const data = await getDepartments()
-      setDepartments(data)
-    } catch (error) {
-      console.error("Error loading departments:", error)
-    }
-  }
 
   const loadUsers = async () => {
     setIsLoading(true)
@@ -81,8 +69,7 @@ export default function Personas() {
       const filtered = users.filter(
         (user) =>
           user.name.toLowerCase().includes(value.toLowerCase()) ||
-          user.email.toLowerCase().includes(value.toLowerCase()) ||
-          (user.department && user.department.name.toLowerCase().includes(value.toLowerCase())),
+          user.email.toLowerCase().includes(value.toLowerCase())
       )
       setFilteredUsers(filtered)
     }
@@ -163,7 +150,6 @@ export default function Personas() {
         isOpen={isAddDialogOpen}
         onClose={() => setIsAddDialogOpen(false)}
         onSuccess={handleAddUserSuccess}
-        departments={departments}
       />
     </div>
   )

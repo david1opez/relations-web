@@ -55,9 +55,11 @@
 }
 */
 
+
+
 .container {
     display: grid;
-    grid-template-columns: 1fr 1.5fr 1fr 1fr 0.5fr auto auto;
+    grid-template-columns: 1fr 1.5fr 1fr 2fr;
     align-items: center;
     background-color: var(--dark-gray);
     border-radius: 8px;
@@ -65,6 +67,7 @@
     gap: 1rem;
     margin-bottom: 1rem;
     min-height: 70px;
+    width: 100%;
 }
 
 .dataContainer {
@@ -134,4 +137,11 @@
     background-color: var(--accent);
     color: var(--black);
 }
-  
+
+.buttonContainer {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    grid-column: -2 / -1;
+    width: 100%;
+}

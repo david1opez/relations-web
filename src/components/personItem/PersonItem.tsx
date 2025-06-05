@@ -69,39 +69,31 @@ export default function PersonItem({ user, onDelete, onRoleChange }: PersonItemP
       </div>
 
       <div className={styles.dataContainer}>
-        <p className={styles.label}>Departamento:</p>
-        <p className={styles.data} title={user.department ? user.department.name : "No asignado"}>
-          {user.department ? user.department.name : "No asignado"}
-        </p>
-      </div>
-
-      <div className={styles.dataContainer}>
-        <p className={styles.label}>Rol:</p>
-        <select className={styles.select} value={role} onChange={(e) => handleRoleChange(e.target.value)}>
+        <label className={styles.label} htmlFor={`role-select-${user.userID}`}>Rol:</label>
+        <select
+          id={`role-select-${user.userID}`}
+          className={styles.select}
+          value={role}
+          onChange={(e) => handleRoleChange(e.target.value)}
+        >
           <option value="admin" className={styles.option}>
             Administrador
           </option>
           <option value="colaborator" className={styles.option}>
             Colaborador
           </option>
-          <option value="support" className={styles.option}>
-            Soporte
-          </option>
-          <option value="teamLead" className={styles.option}>
-            Líder de Equipo
-          </option>
-          <option value="projectLead" className={styles.option}>
-            Líder de Proyecto
-          </option>
         </select>
       </div>
 
-      <button className={styles.deleteButton} onClick={() => setIsDeleteDialogOpen(true)}>
-        Eliminar
-      </button>
-      <button className={styles.assignButton} onClick={() => setIsProjectAssignDialogOpen(true)}>
-        Asignar proyectos
-      </button>
+      <div className={styles.buttonContainer}>
+        <button className={styles.deleteButton} onClick={() => setIsDeleteDialogOpen(true)}>
+          Eliminar
+        </button>
+        <button className={styles.assignButton} onClick={() => setIsProjectAssignDialogOpen(true)}>
+          Asignar proyectos
+        </button>
+      </div>
+      
 
       <Dialog
         isOpen={isDeleteDialogOpen}

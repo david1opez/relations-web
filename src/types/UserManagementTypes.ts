@@ -2,13 +2,8 @@ export type User = {
     userID: number 
     name: string
     email: string
-    role: "admin" | "colaborator" | "support" | "teamLead" | "projectLead"
+    role: "admin" | "colaborator"
     profilePicture?: string
-    department?: {
-      departmentID: number
-      name: string
-    }
-    password?: string
   }
   
   export type Project = {
@@ -31,9 +26,7 @@ export type User = {
   export type UserFormData = {
     name: string
     email: string
-    password: string
-    role: "admin" | "colaborator" | "support" | "teamLead" | "projectLead"
-    departmentID?: number
+    role: "admin" | "colaborator"
     profilePicture?: string
   }
   

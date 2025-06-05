@@ -6,7 +6,6 @@ import Dialog from "@/components/dialog/Dialog"
 
 // Types
 import type { User, UserFormData } from "@/types/UserManagementTypes"
-import type { Department } from "@/utils/DepartmentManagement"
 
 // Utils
 import { createUser } from "@/utils/UserManagement"
@@ -15,10 +14,9 @@ interface AddPersonDialogProps {
   isOpen: boolean
   onClose: () => void
   onSuccess: (user: User) => void
-  departments: Department[]
 }
 
-export default function AddPersonDialog({ isOpen, onClose, onSuccess, departments }: AddPersonDialogProps) {
+export default function AddPersonDialog({ isOpen, onClose, onSuccess }: AddPersonDialogProps) {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
 
@@ -26,9 +24,7 @@ export default function AddPersonDialog({ isOpen, onClose, onSuccess, department
   const [newUserData, setNewUserData] = useState<UserFormData>({
     name: "",
     email: "",
-    password: "",
     role: "colaborator",
-    departmentID: undefined,
   })
 
   const validateForm = (): boolean => {
@@ -42,10 +38,6 @@ export default function AddPersonDialog({ isOpen, onClose, onSuccess, department
       errors.email = "El correo es requerido"
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newUserData.email)) {
       errors.email = "El correo no es válido"
-    }
-    
-    if (newUserData.password && newUserData.password.length < 6) {
-      errors.password = "La contraseña debe tener al menos 6 caracteres"
     }
     
     setFormErrors(errors)
@@ -66,9 +58,7 @@ export default function AddPersonDialog({ isOpen, onClose, onSuccess, department
         setNewUserData({
           name: "",
           email: "",
-          password: "",
           role: "colaborator",
-          departmentID: undefined,
         })
         setFormErrors({})
         onSuccess(createdUser)
@@ -121,20 +111,6 @@ export default function AddPersonDialog({ isOpen, onClose, onSuccess, department
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="password">Contraseña:</label>
-            <input
-              id="password"
-              type="password"
-              value={newUserData.password}
-              onChange={(e) => setNewUserData((prev) => ({ ...prev, password: e.target.value }))}
-              placeholder="Contraseña"
-              className={formErrors.password ? styles.inputError : ""}
-              disabled={isLoading}
-            />
-            {formErrors.password && <span className={styles.errorMessage}>{formErrors.password}</span>}
-          </div>
-
-          <div className={styles.formGroup}>
             <label htmlFor="role">Rol:</label>
             <select
               id="role"
@@ -143,32 +119,7 @@ export default function AddPersonDialog({ isOpen, onClose, onSuccess, department
               disabled={isLoading}
             >
               <option value="colaborator">Colaborador</option>
-              <option value="support">Soporte</option>
-              <option value="teamLead">Líder de Equipo</option>
-              <option value="projectLead">Líder de Proyecto</option>
               <option value="admin">Administrador</option>
-            </select>
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="departmentID">Departamento:</label>
-            <select
-              id="departmentID"
-              value={newUserData.departmentID || ""}
-              onChange={(e) =>
-                setNewUserData((prev) => ({
-                  ...prev,
-                  departmentID: e.target.value ? Number(e.target.value) : undefined,
-                }))
-              }
-              disabled={isLoading}
-            >
-              <option value="">Seleccionar departamento</option>
-              {departments.map((dept) => (
-                <option key={dept.departmentID} value={dept.departmentID}>
-                  {dept.name}
-                </option>
-              ))}
             </select>
           </div>
         </div>

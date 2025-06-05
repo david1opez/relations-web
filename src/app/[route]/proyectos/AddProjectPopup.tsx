@@ -150,8 +150,7 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded, proje
       const filtered = users.filter(
         (user) =>
           user.name.toLowerCase().includes(userSearchTerm.toLowerCase()) ||
-          user.email.toLowerCase().includes(userSearchTerm.toLowerCase()) ||
-          (user.department && user.department.name.toLowerCase().includes(userSearchTerm.toLowerCase()))
+          user.email.toLowerCase().includes(userSearchTerm.toLowerCase())
       );
       setFilteredUsers(filtered);
     }
@@ -515,11 +514,6 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded, proje
                             <div className={styles.userName}>{user.name}</div>
                             <div className={styles.userMeta}>
                               <span className={styles.userEmail}>{user.email}</span>
-                              {user.department && (
-                                <span className={styles.userDepartment}>
-                                  {user.department.name}
-                                </span>
-                              )}
                               <span className={styles.userRole}>{user.role}</span>
                             </div>
                           </div>
