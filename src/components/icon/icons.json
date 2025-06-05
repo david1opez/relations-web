@@ -465,5 +465,25 @@
                 "strokeLinejoin": "round"
             }
         ]
+    },
+    "analyze": {
+        "viewbox": "0 0 24 24",
+        "fill": "none",
+        "paths": [
+            {
+            "d": "M11 17C14.3137 17 17 14.3137 17 11C17 7.68629 14.3137 5 11 5C7.68629 5 5 7.68629 5 11C5 14.3137 7.68629 17 11 17Z",
+            "stroke": "#C9FE6E",
+            "strokeWidth": "1.7",
+            "strokeLinecap": "round",
+            "strokeLinejoin": "round"
+            },
+            {
+            "d": "M20 20L16.65 16.65",
+            "stroke": "#C9FE6E",
+            "strokeWidth": "1.7",
+            "strokeLinecap": "round",
+            "strokeLinejoin": "round"
+            }
+        ]
     }
 }

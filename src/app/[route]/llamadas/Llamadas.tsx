@@ -3,20 +3,19 @@
 
 import { useEffect, useState } from "react";
 import styles from "./llamadas.module.css";
-import { analyzeCall } from '@/services/callsService'; 
-import { fetchCallSentimentAnalysis } from "@/services/callsService";
+import { analyzeCall, fetchCallSentimentAnalysis, fetchCalls } from "@/services/callsService";
 
 // COMPONENTS
 import PageTitle from "@/components/pageTitle/PageTitle";
 import CallComponent from "@/components/CallComponent/CallComponent";
 import CallInsightsPopup from "@/components/CallComponent/CallInsightsPopup";
 import Searchbar from "@/components/searchbar/Searchbar";
+import CallItem from "@/components/callItem/CallItem";
+import Icon from "@/components/icon/Icon";
 import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator";
 
 // UTILS
 import { Call, CallDetails } from "@/types/CallItemTypes";
-import { fetchCalls } from '@/services/callsService';
-import CallItem from "@/components/callItem/CallItem";
 import { deleteCall } from "@/utils/CallManagement";
 
 export default function Llamadas() {
@@ -24,11 +23,12 @@ export default function Llamadas() {
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const [selectedCall, setSelectedCall] = useState<Call | null>(null);
   const [callDetails, setCallDetails] = useState<CallDetails | null>(null);
-  const [deleteLoading, setDeleteLoading] = useState<string | null>(null); // Track which call is being deleted
+  const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
+  const [analyzingLoading, setAnalyzingLoading] = useState<{ [key: string]: boolean }>({});
+  const [analyzingAll, setAnalyzingAll] = useState(false);
 
   const [analyzed, setAnalyzed] = useState<Call[]>([]);
   const [notAnalyzed, setNotAnalyzed] = useState<Call[]>([]);
-  // Add these new states for filtered results
   const [filteredAnalyzed, setFilteredAnalyzed] = useState<Call[]>([]);
   const [filteredNotAnalyzed, setFilteredNotAnalyzed] = useState<Call[]>([]);
 
@@ -59,13 +59,10 @@ export default function Llamadas() {
       
       await deleteCall(id);
       
-      // Update both analyzed and not analyzed states
       setAnalyzed(prev => prev.filter(call => call.callID !== id));
       setNotAnalyzed(prev => prev.filter(call => call.callID !== id));
       setFilteredAnalyzed(prev => prev.filter(call => call.callID !== id));
       setFilteredNotAnalyzed(prev => prev.filter(call => call.callID !== id));
-      
-      console.log(`Llamada eliminada correctamente`);
     } catch (error) {
       console.error("Error al eliminar la llamada:", error);
       alert("No se pudo eliminar la llamada. Por favor, inténtalo de nuevo.");
@@ -78,18 +75,16 @@ export default function Llamadas() {
     const call = notAnalyzed.find((call) => call.callID === id);
     if (!call || !call.summary) return;
 
-    try {
-      // 1. Llamar al endpoint de análisis
-      await analyzeCall(call.callID, call.summary);
+    setAnalyzingLoading(prev => ({ ...prev, [id]: true }));
 
-      // 2. Llamar al endpoint que marca isAnalyzed = true en la BD
+    try {
+      await analyzeCall(call.callID, call.summary);
       await fetch("https://relations-data-api.vercel.app/call/markAnalyzed", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ callID: call.callID }),
       });
 
-      // 3. Actualizar el estado local del frontend
       const updatedCall = { ...call, isAnalyzed: true };
       setAnalyzed((prev) => [...prev, updatedCall]);
       setFilteredAnalyzed((prev) => [...prev, updatedCall]);
@@ -99,11 +94,57 @@ export default function Llamadas() {
     } catch (error) {
       console.error("Error al analizar llamada:", error);
       alert("Ocurrió un error al analizar la llamada ");
+    } finally {
+      setAnalyzingLoading(prev => {
+        const copy = { ...prev };
+        delete copy[id];
+        return copy;
+      });
     }
   };
 
+  const handleAnalyzeAll = async () => {
+    setAnalyzingAll(true);
 
-  // Add search handlers for both sections
+    try {
+      await Promise.all(
+        notAnalyzed.map(async (call) => {
+          if (!call.summary) return;
+
+          setAnalyzingLoading(prev => ({ ...prev, [call.callID]: true }));
+
+          try {
+            await analyzeCall(call.callID, call.summary);
+
+            await fetch("https://relations-data-api.vercel.app/call/markAnalyzed", {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ callID: call.callID }),
+            });
+
+            const updatedCall = { ...call, isAnalyzed: true };
+
+            setAnalyzed(prev => [...prev, updatedCall]);
+            setFilteredAnalyzed(prev => [...prev, updatedCall]);
+            setNotAnalyzed(prev => prev.filter(c => c.callID !== call.callID));
+            setFilteredNotAnalyzed(prev => prev.filter(c => c.callID !== call.callID));
+
+          } catch (error) {
+            console.error(`Error al analizar la llamada ${call.callID}:`, error);
+          } finally {
+            setAnalyzingLoading(prev => {
+              const copy = { ...prev };
+              delete copy[call.callID];
+              return copy;
+            });
+          }
+        })
+      );
+    } finally {
+      setAnalyzingAll(false);
+    }
+  };
+
   const handleSearchAnalyzed = (value: string) => {
     if (value.trim() === "") {
       setFilteredAnalyzed(analyzed);
@@ -144,7 +185,6 @@ export default function Llamadas() {
         const notAnalyzedCalls = data.filter((call) => !call.isAnalyzed);
         setAnalyzed(analyzedCalls);
         setNotAnalyzed(notAnalyzedCalls);
-        // Initialize filtered arrays
         setFilteredAnalyzed(analyzedCalls);
         setFilteredNotAnalyzed(notAnalyzedCalls);
       } catch (error) {
@@ -185,26 +225,35 @@ export default function Llamadas() {
           <div className={styles.sectionContainer}>
             <div className={styles.sectionHeader}>
               <h2 className={styles.listTitle}>Por analizar</h2>
-              {/* {notAnalyzed.length > 0 && (
-                <button 
-                  className={styles.analyzeAllButton}
-                >
-                  Analizar todas
-                </button>
-              )} */}
             </div>
-            
-            <Searchbar onChange={handleSearchNotAnalyzed}/>
-            
+
+            <div className={styles.searchAndButton}>
+              <Searchbar onChange={handleSearchNotAnalyzed} />
+              <button
+                className={styles.analyzeAllButton}
+                onClick={handleAnalyzeAll}
+                disabled={filteredNotAnalyzed.length === 0 || analyzingAll}
+              >
+                {!analyzingAll && (
+                  <Icon
+                    name="analyze"
+                    size={14}
+                    color="var(--black)"
+                  />
+                )}
+                {analyzingAll ? "Analizando..." : "Analizar Llamadas"}
+              </button>
+            </div>
+
             <div className={styles.callsContainer}>
               {filteredNotAnalyzed.map((call) => (
                 <CallComponent
                   key={call.callID}
                   call={call}
-                  onClick={(id) => {}}
+                  onClick={() => {}}
                   onAnalyze={() => handleAnalyze(call.callID)}
                   onDelete={handleDelete}
-                  loading={deleteLoading === call.callID}
+                  loading={deleteLoading === call.callID || analyzingLoading[call.callID]}
                 />
               ))}
             </div>
@@ -213,7 +262,7 @@ export default function Llamadas() {
           <div className={styles.sectionContainer}>
             <h2 className={styles.listTitle}>Analizadas</h2>
 
-            <Searchbar onChange={handleSearchAnalyzed}/>
+            <Searchbar onChange={handleSearchAnalyzed} />
 
             <div className={styles.callsContainer}>
               {filteredAnalyzed.map((call) => (

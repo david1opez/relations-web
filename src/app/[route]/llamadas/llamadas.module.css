@@ -335,22 +335,36 @@
 }
 
 .analyzeAllButton {
-  background-color: var(--card-background);
-  color: var(--text-primary);
+  background-color: white;
+  color: var(--black);
   border: 1px solid var(--gray);
   padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   font-size: 0.85rem;
   font-family: "LayGrotesk-Medium", sans-serif;
   cursor: pointer;
   transition: all 0.2s;
-  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.analyzeAllButton:hover {
-  background: var(--blue);
-  color: var(--background);
-  border-color: var(--blue);
+.analyzeAllButton:not(:disabled):hover {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+.analyzeAllButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.searchAndButton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
 }
 
 .loadingContainer {
