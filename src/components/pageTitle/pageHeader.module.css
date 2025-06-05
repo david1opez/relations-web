@@ -1,6 +1,6 @@
 .pageIndicatorContainer {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     flex-direction: row;
     justify-content: start;
     align-self: flex-start;
@@ -38,4 +38,18 @@
     font-family: "Poppins", sans-serif;
     font-weight: 300;
     font-size: 0.8rem;
+}
+
+.mainTitleContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pageHeaderContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
