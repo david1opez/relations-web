@@ -5,6 +5,7 @@ import styles from "./llamadas.module.css";
 import Searchbar from "@/components/searchbar/Searchbar";
 import CallItem from "@/components/callItem/CallItem";
 import CallDetailsPopup from '@/components/CallComponent/CallDetailsPopup';
+import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator";
 
 import { analyzeCall, fetchChaptering } from '@/utils/CallAnalysisAPI';
 import { CallItemProps, CallDetails, Call } from '@/types/CallItemTypes';
@@ -84,18 +85,22 @@ export default function Llamadas({ id }: { id: number }) {
         <Searchbar onChange={handleSearch} />
       </div>
 
-      <div className={styles.callsList}>
-
-      {filteredCalls.map((call, idx) => (
-        <CallItem
-          key={call.callID}
-          call={call}
-          loading={loadingCallIdx == idx}
-          onClick={() => handleSelectCall(call.callID, idx)}
-        />
-      ))}
-
-      </div>
+      {loading ? (
+        <div className={styles.loadingContainer}>
+          <ActivityIndicator size={40} color="var(--accent)" />
+        </div>
+      ) : (
+        <div className={styles.callsList}>
+          {filteredCalls.map((call, idx) => (
+            <CallItem
+              key={call.callID}
+              call={call}
+              loading={loadingCallIdx == idx}
+              onClick={() => handleSelectCall(call.callID, idx)}
+            />
+          ))}
+        </div>
+      )}
 
       <CallDetailsPopup
         isOpen={showModal}
