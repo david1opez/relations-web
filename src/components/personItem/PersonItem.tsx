@@ -6,21 +6,21 @@ import Dialog from "../dialog/Dialog"
 import ProjectAssignDialog from "../projectAssignDialog/ProjectAssignDialog"
 
 // Types
-import type { User, Project } from "@/types/UserManagementTypes"
+import type { User } from "@/types/UserManagementTypes"
 
 // Utils
-import { updateUserRole, deleteUserWithRelations, getUserProjects } from "@/utils/UserManagement"
+import { updateUserRole, deleteUserWithRelations } from "@/utils/UserManagement"
 
 interface PersonItemProps {
   user: User
-  onDelete: (id: number) => void // Cambiado de string a number
-  onRoleChange: (id: number, role: string) => void // Cambiado de string a number
+  onDelete: (id: number) => void 
+  onRoleChange: (id: number, role: string) => void 
 }
 
 export default function PersonItem({ user, onDelete, onRoleChange }: PersonItemProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isProjectAssignDialogOpen, setIsProjectAssignDialogOpen] = useState(false)
-  const [role, setRole] = useState(user.role)
+  const [role, setRole] = useState(user.role ?? "colaborator") // Aseguramos que el rol tenga un valor por defecto
   const [isLoading, setIsLoading] = useState(false)
 
 // Dentro del componente PersonItem
