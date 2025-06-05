@@ -8,7 +8,7 @@ export async function fetchCalls(projectId: number): Promise<Call[]> {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response}`);
     }
-    console.log(response)
+    
     return await response.json();
   } catch (error) {
     console.error("Error fetching calls:", error);
