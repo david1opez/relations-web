@@ -4,12 +4,8 @@ import { useState, useEffect } from "react"
 import styles from "./miembros.module.css"
 import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator"
 
-const translateRole = (role: string): string => {
-  if (!role) return 'Sin rol asignado'
-  if (role.toLowerCase() === 'admin') return 'Administrador'
-  if (role.toLowerCase() === 'colaborator') return 'Colaborador'
-  return role
-}
+// UTILS
+import { translateRole } from "@/utils/roleUtils"
 
 interface ProjectUser {
   userID: number

@@ -6,6 +6,7 @@ import styles from "./perfil.module.css";
 import { GetUser } from "@/utils/GetUser";
 import {UserProfile} from "@/types/UserTypes";
 import { updateUser } from "@/utils/UserManagement";
+import { translateRole } from "@/utils/roleUtils";
 
 export default function PerfilPage() {
   const [subpages, setSubpages] = useState<string[]>([]);
@@ -204,7 +205,7 @@ export default function PerfilPage() {
             <h2>{user?.name}</h2>
             <p>{user?.email}</p>
             <div className={styles.tags}>
-              <span>{user?.role || 'Usuario'}</span>
+              <span>{translateRole(user?.role)}</span>
             </div>
           </div>
         </div>
