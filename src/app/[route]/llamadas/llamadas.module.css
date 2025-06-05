@@ -335,22 +335,23 @@
 }
 
 .analyzeAllButton {
-  background-color: var(--card-background);
-  color: var(--text-primary);
+  background-color: white;
+  color: var(--black);
   border: 1px solid var(--gray);
   padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   font-size: 0.85rem;
   font-family: "LayGrotesk-Medium", sans-serif;
   cursor: pointer;
   transition: all 0.2s;
-  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .analyzeAllButton:not(:disabled):hover {
-  background: var(--blue);
-  color: white;
-  border-color: var(--blue);
+  background-color: var(--accent);
+  border-color: var(--accent);
 }
 
 .analyzeAllButton:disabled {

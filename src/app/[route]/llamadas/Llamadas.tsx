@@ -11,6 +11,7 @@ import CallComponent from "@/components/CallComponent/CallComponent";
 import CallInsightsPopup from "@/components/CallComponent/CallInsightsPopup";
 import Searchbar from "@/components/searchbar/Searchbar";
 import CallItem from "@/components/callItem/CallItem";
+import Icon from "@/components/icon/Icon";
 
 // UTILS
 import { Call, CallDetails } from "@/types/CallItemTypes";
@@ -217,6 +218,13 @@ export default function Llamadas() {
                 onClick={handleAnalyzeAll}
                 disabled={filteredNotAnalyzed.length === 0 || analyzingAll}
               >
+                {!analyzingAll && (
+                  <Icon
+                    name="analyze"
+                    size={14}
+                    color="var(--black)"
+                  />
+                )}
                 {analyzingAll ? "Analizando..." : "Analizar Llamadas"}
               </button>
             </div>
