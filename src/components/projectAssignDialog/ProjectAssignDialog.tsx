@@ -115,7 +115,7 @@ export default function ProjectAssignDialog({
                     onChange={(e) => handleRoleChange(assignment.project.projectID, e.target.value as "admin" | "colaborator")}
                     className={styles.roleSelect}
                   >
-                    <option value="admin">Admin</option>
+                    <option value="admin">Administrador</option>
                     <option value="colaborator">Colaborador</option>
                   </select>
                 )}

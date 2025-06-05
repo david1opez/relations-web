@@ -4,6 +4,13 @@ import { useState, useEffect } from "react"
 import styles from "./miembros.module.css"
 import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator"
 
+const translateRole = (role: string): string => {
+  if (!role) return 'Sin rol asignado'
+  if (role.toLowerCase() === 'admin') return 'Administrador'
+  if (role.toLowerCase() === 'colaborator') return 'Colaborador'
+  return role
+}
+
 interface ProjectUser {
   userID: number
   name: string
@@ -78,8 +85,8 @@ export default function Miembros({ id }: MiembrosProps) {
               </div>
             </div>
             <div className={styles.roles}>
-              <span className={styles.projectRole}>{user.projectRole}</span>
-              <span className={styles.systemRole}>{user.role}</span>
+              <span className={styles.projectRole}>{translateRole(user.projectRole)}</span>
+              <span className={styles.systemRole}>{translateRole(user.role)}</span>
             </div>
           </div>
         ))}

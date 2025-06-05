@@ -79,7 +79,7 @@ export default function PersonItem({ user, onDelete, onRoleChange }: PersonItemP
         <p className={styles.label}>Rol:</p>
         <select className={styles.select} value={role} onChange={(e) => handleRoleChange(e.target.value)}>
           <option value="admin" className={styles.option}>
-            Admin
+            Administrador
           </option>
           <option value="colaborator" className={styles.option}>
             Colaborador

@@ -3,7 +3,7 @@ import { getUser, updateEmptyUser, getUserFromLocalStorage, removeUserFromLocalS
 
 // TYPES
 import AuthResponse from "@/types/authTypes";
-import { UserProfile } from "@/types/userTypes";
+import { UserProfile } from "@/types/UserTypes";
 
 export async function authWithMicrosoft(code: string): Promise<AuthResponse> {
     const response = await fetch(

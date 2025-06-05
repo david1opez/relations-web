@@ -532,7 +532,7 @@ export default function AddProjectPopup({ isOpen, onClose, onProjectAdded, proje
                           >
                             <option value="manager">Manager</option>
                             <option value="developer">Developer</option>
-                            <option value="admin">Admin</option>
+                            <option value="admin">Administrador</option>
                             <option value="colaborator">Colaborador</option>
                           </select>
                         )}

@@ -160,7 +160,7 @@ export default function Admin() {
     <div className="pageContainer">
       <div className={styles.headerRow}>
         <PageTitle
-          title="Admin"
+          title="Administrador"
           icon="activity"
           subpages={[]}
         />
