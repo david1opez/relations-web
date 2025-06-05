@@ -73,7 +73,7 @@ export default function Page() {
             <div className={styles.sidebarSection}>
                 <Sidebar
                     user={user}
-                    pages={user && user.role === 'admin' ? Pages : user.role === 'colaborador' ? Pages.slice(0, 3) : Pages.slice(0, 2)}
+                    pages={user && user.role === 'admin' ? Pages : user.role === 'colaborator' ? Pages.slice(0, 3) : Pages.slice(0, 2)}
                     activePage={activePage}
                     onPageChange={(page) => setActivePage(page)}
                     onLogOut={() => handleLogOut()}
