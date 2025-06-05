@@ -6,6 +6,7 @@ import PageTitle from "@/components/pageTitle/PageTitle"
 import Searchbar from "@/components/searchbar/Searchbar"
 import ClientItem from "@/components/clientItem/ClientItem"
 import AddClientDialog from "@/components/addClientDialog/AddClientDialog"
+import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator"
 
 // Types
 import type { Client } from "@/types/ClientTypes"
@@ -90,7 +91,7 @@ export default function Clientes() {
       <div className="pageContainer">
         <PageTitle title="Clientes" icon="star" subpages={[]} />
         <div className={styles.loadingContainer}>
-          <p>Cargando clientes...</p>
+          <ActivityIndicator size={40} color="var(--accent)" />
         </div>
       </div>
     )
