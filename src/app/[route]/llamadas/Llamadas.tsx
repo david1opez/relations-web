@@ -228,19 +228,12 @@ export default function Llamadas() {
             </div>
 
             <div className={styles.searchAndButton}>
-              <Searchbar onChange={handleSearchNotAnalyzed} />
+              <Searchbar onChange={handleSearchNotAnalyzed} className={styles.searchbar} />
               <button
                 className={styles.analyzeAllButton}
                 onClick={handleAnalyzeAll}
                 disabled={filteredNotAnalyzed.length === 0 || analyzingAll}
               >
-                {!analyzingAll && (
-                  <Icon
-                    name="analyze"
-                    size={14}
-                    color="var(--black)"
-                  />
-                )}
                 {analyzingAll ? "Analizando..." : "Analizar Llamadas"}
               </button>
             </div>
