@@ -8,6 +8,7 @@ import PageTitle from "@/components/pageTitle/PageTitle"
 import { Tabs } from "@/components/tabs/Tabs"
 import { LineChartComponent } from "@/components/lineChart/LineChart"
 import Dropdown from "@/components/dropdown/Dropdown"
+import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator"
 
 // UTILS
 import { getCallHistory, CallHistoryResponse, getProjectUsers, ProjectUser } from "@/utils/CallAnalysisAPI"
@@ -160,7 +161,7 @@ export default function Admin() {
     <div className="pageContainer">
       <div className={styles.headerRow}>
         <PageTitle
-          title="Admin"
+          title="Administrador"
           icon="activity"
           subpages={[]}
         />
@@ -186,7 +187,9 @@ export default function Admin() {
       </div>
 
       {loading ? (
-        <div className={styles.loadingMessage}>Cargando datos...</div>
+        <div className={styles.loadingContainer}>
+          <ActivityIndicator size={40} color="var(--accent)" />
+        </div>
       ) : error ? (
         <div className={styles.errorMessage}>{error}</div>
       ) : (

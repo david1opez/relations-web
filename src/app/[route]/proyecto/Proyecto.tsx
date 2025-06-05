@@ -102,7 +102,6 @@ export default function Proyecto({ id }: { id: number }) {
         <PageTitle
           title="Proyectos"
           icon="rocket"
-          subpages={[id.toString()]}
           onPageChange={() => router.push("/proyectos")}
         />
         <div className={styles.loadingContainer}>
@@ -118,7 +117,6 @@ export default function Proyecto({ id }: { id: number }) {
         <PageTitle
           title="Proyectos"
           icon="rocket"
-          subpages={[id.toString()]}
           onPageChange={() => router.push("/proyectos")}
         />
         <div className={styles.errorContainer}>Proyecto no encontrado</div>
@@ -131,15 +129,11 @@ export default function Proyecto({ id }: { id: number }) {
       <PageTitle
         title="Proyectos"
         icon="rocket"
-        subpages={[project.name]}
         onPageChange={() => router.push("/proyectos")}
       />
 
       <div className={styles.headerContainer}>
-        <div>
-          <p className={styles.label}>Nombre del proyecto:</p>
-          <h1 className={styles.projectTitle}>{project.name}</h1>
-        </div>
+        <h1 className={styles.projectTitle}>{project.name}</h1>
         <button 
           className={styles.editButton}
           onClick={() => setIsEditModalOpen(true)}

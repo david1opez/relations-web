@@ -6,6 +6,7 @@ import PageTitle from "@/components/pageTitle/PageTitle"
 import Searchbar from "@/components/searchbar/Searchbar"
 import PersonItem from "@/components/personItem/PersonItem"
 import AddPersonDialog from "@/components/addPersonDialog/AddPersonDialog"
+import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator"
 
 // Types
 import type { User } from "@/types/UserManagementTypes"
@@ -109,7 +110,7 @@ export default function Personas() {
       <div className="pageContainer">
         <PageTitle title="Personas" icon="users" subpages={[]} />
         <div className={styles.loadingContainer}>
-          <p>Cargando usuarios...</p>
+          <ActivityIndicator size={40} color="var(--accent)" />
         </div>
       </div>
     )

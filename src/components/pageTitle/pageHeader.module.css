@@ -1,4 +1,4 @@
-.pageIndicatorContainer {
+.pageHeaderContainer {
     display: flex;
     align-items: center;
     flex-direction: row;
@@ -7,18 +7,18 @@
     margin-bottom: 3.5vh;
 }
 
-.pageIndicatorTitle {
+.pageHeaderTitle {
     font-family: 'LayGrotesk-Semibold', sans-serif;
     font-size: 1.3rem;
     font-weight: 500;
     margin-left: 0.5rem;
 }
 
-.clickablePageIndicatorTitle {
+.clickablePageHeaderTitle {
     cursor: pointer;
 }
 
-.clickablePageIndicatorTitle:hover {
+.clickablePageHeaderTitle:hover {
     text-decoration: underline;
 }
 

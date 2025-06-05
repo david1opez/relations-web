@@ -4,23 +4,15 @@ import { useState, useRef, useEffect } from "react";
 import PageTitle from "@/components/pageTitle/PageTitle";
 import styles from "./perfil.module.css";
 import { GetUser } from "@/utils/GetUser";
-import UserType from "@/types/UserTypes";
+import {UserProfile} from "@/types/UserTypes";
 import { updateUser } from "@/utils/UserManagement";
-
-
-const testUser: UserType = {
-  id: "20",
-  name: "John Smith",
-  email: "john.smith@company.com",
-  role: "admin",
-}
-
+import { translateRole } from "@/utils/roleUtils";
 
 export default function PerfilPage() {
   const [subpages, setSubpages] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<"Overview"|"Settings"|"Security">("Settings");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [user, setUser] = useState<UserType | null>(null);
+  const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -61,18 +53,12 @@ export default function PerfilPage() {
         reader.readAsDataURL(file);
       });
 
-      if (!user?.id) {
+      if (!user?.userID) {
         throw new Error('No se pudo obtener el ID del usuario');
       }
 
-      // Convertir el ID de string a número para la API
-      const userId = parseInt(user.id, 10);
-      if (isNaN(userId)) {
-        throw new Error('ID de usuario inválido');
-      }
-
       // Actualizar el usuario con la nueva imagen
-      const updatedUserData = await updateUser(userId, {
+      const updatedUserData = await updateUser(user.userID, {
         profilePicture: base64Image
       });
 
@@ -80,11 +66,8 @@ export default function PerfilPage() {
         throw new Error('Error al actualizar la imagen de perfil');
       }
 
-      const updatedUserType: UserType = {
-        id: user.id, 
-        name: updatedUserData.name,
-        email: updatedUserData.email,
-        role: updatedUserData.role,
+      const updatedUserType : UserProfile = {
+        ...user,
         profilePicture: base64Image
       };
 
@@ -119,7 +102,7 @@ export default function PerfilPage() {
   };
 
   const handleSaveName = async () => {
-    if (!user?.id) {
+    if (!user?.userID) {
       setError('No se pudo obtener el ID del usuario');
       return;
     }
@@ -134,14 +117,8 @@ export default function PerfilPage() {
     setSuccess(null);
 
     try {
-      // Convertir el ID de string a número para la API
-      const userId = parseInt(user.id, 10);
-      if (isNaN(userId)) {
-        throw new Error('ID de usuario inválido');
-      }
-
       // Actualizar el usuario con el nuevo nombre
-      const updatedUserData = await updateUser(userId, {
+      const updatedUserData = await updateUser(user.userID, {
         name: tempName
       });
 
@@ -149,7 +126,7 @@ export default function PerfilPage() {
         throw new Error('Error al actualizar el nombre');
       }
 
-      const updatedUserType: UserType = {
+      const updatedUserType: UserProfile = {
         ...user,
         name: updatedUserData.name
       };
@@ -185,8 +162,6 @@ export default function PerfilPage() {
         console.log("userData is null");
         return;
       }
-      userData.id = "20"; //REMOVE WHEN LOGIN WORKS 
-      console.log("userData", userData);
       setUser(userData);
       setTempName(userData.name || "");
     };
@@ -221,14 +196,16 @@ export default function PerfilPage() {
             type="file"
             ref={fileInputRef}
             onChange={handleImageUpload}
-            accept="image/*"
+            accept="image/jpeg,image/png,image/gif"
             style={{ display: 'none' }}
+            title="Selecciona una imagen (JPG, PNG o GIF) de máximo 5MB"
+            disabled={loading}
           />
           <div className={styles.userInfo}>
             <h2>{user?.name}</h2>
             <p>{user?.email}</p>
             <div className={styles.tags}>
-              <span>{user?.role || 'Usuario'}</span>
+              <span>{translateRole(user?.role)}</span>
             </div>
           </div>
         </div>

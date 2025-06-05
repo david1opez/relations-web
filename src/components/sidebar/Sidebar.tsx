@@ -12,6 +12,9 @@ import OptionsMenu from "@/components/optionsMenu/OptionsMenu";
 // TYPES
 import SidebarProps from "@/types/components/sidebarTypes";
 
+// UTILS
+import { translateRole } from "@/utils/roleUtils";
+
 export default function Sidebar({ user, pages, activePage, onPageChange, onLogOut }: SidebarProps) {
   const { route }: { route: string } = useParams();
 
@@ -84,8 +87,8 @@ export default function Sidebar({ user, pages, activePage, onPageChange, onLogOu
               onClick={() => handlePageChange("Perfil")}
               style={{ cursor: "pointer" }}
             >
-              <p className={styles.userName}>{user.name || "No Name Available"}</p>
-              <p className={styles.userRole}>{user.role || "No Role Assigned"}</p>
+              <p className={styles.userName}>{user.name || "Sin nombre"}</p>
+              <p className={styles.userRole}>{translateRole(user.role)}</p>
             </div>
 
             <OptionsMenu

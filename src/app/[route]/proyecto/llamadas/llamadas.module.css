@@ -86,3 +86,11 @@
     background: var(--blue);
     color: var(--background);
   }
+
+  .loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 100%;
+  }

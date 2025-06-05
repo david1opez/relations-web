@@ -12,6 +12,7 @@ import CallInsightsPopup from "@/components/CallComponent/CallInsightsPopup";
 import Searchbar from "@/components/searchbar/Searchbar";
 import CallItem from "@/components/callItem/CallItem";
 import Icon from "@/components/icon/Icon";
+import ActivityIndicator from "@/components/activityIndicator/ActivityIndicator";
 
 // UTILS
 import { Call, CallDetails } from "@/types/CallItemTypes";
@@ -194,6 +195,21 @@ export default function Llamadas() {
     };
     loadInitialData();
   }, []);
+
+  if (loading) {
+    return (
+      <div className={styles.pageContainer}>
+        <PageTitle
+          title="Llamadas"
+          icon="phone"
+          subpages={[]}
+        />
+        <div className={styles.loadingContainer}>
+          <ActivityIndicator size={40} color="var(--accent)" />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.pageContainer}>
