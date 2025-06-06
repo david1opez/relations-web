@@ -11,7 +11,14 @@ interface Resource {
 }
 
 export default function Recursos({ id }: { id: number }) {
-  const [resources, setResources] = useState<Resource[]>([]);
+  const [resources, setResources] = useState<Resource[]>(() => {
+    // Cargar recursos desde localStorage al iniciar
+    if (typeof window !== 'undefined') {
+      const savedResources = localStorage.getItem(`project-${id}-resources`);
+      return savedResources ? JSON.parse(savedResources) : [];
+    }
+    return [];
+  });
   const [newTitle, setNewTitle] = useState("");
   const [newLink, setNewLink] = useState("");
   const [isAdding, setIsAdding] = useState(false);
@@ -31,8 +38,12 @@ export default function Recursos({ id }: { id: number }) {
         console.log('Intentando guardar recurso:', newResourceData);
 
         const createdReport = await createReport(newResourceData);
-
-        setResources(prev => [...prev, { title: createdReport.reportType, link: createdReport.fileURL }]);
+        
+        const newResources = [...resources, { title: createdReport.reportType, link: createdReport.fileURL }];
+        setResources(newResources);
+        
+        // Guardar en localStorage
+        localStorage.setItem(`project-${id}-resources`, JSON.stringify(newResources));
         
         setNewTitle("");
         setNewLink("");
