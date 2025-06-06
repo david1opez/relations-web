@@ -3,6 +3,7 @@
 import { useState } from "react";
 import styles from "./recursos.module.css";
 import Icon from "@/components/icon/Icon";
+import { createReport } from "@/services/reportsService";
 
 interface Resource {
   title: string;
@@ -15,12 +16,34 @@ export default function Recursos({ id }: { id: number }) {
   const [newLink, setNewLink] = useState("");
   const [isAdding, setIsAdding] = useState(false);
 
-  const handleAddResource = () => {
+  const handleAddResource = async () => {
+    console.log('Iniciando handleAddResource');
     if (newTitle.trim() && newLink.trim()) {
-      setResources(prev => [...prev, { title: newTitle, link: newLink }]);
-      setNewTitle("");
-      setNewLink("");
-      setIsAdding(false);
+      console.log('Condición del if cumplida');
+      try {
+        console.log('Entrando al try block');
+        const newResourceData = {
+          reportType: newTitle,
+          fileURL: newLink,
+          projectID: id,
+        };
+
+        console.log('Intentando guardar recurso:', newResourceData);
+
+        const createdReport = await createReport(newResourceData);
+
+        setResources(prev => [...prev, { title: createdReport.reportType, link: createdReport.fileURL }]);
+        
+        setNewTitle("");
+        setNewLink("");
+        setIsAdding(false);
+        
+        console.log('Recurso guardado con éxito:', createdReport);
+
+      } catch (error) {
+        console.error('Error al guardar el recurso:', error);
+        alert('Error al guardar el recurso. Inténtalo de nuevo.');
+      }
     }
   };
 
