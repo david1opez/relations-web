@@ -8,6 +8,5 @@ export type Activity = {
 export type RegisterActivityParams = {
     action: string;
     projectID?: number | null;
-    projectCallID?: number | null;
-    supportCallID?: number | null;
+    callID?: number | null;
 };

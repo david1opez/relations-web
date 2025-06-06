@@ -14,10 +14,10 @@ import RecentActivity from './sections/recentActivity/RecentActivity';
 import { getUserStats } from '@/utils/activity';
 
 // TYPES
-import { RegularStats, SupportStats } from '@/types/components/statsCardTypes';
+import { Stats } from '@/types/components/statsCardTypes';
 
 export default function Inicio() {
-    const [stats, setStats] = useState<RegularStats | SupportStats | null>(null);
+    const [stats, setStats] = useState<Stats | null>(null);
 
     useEffect(() => {
         getUserStats().then(setStats);
@@ -31,7 +31,7 @@ export default function Inicio() {
             <p className={styles.headerDescription}>Aquí tienes un resumen de tu actividad reciente</p>
 
             {
-                stats && 'activeProjects' in stats ? (
+                stats && (
                     <div className={styles.statsCardsContainer}>
                         <StatsCard
                             icon='images/blue-house.svg'
@@ -47,29 +47,6 @@ export default function Inicio() {
                             icon='images/blue-group.svg'
                             title='Proyectos totales'
                             number={stats.totalProjects}
-                        />
-                    </div>
-                ) : (
-                    <div className={styles.statsCardsContainer}>
-                        <StatsCard
-                            icon='images/blue-group.svg'
-                            title='Llamadas de soporte totales'
-                            number={stats?.totalSupportCalls}
-                        />
-                        <StatsCard
-                            icon='images/blue-phone.svg'
-                            title='Llamadas de soporte analizadas'
-                            number={stats?.analyzedSupportCalls}
-                        />
-                        <StatsCard
-                            icon='images/blue-group.svg'
-                            title='Porcentaje de resolución'
-                            number={stats?.solvedPercentage}
-                        />
-                        <StatsCard
-                            icon='images/blue-group.svg'
-                            title='Porcentaje de sentimiento positivo'
-                            number={stats?.positiveSentimentPercentage}
                         />
                     </div>
                 )
