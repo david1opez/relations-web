@@ -15,6 +15,7 @@ import { getUserStats } from '@/utils/activity';
 
 // TYPES
 import { Stats } from '@/types/components/statsCardTypes';
+import { getUserFromLocalStorage } from '@/utils/users';
 
 export default function Inicio() {
     const [stats, setStats] = useState<Stats | null>(null);
@@ -27,7 +28,7 @@ export default function Inicio() {
         <div className="pageContainer">
             <PageTitle title='Inicio' icon='house'/>
 
-            <h2 className={styles.headerTitle}>Bienvenido, {"Random"}</h2>
+            <h2 className={styles.headerTitle}>Bienvenido, {getUserFromLocalStorage()?.name}</h2>
             <p className={styles.headerDescription}>Aquí tienes un resumen de tu actividad reciente</p>
 
             {
