@@ -75,7 +75,7 @@ export default function RecentActivitySection() {
                             key={index}
                             icon="rocket"
                             title={item.action}
-                            description={item.where || "Ubicación del Cambio Desconocida"}
+                            description={item.where || " ___"}
                             time={formatTimeAgo(item.date)}
                             user={item.username}
                         />
