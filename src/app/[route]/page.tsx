@@ -11,7 +11,7 @@ import { checkUserLoggedIn } from '@/utils/auth';
 import { removeUserFromLocalStorage, setUserInLocalStorage } from '@/utils/users';
 
 // TYPES
-import { UserProfile } from '@/types/userTypes';
+import type { UserProfile } from "@/types/userTypes";
 
 // PAGES
 import Inicio from './inicio/Inicio';
@@ -25,14 +25,14 @@ import Clientes from "./clientes/Clientes";
 
 const Pages = [
     // COMMON
-    { icon: "house", name: "Inicio" },
-    { icon: "phone", name: "Llamadas"},
+    { icon: "house" as const, name: "Inicio" },
+    { icon: "phone" as const, name: "Llamadas"},
     // COLABORATOR
-    { icon: "rocket", name: "Proyectos" },
+    { icon: "rocket" as const, name: "Proyectos" },
     // ADMIN
-    { icon: "activity", name: "Admin" },
-    { icon: "users", name: "Personas" },
-    { icon: "star", name: "Clientes" }
+    { icon: "activity" as const, name: "Admin" },
+    { icon: "users" as const, name: "Personas" },
+    { icon: "star" as const, name: "Clientes" }
 ];
 
 export default function Page() {

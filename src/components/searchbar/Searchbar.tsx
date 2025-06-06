@@ -7,13 +7,14 @@ type Props = {
   value?: string;
   onChange?: (value: string) => void;
   className?: string;
+  placeholder?: string;
 };
 
-export default function Searchbar({ value, onChange, className }: Props) {
+export default function Searchbar({ value, onChange, className, placeholder }: Props) {
   return (
     <div className={`${styles.container} ${className || ''}`}>
       <input
-        placeholder="Buscar..."
+        placeholder={placeholder || "Buscar..."}
         className={styles.input}
         type="text"
         value={value}

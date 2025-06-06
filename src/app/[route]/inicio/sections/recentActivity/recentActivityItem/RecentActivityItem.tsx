@@ -5,7 +5,7 @@ import Icon from '@/components/icon/Icon';
 import MetadataItem from '@/components/metadataItem/MetadataItem';
 
 // TYPES
-import { RecentActivityItemProps } from '@/types/components/recentActivityItemTypes';
+import { RecentActivityItemProps } from '@/types/RecentActivityItemTypes';
 
 export default function RecentActivityItem({ icon, title, description, time, user }: RecentActivityItemProps) {
     return (

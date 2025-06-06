@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import PageTitle from "@/components/pageTitle/PageTitle";
 import styles from "./perfil.module.css";
 import { GetUser } from "@/utils/GetUser";
-import {UserProfile} from "@/types/UserTypes";
+import { UserProfile } from "@/types/userTypes";
 import { updateUser } from "@/utils/UserManagement";
 import { translateRole } from "@/utils/roleUtils";
 

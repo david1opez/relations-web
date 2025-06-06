@@ -1,6 +1,6 @@
 // TYPES
 import { MicrosoftProfile } from "@/types/authTypes";
-import { UserProfile } from "@/types/userTypes";
+import type { UserProfile } from "@/types/userTypes";
 
 // LOCAL STORAGE UTILS
 export function getUserFromLocalStorage(): UserProfile | null {

@@ -1,16 +1,17 @@
-// TYPES
-import UserType from "@/types/UserTypes";
+import type { UserProfile } from "@/types/userTypes";
 
 export async function Login() {
   localStorage.setItem("user", JSON.stringify({
-    id: '20',
+    userID: 20,
+    uid: '20',
     name: "John Doe",
     email: "johndoe@example.com",
     role: "admin",
-  } as UserType));
+    profilePicture: undefined
+  } as UserProfile));
 }
 
-export async function GetUser(): Promise<UserType | null> {
+export async function GetUser(): Promise<UserProfile | null> {
   const user = localStorage.getItem("user");
 
   if (!user) {

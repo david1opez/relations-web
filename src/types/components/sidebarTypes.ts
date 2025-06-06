@@ -1,5 +1,6 @@
 // TYPES
-import { UserProfile } from "../userTypes";
+import type { UserProfile } from "@/types/userTypes";
+import type { IconName } from '@/types/IconTypes';
 
 type SidebarProps = {
     user: UserProfile | null;
@@ -10,12 +11,12 @@ type SidebarProps = {
 };
 
 export type SidebarItemOption = {
-    icon: string;
+    icon: IconName;
     name: string;
 }
 
 export type SidebarItemProps = {
-    icon: string;
+    icon: IconName;
     pageName: string;
     active?: boolean;
     onClick?: () => void;
