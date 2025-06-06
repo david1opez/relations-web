@@ -228,7 +228,7 @@ export default function Llamadas() {
             </div>
 
             <div className={styles.searchAndButton}>
-              <Searchbar onChange={handleSearchNotAnalyzed} className={styles.searchbar} />
+              <Searchbar onChange={handleSearchNotAnalyzed} />
               <button
                 className={styles.analyzeAllButton}
                 onClick={handleAnalyzeAll}
