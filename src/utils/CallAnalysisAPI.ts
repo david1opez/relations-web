@@ -1,3 +1,5 @@
+import { registerActivity } from "./activity";
+
 export const analyzeCall = async (transcript: string) => {
   try {
     console.log("Transcripción a analizar:", transcript);
@@ -16,6 +18,7 @@ export const analyzeCall = async (transcript: string) => {
     }
 
     const data = await response.json();
+
     return data;
   } catch (error) {
     console.error("Error en el análisis de la llamada:", error);

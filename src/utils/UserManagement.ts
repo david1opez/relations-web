@@ -3,6 +3,8 @@ import { apiRequest, API_BASE_URL2 } from './api-helpers';
 // URL base para la API
 const API_BASE_URL = "https://relations-data-api.vercel.app"
 
+import { registerActivity } from "./activity"
+
 /**
  * Obtiene todos los usuarios
  */
@@ -74,7 +76,13 @@ export async function createUser(userData: UserFormData): Promise<User | null> {
       throw new Error(`Error creating user: ${response.status} ${response.statusText}`)
     }
 
-    const data = await response.json()
+    const data = await response.json();
+
+    // Registrar la actividad de creación de usuario
+    await registerActivity({
+      action: "Creación de usuario",
+    });
+
     return data
   } catch (error) {
     console.error("Error creating user:", error)
@@ -101,7 +109,13 @@ export async function updateUserRole(userId: number, role: string): Promise<User
       throw new Error(`Error updating user role: ${response.status} ${response.statusText}`)
     }
 
-    const data = await response.json()
+    const data = await response.json();
+
+    // Registrar la actividad de actualización de rol
+    await registerActivity({
+      action: "Actualización de rol de usuario",
+    });
+
     return data
   } catch (error) {
     console.error(`Error updating user ${userId} role:`, error)
@@ -128,7 +142,13 @@ export async function updateUser(userId: number, userData: Partial<UserFormData>
       throw new Error(`Error updating user: ${response.status} ${response.statusText}`)
     }
 
-    const data = await response.json()
+    const data = await response.json();
+
+    // Registrar la actividad de actualización de usuario
+    await registerActivity({
+      action: "Actualización de usuario",
+    });
+    
     return data
   } catch (error) {
     console.error(`Error updating user ${userId}:`, error)

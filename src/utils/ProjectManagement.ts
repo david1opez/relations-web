@@ -1,4 +1,5 @@
 import type { Project } from "@/types/UserManagementTypes"
+import { registerActivity } from "./activity"
 
 const API_BASE_URL = "https://relations-data-api.vercel.app"
 
@@ -9,6 +10,12 @@ export const deleteProject = async (projectId: number): Promise<boolean> => {
     })
     
     if (!response.ok) throw new Error("Failed to delete project")
+
+    await registerActivity({
+      action: "Eliminación de proyecto",
+      projectID: projectId,
+    });
+    
     return true
   } catch (error) {
     console.error("Error deleting project:", error)

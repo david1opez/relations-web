@@ -1,5 +1,6 @@
 import { Call } from '@/types/CallItemTypes';
 import { parseVTT } from '@/utils/vttHelpers';
+import { registerActivity } from '@/utils/activity';
 
 export async function fetchCalls(projectId: number): Promise<Call[]> {
   try {
@@ -35,7 +36,14 @@ export async function analyzeCall(callID: string, text: string) {
   }
   
   const result = await response.json();
+  
   console.log("✅ API Response:", result);
+
+  await registerActivity({
+    action: 'Analsis de llamada',
+    callID: Number(callID),
+  });
+  
   return result;
 }
 
